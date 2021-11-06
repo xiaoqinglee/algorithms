@@ -1,12 +1,12 @@
 package leetcodeproblems
 
 func TwoSum(nums []int, target int) []int {
-	hashtable := make(map[int]int, len(nums))
+	mapValueToIndex := make(map[int]int, len(nums))
 	for i, num := range nums {
-		if index, ok := hashtable[target-num]; ok {
+		if index, ok := mapValueToIndex[target-num]; ok {
 			return []int{index, i}
 		}
-		hashtable[num] = i
+		mapValueToIndex[num] = i
 	}
 	return []int{}
 }
