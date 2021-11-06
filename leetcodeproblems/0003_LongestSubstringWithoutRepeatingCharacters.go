@@ -1,6 +1,6 @@
 package leetcodeproblems
 
-func LengthOfLongestSubstring(s string) int {
+func LongestSubstringWithoutRepeatingCharacters(s string) int {
 
 	// maxLengthIndexStart := 0
 	// maxLengthIndexEnd := 0

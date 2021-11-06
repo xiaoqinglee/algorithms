@@ -1,6 +1,8 @@
 package leetcodeproblems
 
-func LongestPalindrome(s string) string {
+func LongestPalindromicSubstring(s string) string {
+
+	//不考虑字符串s中包含字节数大于1的rune的情景
 
 	longestLeftCharIndex := 0
 	longestRightCharIndex := 0

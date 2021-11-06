@@ -2,7 +2,7 @@ package leetcodeproblems
 
 import . "github.com/XiaoqingLee/LeetCodeProblems/pkg"
 
-func ReverseList(pHead *ListNode) *ListNode {
+func ReverseLinkedList(pHead *ListNode) *ListNode {
 	var pNewListHead *ListNode
 	var pTail *ListNode
 	for {
