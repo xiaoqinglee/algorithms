@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/XiaoqingLee/LeetCodeProblems/leetcodeproblems"
+	"github.com/XiaoqingLee/LeetCodeProblems/problems"
 )
 
 func main() {
-
-	fmt.Printf("%t\n", leetcodeproblems.PalindromeNumber(121))
-
+	nums := []int{2, 7, 11, 15}
+	target := 9
+	fmt.Printf("%v\n", problems.TwoSum(nums, target))
 }

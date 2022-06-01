@@ -1,4 +1,4 @@
-package leetcodeproblems
+package problems
 
 func ZigZagConversion(s string, numRows int) string {
 	runes := []rune(s)

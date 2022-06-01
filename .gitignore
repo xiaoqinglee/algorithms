@@ -1,3 +1,5 @@
+# 1.golang
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -14,4 +16,11 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
+# 2.python
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 3.others
 .idea

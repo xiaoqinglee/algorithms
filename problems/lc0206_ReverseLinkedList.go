@@ -1,4 +1,4 @@
-package leetcodeproblems
+package problems
 
 import . "github.com/XiaoqingLee/LeetCodeProblems/pkg"
 
