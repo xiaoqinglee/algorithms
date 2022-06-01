@@ -36,16 +36,13 @@ func AddTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 		l3NewNode := &ListNode{
 			Val: nodeSum,
 		}
-		if l3LastNode == nil {
+		if l3 == nil {
 			l3 = l3NewNode
 			l3LastNode = l3NewNode
 		} else {
 			l3LastNode.Next = l3NewNode
 			l3LastNode = l3NewNode
 		}
-	}
-	if l3 == nil {
-		return new(ListNode)
 	}
 	return l3
 }
