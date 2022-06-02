@@ -10,7 +10,7 @@ def longest_palindrome(s: str) -> str:
     longest_palindrome_substring: str = ''
     longest_palindrome_substring_length: int = 0
 
-    def populate_dp_table():
+    def populate_dp_table() -> None:
         substring_length = 0
         while True:
             substring_length += 1
