@@ -1,36 +1,26 @@
 package problems
 
-import "fmt"
+func Permute(nums []int) [][]int {
+	result := make([][]int, 0)
 
-func allCombinations_(used, left []int, resultAddress *[][]int) {
-
-	if len(left) == 0 {
-		*resultAddress = append(*resultAddress, used)
-		return
+	swapTwoElementByIndex := func(pList *[]int, i int, j int) {
+		(*pList)[i], (*pList)[j] = (*pList)[j], (*pList)[i]
 	}
 
-	for i, v := range left {
-
-		newUsed := make([]int, len(used), cap(used))
-		copy(newUsed, used)
-		newUsed = append(newUsed, v)
-
-		newLeft := make([]int, len(left), cap(left))
-		copy(newLeft, left)
-		newLeft = append(newLeft[:i], newLeft[i+1:]...)
-
-		allCombinations_(newUsed, newLeft, resultAddress)
+	var backTrace func(fixedFirstNElement int)
+	backTrace = func(fixedFirstNElement int) {
+		if fixedFirstNElement == len(nums) {
+			oneCombination := make([]int, len(nums), len(nums))
+			copy(oneCombination, nums)
+			result = append(result, oneCombination)
+		}
+		for i := fixedFirstNElement; i < len(nums); i++ {
+			swapTwoElementByIndex(&nums, fixedFirstNElement, i)
+			backTrace(fixedFirstNElement + 1)
+			swapTwoElementByIndex(&nums, fixedFirstNElement, i)
+		}
 	}
-}
 
-func allCombinations(nums []int) [][]int {
-	result := [][]int{}
-	allCombinations_([]int{}, nums, &result)
+	backTrace(0)
 	return result
-}
-
-func main() {
-	nums := []int{0, 1, 2}
-	result := allCombinations(nums)
-	fmt.Printf("result: %v", result)
 }
