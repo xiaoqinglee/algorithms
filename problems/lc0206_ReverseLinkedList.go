@@ -2,20 +2,21 @@ package problems
 
 import . "github.com/XiaoqingLee/LeetCodeProblems/pkg"
 
-func ReverseLinkedList(pHead *ListNode) *ListNode {
-	var pNewListHead *ListNode
-	var pTail *ListNode
+func ReverseLinkedList(head *ListNode) *ListNode {
+	if head == nil {
+		return head
+	}
+	var newListHead *ListNode
 	for {
-		if pHead == nil {
+		newHead := head.Next
+
+		head.Next = newListHead
+		newListHead = head
+
+		head = newHead
+		if head == nil {
 			break
 		}
-		//第一步
-		pTail = pHead.Next
-		//第三步
-		pHead.Next = pNewListHead
-		pNewListHead = pHead
-		//第二步
-		pHead = pTail
 	}
-	return pNewListHead
+	return newListHead
 }
