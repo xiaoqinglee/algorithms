@@ -23,14 +23,13 @@ class PriorityHeap:
     def __swim_up(self, element_index: int) -> None:
         while True:
             if element_index == 0:
-                return
-            parent_index = (element_index - 1) // 2
-            if self.__is_priority(self.__elements[element_index], self.__elements[parent_index]):
-                self.__elements[element_index], self.__elements[parent_index] = \
-                    self.__elements[parent_index], self.__elements[element_index]
-                element_index = parent_index
-            else:
                 break
+            index_of_parent_to_swap = (element_index - 1) // 2
+            if not self.__is_priority(self.__elements[element_index], self.__elements[index_of_parent_to_swap]):
+                break
+            self.__elements[element_index], self.__elements[index_of_parent_to_swap] = \
+                self.__elements[index_of_parent_to_swap], self.__elements[element_index]
+            element_index = index_of_parent_to_swap
 
     def __sink_down(self, element_index: int) -> None:
         while True:
@@ -40,19 +39,18 @@ class PriorityHeap:
             if 2*element_index + 2 <= self.size() - 1:
                 children_indexes.append(2*element_index + 2)
             if len(children_indexes) == 0:
-                return
+                break
             if len(children_indexes) == 1:
                 index_of_child_to_swap = children_indexes[0]
             elif len(children_indexes) == 2:
                 index_of_child_to_swap = children_indexes[0] \
                     if self.__is_priority(self.__elements[children_indexes[0]], self.__elements[children_indexes[1]]) \
                     else children_indexes[1]
-            if self.__is_priority(self.__elements[index_of_child_to_swap], self.__elements[element_index]):
-                self.__elements[index_of_child_to_swap], self.__elements[element_index] = \
-                    self.__elements[element_index], self.__elements[index_of_child_to_swap]
-                element_index = index_of_child_to_swap
-            else:
+            if not self.__is_priority(self.__elements[index_of_child_to_swap], self.__elements[element_index]):
                 break
+            self.__elements[index_of_child_to_swap], self.__elements[element_index] = \
+                self.__elements[element_index], self.__elements[index_of_child_to_swap]
+            element_index = index_of_child_to_swap
 
     def size(self) -> int:
         return len(self.__elements)

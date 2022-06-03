@@ -107,12 +107,12 @@ def heap_sort(nums: list[int]) -> list[int]:
     while not heap.is_empty():
         sorted_.append(heap.pop())
 
-    # sorted_2 = []
-    # heap = PriorityHeap(elements=[], is_priority=lambda x, y: x < y)
-    # for elem in nums:
-    #     heap.insert(elem)
-    # while not heap.is_empty():
-    #     sorted_2.append(heap.pop())
-    # assert quick_sort(nums) == sorted_ == sorted_2
+    sorted_2 = []
+    heap = PriorityHeap(elements=[], is_priority=lambda x, y: x < y)
+    for elem in nums:
+        heap.insert(elem)
+    while not heap.is_empty():
+        sorted_2.append(heap.pop())
+    assert quick_sort(nums) == sorted_ == sorted_2
 
     return sorted_
