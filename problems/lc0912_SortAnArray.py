@@ -1,6 +1,6 @@
-# https://www.cnblogs.com/curo0119/p/8588565.html
-
 def quick_sort(nums: list[int]) -> list[int]:
+    # # https://www.cnblogs.com/curo0119/p/8588565.html
+
     # # 应对 leetcode极端测试用例: 升序超大数组
     # import random
     # random.shuffle(nums)
@@ -102,13 +102,13 @@ def heap_sort(nums: list[int]) -> list[int]:
         return nums
 
     sorted_ = []
-    from pypkg.datatype import PriorityHeap
-    heap = PriorityHeap(elements=nums, is_priority=lambda x, y: x < y)
+    from pypkg.datatype import PriorityQueue
+    heap = PriorityQueue(elements=nums, has_higher_priority=lambda x, y: x < y)  # 最小堆
     while not heap.is_empty():
         sorted_.append(heap.pop())
 
     sorted_2 = []
-    heap = PriorityHeap(elements=[], is_priority=lambda x, y: x < y)
+    heap = PriorityQueue(elements=[], has_higher_priority=lambda x, y: x < y)  # 最小堆
     for elem in nums:
         heap.insert(elem)
     while not heap.is_empty():

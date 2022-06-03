@@ -8,12 +8,12 @@ class ListNode:
         self.next: ListNode = next
 
 
-class PriorityHeap:
+class PriorityQueue:
     def __init__(self,
                  elements: list[int],
-                 is_priority: collections.abc.Callable[[int, int], bool]):
+                 has_higher_priority: collections.abc.Callable[[int, int], bool]):
         self.__elements = elements.copy()
-        self.__is_priority = is_priority
+        self.__has_higher_priority = has_higher_priority
         self.__heapify()
 
     def __heapify(self) -> None:
@@ -24,12 +24,12 @@ class PriorityHeap:
         while True:
             if element_index == 0:
                 break
-            index_of_parent_to_swap = (element_index - 1) // 2
-            if not self.__is_priority(self.__elements[element_index], self.__elements[index_of_parent_to_swap]):
+            index_of_parent = (element_index - 1) // 2
+            if self.__has_higher_priority(self.__elements[index_of_parent], self.__elements[element_index]):
                 break
-            self.__elements[element_index], self.__elements[index_of_parent_to_swap] = \
-                self.__elements[index_of_parent_to_swap], self.__elements[element_index]
-            element_index = index_of_parent_to_swap
+            self.__elements[element_index], self.__elements[index_of_parent] = \
+                self.__elements[index_of_parent], self.__elements[element_index]
+            element_index = index_of_parent
 
     def __sink_down(self, element_index: int) -> None:
         while True:
@@ -41,16 +41,18 @@ class PriorityHeap:
             if len(children_indexes) == 0:
                 break
             if len(children_indexes) == 1:
-                index_of_child_to_swap = children_indexes[0]
+                index_of_child_with_higher_priority = children_indexes[0]
             elif len(children_indexes) == 2:
-                index_of_child_to_swap = children_indexes[0] \
-                    if self.__is_priority(self.__elements[children_indexes[0]], self.__elements[children_indexes[1]]) \
+                index_of_child_with_higher_priority = children_indexes[0] \
+                    if self.__has_higher_priority(self.__elements[children_indexes[0]],
+                                                  self.__elements[children_indexes[1]]) \
                     else children_indexes[1]
-            if not self.__is_priority(self.__elements[index_of_child_to_swap], self.__elements[element_index]):
+            if self.__has_higher_priority(self.__elements[element_index],
+                                          self.__elements[index_of_child_with_higher_priority]):
                 break
-            self.__elements[index_of_child_to_swap], self.__elements[element_index] = \
-                self.__elements[element_index], self.__elements[index_of_child_to_swap]
-            element_index = index_of_child_to_swap
+            self.__elements[index_of_child_with_higher_priority], self.__elements[element_index] = \
+                self.__elements[element_index], self.__elements[index_of_child_with_higher_priority]
+            element_index = index_of_child_with_higher_priority
 
     def size(self) -> int:
         return len(self.__elements)
