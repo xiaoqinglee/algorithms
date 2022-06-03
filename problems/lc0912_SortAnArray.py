@@ -91,3 +91,28 @@ def merge_sort(nums: list[int]) -> list[int]:
 
     sort(0, len(nums) - 1)
     return nums
+
+
+def heap_sort(nums: list[int]) -> list[int]:
+    # # 应对 leetcode极端测试用例: 升序超大数组
+    # import random
+    # random.shuffle(nums)
+
+    if len(nums) == 0:
+        return nums
+
+    sorted_ = []
+    from pypkg.datatype import PriorityHeap
+    heap = PriorityHeap(elements=nums, is_priority=lambda x, y: x < y)
+    while not heap.is_empty():
+        sorted_.append(heap.pop())
+
+    # sorted_2 = []
+    # heap = PriorityHeap(elements=[], is_priority=lambda x, y: x < y)
+    # for elem in nums:
+    #     heap.insert(elem)
+    # while not heap.is_empty():
+    #     sorted_2.append(heap.pop())
+    # assert quick_sort(nums) == sorted_ == sorted_2
+
+    return sorted_
