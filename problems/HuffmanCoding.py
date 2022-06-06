@@ -25,7 +25,7 @@
 from pypkg.datatype import TreeNode
 
 
-class HaffmanEncode:
+class HaffmanCoding:
 
     def __init__(self, char_to_frequency: dict[str, int]):
 
@@ -33,19 +33,19 @@ class HaffmanEncode:
             raise "待编码的字符个数小于2，编码无意义"
 
         # 这个工作交给堆比较合适
-        def pop_node_with_min_v(list_: list[TreeNode]) -> TreeNode:
-            min_v = min((node.val for node in list_))
+        def pop_node_with_min_value(list_: list[TreeNode]) -> TreeNode:
+            min_value = min((node.val for node in list_))
             for i, node in enumerate(list_):
-                if node.val == min_v:
+                if node.val == min_value:
                     return list_.pop(i)
 
         def build_tree(list_: list[TreeNode]) -> TreeNode:
             while len(list_) >= 2:
-                node1 = pop_node_with_min_v(list_)
-                node2 = pop_node_with_min_v(list_)
+                node1 = pop_node_with_min_value(list_)
+                node2 = pop_node_with_min_value(list_)
                 # 这里 node1.val <= node2.val
                 root: TreeNode = TreeNode(val=node1.val + node2.val, left=node1, right=node2)
-                root.char = None  # 非叶子节点 char 值为非 None
+                root.char = None  # 非叶子节点 char 值为 None
                 list_.append(root)
             return list_[0]
 
@@ -69,9 +69,9 @@ class HaffmanEncode:
             return result
 
         node_list: list[TreeNode] = []
-        for k, v in char_to_frequency.items():
-            node: TreeNode = TreeNode(val=v, left=None, right=None)
-            node.char = k  # 叶子结点 char 值为非 None
+        for char, frequency in char_to_frequency.items():
+            node: TreeNode = TreeNode(val=frequency, left=None, right=None)
+            node.char = char  # 叶子结点 char 值为非 None
             node_list.append(node)
 
         self.__haffman_tree: TreeNode = build_tree(node_list)
@@ -117,7 +117,7 @@ if __name__ == '__main__':
         "e": 16,
         "f": 45,
     }
-    haffman: HaffmanEncode = HaffmanEncode(frequency_table)
+    haffman: HaffmanCoding = HaffmanCoding(frequency_table)
     for char in frequency_table:
         print(haffman.encode(char))
     for char in frequency_table:
