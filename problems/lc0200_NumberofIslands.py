@@ -7,7 +7,7 @@ class Solution:
     #     if len(grid) == 0 or len(grid[0]) == 0:
     #         return 0
     #
-    #     # '1'（陆地）和 '0'（水）
+    #     # '1'（没有访问过的陆地）和 '0'（水）
     #     # '2' (访问过的陆地)
     #     def visit_position(row_index: int, column_index: int) -> None:
     #         grid[row_index][column_index] = '2'
@@ -55,7 +55,7 @@ class Solution:
         if len(grid) == 0 or len(grid[0]) == 0:
             return 0
 
-        # '1'（陆地）和 '0'（水）
+        # '1'（没有访问过的陆地）和 '0'（水）
         # '2' (访问过的陆地)
         def visit_position(row_index: int, column_index: int) -> None:
             grid[row_index][column_index] = '2'
