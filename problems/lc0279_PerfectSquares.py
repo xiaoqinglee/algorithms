@@ -1,6 +1,8 @@
 class Solution:
     def numSquares(self, n: int) -> int:
 
+        # 相关问题 see lc 322
+
         if n < 0:
             return 0
 

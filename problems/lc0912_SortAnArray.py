@@ -49,9 +49,9 @@ def quick_sort(nums: list[int]) -> list[int]:
 
 
 def merge_sort(nums: list[int]) -> list[int]:
-    # 应对 leetcode极端测试用例: 升序超大数组
-    import random
-    random.shuffle(nums)
+    # # 应对 leetcode极端测试用例: 升序超大数组
+    # import random
+    # random.shuffle(nums)
 
     if len(nums) == 0:
         return nums

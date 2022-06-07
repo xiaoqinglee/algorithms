@@ -1,7 +1,8 @@
 class Solution:
     def coinChange(self, coins: list[int], amount: int) -> int:
 
-        # 和 lc0279 完全平方和数一样，不同的是零钱可能兑换不开。
+        # 相关问题 see lc 279, 和完全平方和数一样，不同的是零钱可能兑换不开。
+
         coins.sort()
 
         # 零钱找不开的情景在python这种动态语言中可以使用None，在静态Golang语言中可以使用-1特殊值，使用前判断是否是-1。
