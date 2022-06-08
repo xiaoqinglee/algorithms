@@ -41,3 +41,9 @@ func SliceToListNode(slice []int) *ListNode {
 	}
 	return l
 }
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
