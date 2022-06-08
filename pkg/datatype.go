@@ -47,3 +47,16 @@ type TreeNode struct {
 	Left  *TreeNode
 	Right *TreeNode
 }
+
+//max := func(int1, int2 int) int {
+//	if int1 > int2 {
+//		return int1
+//	}
+//	return int2
+//}
+//min := func(int1, int2 int) int {
+//	if int1 < int2 {
+//		return int1
+//	}
+//	return int2
+//}
