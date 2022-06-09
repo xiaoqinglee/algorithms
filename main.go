@@ -1,5 +1,7 @@
 package main
 
+import "github.com/XiaoqingLee/LeetCodeProblems/problems"
+
 func main() {
 	//nums := []int{2, 7, 11, 15}
 	//target := 9
@@ -16,4 +18,6 @@ func main() {
 	//spew.Dump(m)
 	//m[15] = append(m[15], -1)
 	//spew.Dump(m)
+
+	problems.TestList()
 }
