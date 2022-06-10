@@ -52,8 +52,8 @@ func TestList() {
 	fmt.Println("===========================")
 }
 
-func maxSlidingWindow(nums []int, k int) []int {
-	if !(k >= 0 && k <= len(nums)) {
-		panic("Invalid Input nums and k")
-	}
-}
+//func maxSlidingWindow(nums []int, k int) []int {
+//	if !(k >= 0 && k <= len(nums)) {
+//		panic("Invalid Input nums and k")
+//	}
+//}
