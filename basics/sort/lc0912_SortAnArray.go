@@ -1,4 +1,4 @@
-package basics
+package sort
 
 import (
 	"math/rand"
