@@ -1,4 +1,4 @@
-package problems
+package basics
 
 import (
 	"math/rand"

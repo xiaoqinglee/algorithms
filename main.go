@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/XiaoqingLee/LeetCodeProblems/problems"
+	"github.com/XiaoqingLee/LeetCodeProblems/basics"
 )
 
 func main() {
@@ -11,5 +11,5 @@ func main() {
 
 	//spew.Dump('7')
 
-	problems.TestBankersAlgorithm()
+	basics.TestBankersAlgorithm()
 }
