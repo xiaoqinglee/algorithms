@@ -98,7 +98,7 @@ class Trie:
     ARRAY_LEN = 26
 
     def __init__(self):
-        self.is_leaf: bool = False
+        self.is_terminal: bool = False
         self.value: str | None = None
         self.value_count: int = 0
         self.children: list[Trie | None] = [None] * self.ARRAY_LEN
@@ -112,40 +112,56 @@ class Trie:
                 child = Trie()
                 node.children[ord(char) - ord('a')] = child
             node = child
-        if node.is_leaf:
+        if node.is_terminal:
             node.value_count += 1
         else:
-            node.is_leaf = True
+            node.is_terminal = True
             node.value = word
             node.value_count = 1
 
-    def __delete(self, word: str) -> bool:
-        node_is_kept: bool = True
-        if word == '':
-            if self.is_leaf is False:
-                raise "word not in trie"
-            if self.value_count > 1:
-                self.value_count -= 1
-            elif self.value_count == 1:
-                self.value = None
-                self.value_count = 0
-                node_is_kept = False
-            return node_is_kept
-        child: Trie | None = self.children[ord(word[0])-ord('a')]
-        if child is None:
-            raise "word not in trie"
-        child_is_kept: bool = child.__delete(word[1:])
-        print("deleted", word[0], "node kept", child_is_kept)
-        if child_is_kept:
-            return node_is_kept
-        self.children[ord(word[0])-ord('a')] = None
-        if self.is_leaf is False and all(x is None for x in self.children):
-            node_is_kept = False
-            return node_is_kept
-        return node_is_kept
-
     def delete(self, word: str) -> None:
-        self.__delete(word)
+        nodes_to_delete: list[Trie] = []
+        paths_to_delete: list[str] = []
+
+        node: Trie = self
+        for char in word:
+            child: Trie | None = node.children[ord(char) - ord('a')]
+            if child is None:
+                raise "word not in trie"
+            node = child
+            nodes_to_delete.append(node)
+            paths_to_delete.append(char)
+
+        if not node.is_terminal:
+            raise "word not in trie"
+        if node.value_count > 1:
+            node.value_count -= 1
+        elif node.value_count == 1:
+            node.is_terminal = False
+
+        child_is_kept: bool | None = None
+        if not node.is_terminal and all(x is None for x in node.children):
+            print("deleting node", node.value)
+            child_is_kept = False
+        else:
+            child_is_kept = True
+
+        nodes_to_delete.pop()
+        path_leading_to_child: str = paths_to_delete.pop()
+
+        while len(nodes_to_delete) > 0:
+            node = nodes_to_delete.pop()
+            if child_is_kept:
+                return
+            print("deleting path", path_leading_to_child)
+            node.children[ord(path_leading_to_child)-ord('a')] = None
+
+            if not node.is_terminal and all(x is None for x in node.children):
+                print("deleting node", node.value)
+                child_is_kept = False
+            else:
+                child_is_kept = True
+            path_leading_to_child = paths_to_delete.pop()
 
     def search(self, word: str) -> bool:
         exists: bool = False
@@ -154,7 +170,7 @@ class Trie:
             node: Trie | None = node.children[ord(char) - ord('a')]
             if node is None:
                 return exists
-        if node.is_leaf:
+        if node.is_terminal:
             exists = True
             return exists
         return exists
@@ -178,24 +194,34 @@ class Trie:
 
 if __name__ == '__main__':
     obj = Trie()
+    print("=============================")
     print('''obj.insert("leetcode")''')
     obj.insert("leetcode")
     print('''obj.insert("leef")''')
     obj.insert("leef")
     print('''obj.insert("leet")''')
     obj.insert("leet")
+    print('''obj.search("leetcode")''')
+    print(obj.search("leetcode"))
     print('''obj.search("leef")''')
+    print(obj.search("leet"))
+    print('''obj.search("leet")''')
     print(obj.search("leef"))
-    print('''obj.search("leetcode")''')
-    print(obj.search("leetcode"))
 
-    print('''obj.delete("leetcode")=============================''')
+    print("=============================")
+    print('''obj.delete("leetcode")''')
     obj.delete("leetcode")
+    print('''obj.delete("leet")''')
+    obj.delete("leet")
 
-    print('''obj.search("leef")=================================''')
-    print(obj.search("leef"))
+    print("=============================")
     print('''obj.search("leetcode")''')
     print(obj.search("leetcode"))
+    print('''obj.search("leef")''')
+    print(obj.search("leet"))
+    print('''obj.search("leet")''')
+    print(obj.search("leef"))
+
     print('''obj.startsWith("l")''')
     print(obj.startsWith("l"))
     print('''obj.startsWith("")''')
