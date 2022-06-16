@@ -99,8 +99,8 @@ class Trie:
 
     def __init__(self):
         self.is_terminal: bool = False
-        self.value: str | None = None
-        self.value_count: int = 0
+        self.value: str | None = None  # 仅当self.is_terminal为True时有意义
+        self.value_count: int = 0  # 仅当self.is_terminal为True时有意义
         self.children: list[Trie | None] = [None] * self.ARRAY_LEN
 
     def insert(self, word: str) -> None:
@@ -138,10 +138,12 @@ class Trie:
             node.value_count -= 1
         elif node.value_count == 1:
             node.is_terminal = False
+            node.value = None
+            node.value_count = 0
 
         child_is_kept: bool | None = None
         if not node.is_terminal and all(x is None for x in node.children):
-            print("deleting node", node.value)
+            # print("deleting node", node.value)
             child_is_kept = False
         else:
             child_is_kept = True
@@ -153,11 +155,11 @@ class Trie:
             node = nodes_to_delete.pop()
             if child_is_kept:
                 return
-            print("deleting path", path_leading_to_child)
+            # print("deleting path", path_leading_to_child)
             node.children[ord(path_leading_to_child)-ord('a')] = None
 
             if not node.is_terminal and all(x is None for x in node.children):
-                print("deleting node", node.value)
+                # print("deleting node", node.value)
                 child_is_kept = False
             else:
                 child_is_kept = True
