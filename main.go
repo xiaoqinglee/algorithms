@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/XiaoqingLee/LeetCodeProblems/basics"
+	"github.com/xiaoqinglee/algorithm/basics"
 )
 
 func main() {
