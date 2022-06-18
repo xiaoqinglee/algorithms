@@ -1,9 +1,5 @@
 package main
 
-import (
-	"github.com/xiaoqinglee/algorithm/basics"
-)
-
 func main() {
 	//nums := []int{2, 7, 11, 15}
 	//target := 9
