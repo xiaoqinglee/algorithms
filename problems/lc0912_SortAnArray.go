@@ -1,4 +1,4 @@
-package sort
+package problems
 
 import (
 	"math/rand"
