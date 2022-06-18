@@ -10,7 +10,7 @@ set/map: hash table、 balanced tree、 redis zset
 
 ### pypkg、pkg
 
-linkedlist、 doublelinkedlist、 binary tree、 binary heap、 trie
+linkedlist、 doublelinkedlist、 binary tree、 binary heap、 trie、 circular queue
 
 ### problems
 

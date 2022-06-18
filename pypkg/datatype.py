@@ -196,7 +196,7 @@ class CircularQueue:
         self.__index_to_write_to: int = 0  # 走得快，是队尾
         self.__index_to_read_from: int = 0  # 走得慢，是队头
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.__len
 
     def enqueue(self, value: int) -> bool:
