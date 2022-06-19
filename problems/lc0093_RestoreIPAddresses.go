@@ -31,7 +31,8 @@ func restoreIpAddresses(s string) []string {
 			return
 		}
 
-		for rightSideBorder := readFirstNChars + 1; rightSideBorder <= len(s); rightSideBorder += 1 {
+		for rightSideBorder := readFirstNChars + 1; rightSideBorder <= len(s) &&
+			rightSideBorder-readFirstNChars <= 3; rightSideBorder += 1 {
 			if isValidNum(s[readFirstNChars:rightSideBorder]) {
 				nums[fixedFirstNNums] = s[readFirstNChars:rightSideBorder]
 				traverse(nums, fixedFirstNNums+1, rightSideBorder)
