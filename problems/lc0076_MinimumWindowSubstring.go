@@ -62,7 +62,7 @@ OuterLoop:
 			}
 		}
 
-		// 此时左侧擦除了一个元素导致覆盖子串失效, lackingCharSum > 0
+		// 此时左侧擦除了一个元素导致覆盖子串失效, lackingCharSum == 1
 
 	}
 
