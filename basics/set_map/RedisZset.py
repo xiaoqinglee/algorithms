@@ -79,7 +79,8 @@ class Skiplist:
         self.length: int = 0
         self.instance_max_level: int = 1
 
-    # 仅仅在元素不存在的情况下被调用
+    # 仅仅在elem不存在的情况下被调用
+    # Insert a new node in the skiplist. Assumes the element does not already exist (up to the caller to enforce that).
     def insert(self, score: float, zset_element: str) -> None:
         # 将一个Node看成(score, element_string)的二元组，寻找最后一个小于(score, zset_element)的二元组对应的node
         nodes_to_update: list[SkiplistNode | None] = [None] * self.SKIPLIST_MAX_LEVEL
