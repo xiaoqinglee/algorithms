@@ -6,6 +6,7 @@ class Solution:
         coins.sort()
 
         # 零钱找不开的情景在python这种动态语言中可以使用None，在静态Golang语言中可以使用-1特殊值，使用前判断是否是-1。
+        # dp[i] 代表将总额为i的大钱用coins中的小钱兑换开，coins中每种面额有无限张，所有兑换方案中总张数最少的那个兑换方案中的张数。
         dp: list[int] = [-1] * (amount + 1)
         for i in range(amount + 1):  # 0,1..n
             if i == 0:
