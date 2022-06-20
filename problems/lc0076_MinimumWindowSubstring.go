@@ -15,31 +15,33 @@ func minWindow(s string, t string) string {
 		requiringCharToCharCount[rune_] += 1
 	}
 
-	windowCharToCharCount := make(map[rune]int)
+	holdingCharToCharCount := make(map[rune]int)
 	lackingCharSum := 0
-	left, right := -1, -1 // 窗口(left...right], right 指针填充一个格子，left 指针擦除一个格子。
+	// 窗口[left...right), 和C传统一致，这样可以表示len为0的空串，目标子串可以直接用切片语法[left:right]表示出来
+	left, right := 0, 0
 
 	for rune_, count := range requiringCharToCharCount {
-		windowCharToCharCount[rune_] = 0
+		holdingCharToCharCount[rune_] = 0
 		lackingCharSum += count
 	}
 
-	shortestSubstringRightIdx := -1
+	shortestSubstringRightIdx := 0
 	shortestSubstringLen := math.MaxInt32
+
 OuterLoop:
 	for {
 		for lackingCharSum > 0 {
-			right += 1
 			if right > len(s)-1 {
 				break OuterLoop
 			}
 			if requiringCount, ok := requiringCharToCharCount[rune(s[right])]; ok {
-				holdingCharCount := windowCharToCharCount[rune(s[right])]
+				holdingCharCount := holdingCharToCharCount[rune(s[right])]
 				if holdingCharCount < requiringCount {
 					lackingCharSum -= 1
 				}
-				windowCharToCharCount[rune(s[right])] += 1
+				holdingCharToCharCount[rune(s[right])] += 1
 			}
+			right += 1
 		}
 
 		// 此时已经找到了一个覆盖子串，lackingCharSum == 0
@@ -52,23 +54,22 @@ OuterLoop:
 				shortestSubstringRightIdx = right
 			}
 
-			left += 1
 			if requiringCount, ok := requiringCharToCharCount[rune(s[left])]; ok {
-				windowCharToCharCount[rune(s[left])] -= 1
-				holdingCharCount := windowCharToCharCount[rune(s[left])]
+				holdingCharToCharCount[rune(s[left])] -= 1
+				holdingCharCount := holdingCharToCharCount[rune(s[left])]
 				if holdingCharCount < requiringCount {
 					lackingCharSum += 1
 				}
 			}
+			left += 1
 		}
 
 		// 此时左侧擦除了一个元素导致覆盖子串失效, lackingCharSum == 1
 
 	}
 
-	if shortestSubstringRightIdx == -1 {
+	if shortestSubstringRightIdx == 0 {
 		return ""
 	}
-
-	return s[shortestSubstringRightIdx+1-shortestSubstringLen : shortestSubstringRightIdx+1]
+	return s[shortestSubstringRightIdx-shortestSubstringLen : shortestSubstringRightIdx]
 }
