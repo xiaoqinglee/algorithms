@@ -3,22 +3,21 @@ package problems
 func combinationSum(candidates []int, target int) [][]int {
 
 	// 题目背景可以说和 lc0322 找零钱一模一样，但是本题目要求输出所有的找零方案
-	// 针对完全背包问题，如果建模过程中将dp设计成1维表，那么无法统计得出方案数量，如果将dp设计成2维表，可以统计得出方案数量。
+	// 完全背包问题
 
 	// 枚举所有可行的找零方案，需要回溯，（能做到剪枝的话更好）
 
 	var combinations [][]int
-	var candidateCountResults [][]int
+	var candidateCountList [][]int
+	candidateCount_ := make([]int, len(candidates))
 
 	var traverse func(candidateCount []int, fixedFirstNCount int, accumulatedSum int)
-
-	candidateCount_ := make([]int, len(candidates))
 	traverse = func(candidateCount []int, fixedFirstNCount int, accumulatedSum int) {
 		if fixedFirstNCount == len(candidateCount) {
 			if accumulatedSum == target {
-				count := make([]int, len(candidateCount), len(candidateCount))
-				copy(count, candidateCount)
-				candidateCountResults = append(candidateCountResults, count)
+				viableCandidateCount := make([]int, len(candidateCount), len(candidateCount))
+				copy(viableCandidateCount, candidateCount)
+				candidateCountList = append(candidateCountList, viableCandidateCount)
 			}
 			return
 		}
@@ -36,14 +35,14 @@ func combinationSum(candidates []int, target int) [][]int {
 
 	traverse(candidateCount_, 0, 0)
 
-	for _, candidateCount := range candidateCountResults {
+	for _, candidateCount := range candidateCountList {
 		var combination []int
-		for i, count := range candidateCount {
+		for candidateIndex, count := range candidateCount {
 			if count == 0 {
 				continue
 			}
 			for nTimes := 1; nTimes <= count; nTimes += 1 {
-				combination = append(combination, candidates[i])
+				combination = append(combination, candidates[candidateIndex])
 			}
 
 		}
