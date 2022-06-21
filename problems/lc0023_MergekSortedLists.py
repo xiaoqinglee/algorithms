@@ -1,3 +1,5 @@
+import heapq
+
 from pypkg.datatype import ListNode
 # Definition for singly-linked list.
 # class ListNode:
@@ -5,6 +7,8 @@ from pypkg.datatype import ListNode
 #         self.val = val
 #         self.next = next
 class Solution:
+
+    # 自顶向下归并
     def mergeKLists(self, lists: list[ListNode | None]) -> ListNode | None:
 
         # 题目要求 K >= 0
@@ -41,3 +45,39 @@ class Solution:
                 return merge_two_linked_lists(left_half, right_half)
 
         return merge(0, len(lists) - 1)
+
+    # 堆排序
+    def mergeKLists2(self, lists: list[ListNode | None]) -> ListNode | None:
+
+        # 题目要求 K >= 0
+        if len(lists) == 0:
+            return None
+
+        new_list_dummy_head = ListNode(val=0, next=None)
+        new_list_tail = new_list_dummy_head
+
+        # python heapq 算法包使用最小堆逻辑
+        # tuple(node_val, from_which_linked_list]
+        heap: list[tuple[int, int]] = []
+
+        for index, node in enumerate(lists):
+            if node is not None:
+                heap.append((node.val, index))
+
+        heapq.heapify(heap)
+        while len(heap) > 0:
+
+            _, from_which_linked_list = heap[0]
+            heapq.heappop(heap)
+
+            node = lists[from_which_linked_list]
+            lists[from_which_linked_list] = node.next
+            node.next = None
+
+            new_list_tail.next = node
+            new_list_tail = new_list_tail.next
+
+            if lists[from_which_linked_list] is not None:
+                heapq.heappush(heap, (lists[from_which_linked_list].val, from_which_linked_list))
+
+        return new_list_dummy_head.next
