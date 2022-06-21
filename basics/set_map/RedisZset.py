@@ -17,13 +17,18 @@ class ZSet:
         for elem, score in elem_to_score.items():
             self.skiplist.insert(score=score, zset_element=elem)
 
+    def __len__(self):
+        return len(self.elem_to_score)
+
     def insert(self, score: float, zset_element: str) -> None:
         if zset_element in self.elem_to_score:
             self.remove(zset_element=zset_element)
         self.elem_to_score[zset_element] = score
         self.skiplist.insert(score=score, zset_element=zset_element)
 
-    def remove(self, zset_element: str):
+    def remove(self, zset_element: str) -> None:
+        if zset_element not in self.elem_to_score:
+            return
         self.skiplist.remove(score=self.elem_to_score[zset_element], zset_element=zset_element)
         del self.elem_to_score[zset_element]
 
@@ -201,7 +206,7 @@ class Skiplist:
 def test_zset():
     print("============================================")
     zset = ZSet({
-        char: int(char) for char in "1234567890"
+        char: int(char) for char in "0123456789"
     })
     for k, v in {char: ord(char) - ord('a') for char in "abcde"}.items():
         zset.insert(v, k)
@@ -233,6 +238,24 @@ def test_zset():
     print(zset.search_element_rank('3'))
     print(zset.search_element_rank('4'))
     print(zset.search_element_rank('c'))
+    print(len(zset))
+
+    print("============================================")
+    print(zset.remove('0'))
+    print(zset.remove('b'))
+    print(zset.remove('9'))
+
+    print(zset.search_element_rank('0'))
+    print(zset.search_element_rank('a'))
+    print(zset.search_element_rank('1'))
+    print(zset.search_element_rank('2'))
+    print(zset.search_element_rank('b'))
+    print(zset.search_element_rank('3'))
+    print(zset.search_element_rank('4'))
+    print(zset.search_element_rank('c'))
+    print(zset.search_element_rank('9'))
+
+    print(len(zset))
 
 
 if __name__ == '__main__':
