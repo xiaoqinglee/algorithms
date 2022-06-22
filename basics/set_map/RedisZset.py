@@ -188,9 +188,9 @@ class Skiplist:
                 node_rank += x.levels[i].span
                 x = x.levels[i].forward
             # x 可能是self.dummy_header
-            if x != self.dummy_header and (x.score, x.elem) == (score, zset_element):
-                return node_rank
         # x 仍然可能是self.dummy_header
+        if x != self.dummy_header and (x.score, x.elem) == (score, zset_element):
+            return node_rank
         # 没有找到该node
         return
 
@@ -205,7 +205,7 @@ class Skiplist:
                 node_rank += x.levels[i].span
                 x = x.levels[i].forward
             # x 可能是self.dummy_header
-        # 现在，x 肯定不是self.dummy_header了，因为rank != 0，我们已经访问过第0层了
+        # 现在，x 肯定不是self.dummy_header了，因为rank > 1 而且我们已经访问过第0层了
         # 此时 rank == node_rank,
         return x.score, x.elem
 
