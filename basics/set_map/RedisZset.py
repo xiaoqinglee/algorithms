@@ -32,13 +32,15 @@ class ZSet:
         self.skiplist.remove(score=self.elem_to_score[zset_element], zset_element=zset_element)
         del self.elem_to_score[zset_element]
 
-    def search_element_rank(self, zset_element: str) -> int | None:
+    def get_element_rank(self, zset_element: str) -> int | None:
         if zset_element not in self.elem_to_score:
             return
         score = self.elem_to_score[zset_element]
-        return self.skiplist.search_element_rank(score, zset_element)
+        return self.skiplist.get_element_rank(score, zset_element)
 
     def search_element_by_rank(self, rank: int) -> tuple[float, str] | None:
+        if not 1 <= rank <= len(self.elem_to_score):
+            return
         return self.skiplist.search_element_by_rank(rank)
 
 
@@ -84,7 +86,7 @@ class Skiplist:
         self.length: int = 0
         self.instance_max_level: int = 1
 
-    # 仅仅在elem不存在的情况下被调用
+    # elem 必须不存在于skiplist中
     # Insert a new node in the skiplist. Assumes the element does not already exist (up to the caller to enforce that).
     def insert(self, score: float, zset_element: str) -> None:
         # 将一个Node看成(score, element_string)的二元组，寻找最后一个小于(score, zset_element)的二元组对应的node
@@ -98,10 +100,11 @@ class Skiplist:
             else:
                 node_ranks[i] = node_ranks[i+1]
             while (x.levels[i].forward is not None and
-                   (x.levels[i].forward.score, x.levels[i].forward.elem) <
-                   (score, zset_element)):
+                   (x.levels[i].forward.score, x.levels[i].forward.elem) < (score, zset_element)):
                 node_ranks[i] += x.levels[i].span
                 x = x.levels[i].forward
+            # x是当前层待插入目标节点的前驱节点
+            # x 可能是self.dummy_header
             nodes_to_update[i] = x
 
         new_node_level: int = self.gen_random_node_level()
@@ -144,14 +147,16 @@ class Skiplist:
             else:
                 node_ranks[i] = node_ranks[i+1]
             while (x.levels[i].forward is not None and
-                   (x.levels[i].forward.score, x.levels[i].forward.elem) <
-                   (score, zset_element)):
+                   (x.levels[i].forward.score, x.levels[i].forward.elem) < (score, zset_element)):
                 node_ranks[i] += x.levels[i].span
                 x = x.levels[i].forward
+            # x是当前层待移除目标节点的前驱节点
+            # x 可能是self.dummy_header
             nodes_to_update[i] = x
         # 重复代码结束
 
         x = x.levels[0].forward
+        # 现在，x 肯定不是self.dummy_header了
         if not (x is not None and (x.score, x.elem) == (score, zset_element)):  # 没找到该node
             return
 
@@ -174,23 +179,23 @@ class Skiplist:
 
         self.length -= 1
 
-    def search_element_rank(self, score: float, zset_element: str) -> int | None:
+    def get_element_rank(self, score: float, zset_element: str) -> int | None:
         node_rank: int = 0
         x: SkiplistNode = self.dummy_header
         for i in range(self.instance_max_level-1, -1, -1):
             while (x.levels[i].forward is not None and
-                   (x.levels[i].forward.score, x.levels[i].forward.elem) <=
-                   (score, zset_element)):
+                   (x.levels[i].forward.score, x.levels[i].forward.elem) <= (score, zset_element)):
                 node_rank += x.levels[i].span
                 x = x.levels[i].forward
-
-        if (x.score, x.elem) != (score, zset_element):
-            return
-
-        return node_rank
+            # x 可能是self.dummy_header
+            if x != self.dummy_header and (x.score, x.elem) == (score, zset_element):
+                return node_rank
+        # x 仍然可能是self.dummy_header
+        # 没有找到该node
+        return
 
     def search_element_by_rank(self, rank: int) -> tuple[float, str] | None:
-        if rank > self.length:
+        if not 1 <= rank <= self.length:
             return
         node_rank: int = 0
         x: SkiplistNode = self.dummy_header
@@ -199,8 +204,10 @@ class Skiplist:
                    node_rank + x.levels[i].span <= rank):
                 node_rank += x.levels[i].span
                 x = x.levels[i].forward
-            if node_rank == rank:
-                return x.score, x.elem
+            # x 可能是self.dummy_header
+        # 现在，x 肯定不是self.dummy_header了，因为rank != 0，我们已经访问过第0层了
+        # 此时 rank == node_rank,
+        return x.score, x.elem
 
 
 def test_zset():
@@ -230,14 +237,14 @@ def test_zset():
     pprint([node for node in list(reversed(li))])
 
     print("============================================")
-    print(zset.search_element_rank('0'))
-    print(zset.search_element_rank('a'))
-    print(zset.search_element_rank('1'))
-    print(zset.search_element_rank('2'))
-    print(zset.search_element_rank('b'))
-    print(zset.search_element_rank('3'))
-    print(zset.search_element_rank('4'))
-    print(zset.search_element_rank('c'))
+    print(zset.get_element_rank('0'))
+    print(zset.get_element_rank('a'))
+    print(zset.get_element_rank('1'))
+    print(zset.get_element_rank('2'))
+    print(zset.get_element_rank('b'))
+    print(zset.get_element_rank('3'))
+    print(zset.get_element_rank('4'))
+    print(zset.get_element_rank('c'))
     print(len(zset))
 
     print("============================================")
@@ -245,15 +252,56 @@ def test_zset():
     print(zset.remove('b'))
     print(zset.remove('9'))
 
-    print(zset.search_element_rank('0'))
-    print(zset.search_element_rank('a'))
-    print(zset.search_element_rank('1'))
-    print(zset.search_element_rank('2'))
-    print(zset.search_element_rank('b'))
-    print(zset.search_element_rank('3'))
-    print(zset.search_element_rank('4'))
-    print(zset.search_element_rank('c'))
-    print(zset.search_element_rank('9'))
+    print(zset.get_element_rank('0'))
+    print(zset.get_element_rank('a'))
+    print(zset.get_element_rank('1'))
+    print(zset.get_element_rank('2'))
+    print(zset.get_element_rank('b'))
+    print(zset.get_element_rank('3'))
+    print(zset.get_element_rank('4'))
+    print(zset.get_element_rank('c'))
+    print(zset.get_element_rank('9'))
+
+    print(len(zset))
+
+    print("============================================")
+    zset = ZSet({
+        char: int(char) for char in "0"
+    })
+
+    print(zset.remove('0'))
+    print(zset.get_element_rank('0'))
+    print(zset.search_element_by_rank(1))
+
+    print(zset.insert(-100, '0'))
+    print(zset.get_element_rank('0'))
+    print(zset.search_element_by_rank(1))
+
+    print(zset.remove('0'))
+
+    print(zset.remove('0'))
+    print(zset.get_element_rank('0'))
+    print(zset.search_element_by_rank(1))
+
+    print(len(zset))
+
+    print("============================================")
+    zset = ZSet({
+    })
+
+    print(zset.skiplist.remove(-100, '0'))
+    print(zset.skiplist.get_element_rank(-100, '0'))
+    print(zset.skiplist.search_element_by_rank(1))
+
+    print(zset.skiplist.insert(-100, '0'))
+    print(zset.skiplist.get_element_rank(-100, '0'))
+    print(zset.skiplist.search_element_by_rank(1))
+
+    print(zset.skiplist.remove(-100, '0'))
+
+    print(zset.skiplist.remove(-100, '0'))
+    print(zset.skiplist.get_element_rank(-100, '0'))
+    print(zset.skiplist.search_element_by_rank(1))
 
     print(len(zset))
 
