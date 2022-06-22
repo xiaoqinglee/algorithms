@@ -1,61 +1,214 @@
-redis zset 的 score 字段是可以使用固定有限精度浮点数的。
+redis zset 使用浮点数作为 score，用作 "==" 操作数的说明
 
-在 redis c 实现中使用了 double 数据类型。
-在 本次 python 实现中我使用了 float 数据类型。
+    redis zset 的 score 字段是可以使用固定有限精度浮点数的。
 
-浮点数在硬件中实际储存的值只是最接近目标值的计算机可表示的二进制分数。
+    在 redis c 实现中使用了 double 数据类型。
+    在 本次 python 实现中我使用了 float 数据类型。
 
-浮点数的比较: 当比较操作符" == "的两个操作数底层的二进制表示完全相同的时候该操作符返回真。
+    浮点数在硬件中实际储存的值只是最接近目标值的计算机可表示的二进制分数。
 
-这意味着:
-    (1) 如果两个操作符在底层是同一个实例。
-    (2) 如果一个操作符是另一个操作符 bit-to-bit 拷贝而来， 两个实例自拷贝发生后再无in-place运算发生。
-        注意 bit-to-bit 拷贝，源对象和目的对象必须是相同精度长度的，如double->double可以，double->float就不可以了。
-    (3) 如果两个操作数是不同的十进制数，但共享相同的最接近的近似二进制小数。
-        例如， 0.1 、 0.10000000000000001 、 0.1000000000000000055511151231257827021181583404541015625
-        全都近似于 3602879701896397 / 2 ** 55。
-这三种情况返回真。
+    浮点数的比较: 当比较操作符" == "的两个操作数底层的二进制表示完全相同的时候该操作符返回真。
 
-redis c 实现中的 score 符合 (2)
-本次 python 实现中的 score 符合 (1)
+        这意味着:
+            (1) 如果两个操作符在底层是同一个实例。
+            (2) 如果一个操作符是另一个操作符 bit-to-bit 拷贝而来， 两个实例自拷贝发生后再无in-place运算发生。
+                注意 bit-to-bit 拷贝，源对象和目的对象必须是相同精度长度的，如double->double可以，double->float就不可以了。
+            (3) 如果两个操作数是不同的十进制数，但共享相同的最接近的近似二进制小数。
+                例如， 0.1 、 0.10000000000000001 、 0.1000000000000000055511151231257827021181583404541015625
+                全都近似于 3602879701896397 / 2 ** 55。
+        这三种情况返回真。
+
+        redis c 实现中的 score 符合 (2)
+        本次 python 实现中的 score 符合 (1)
 
 
-另外：
 
 https://docs.python.org/zh-cn/3/library/stdtypes.html#typesnumeric
 Python 完全支持混合运算：
-当一个二元算术运算符的操作数有不同数值类型时，"较窄"类型的操作数会拓宽到另一个操作数的类型，
-其中整数比浮点数窄，浮点数比复数窄。不同类型的数字之间的比较，同比较这些数字的精确值一样。
 
+    当一个二元算术运算符的操作数有不同数值类型时，"较窄"类型的操作数会拓宽到另一个操作数的类型，
+    其中整数比浮点数窄，浮点数比复数窄。不同类型的数字之间的比较，同比较这些数字的精确值一样。
+
+
+
+# https://docs.python.org/zh-cn/3/library/sys.html#sys.float_info
+sys --- 系统相关的参数和函数
+
+
+sys.float_info
+
+    一个 具名元组，存有浮点型的相关信息。它包含的是关于精度和内部表示的底层信息。
+    这些值与标准头文件 float.h 中为 C 语言定义的各种浮点常量对应，详情请参阅 1999 ISO/IEC C 标准 [C99] 的 5.2.4.2.2 节，
+    'Characteristics of floating types（浮点型的特性）'。
+
+    attribute -- 属性
+    float.h 宏
+    说明
+
+    epsilon
+    DBL_EPSILON
+    大于 1.0 的最小值和 1.0 之间的差，表示为浮点数
+    另请参阅 math.ulp()。
+
+    dig
+    DBL_DIG
+    浮点数可以真实表示的最大十进制数字；见下文
+
+    mant_dig
+    DBL_MANT_DIG
+    浮点数精度：radix 基数下的浮点数有效位数
+
+    max
+    DBL_MAX
+    可表示的最大正浮点数（非无穷）
+
+    max_exp
+    DBL_MAX_EXP
+    使得 radix**(e-1) 是可表示的浮点数（非无穷）的最大整数 e
+
+    max_10_exp
+    DBL_MAX_10_EXP
+    使得 10**e 在可表示的浮点数（非无穷）范围内的最大整数 e
+
+    min
+    DBL_MIN
+    可表示的最小正 规格化 浮点数
+    使用 math.ulp(0.0) 获取可表示的最小正 非规格化 浮点数
+
+    min_exp
+    DBL_MIN_EXP
+    使得 radix**(e-1) 是规格化浮点数的最小整数 e
+
+    min_10_exp
+    DBL_MIN_10_EXP
+    使得 10**e 是规格化浮点数的最小整数 e
+
+    radix
+    FLT_RADIX
+    指数表示法中采用的基数
+
+    rounds
+    FLT_ROUNDS
+    整数常数，表示算术运算中的舍入方式。它反映了解释器启动时系统的 FLT_ROUNDS 宏的值。关于可能的值及其含义的说明，请参阅 C99 标准 5.2.4.2.2 节。
+
+
+    关于 sys.float_info.dig 属性的进一步说明。
+
+    如果 s 是表示十进制数的字符串，而该数最多有 sys.float_info.dig 位有效数字，则将 s 转换为 float 再转回去将恢复原先相同十进制值的字符串:
+    >>>
+
+    >>> import sys
+    >>> sys.float_info.dig
+    15
+    >>> s = '3.14159265358979'    # decimal string with 15 significant digits
+    >>> format(float(s), '.15g')  # convert to float and back -> same value
+    '3.14159265358979'
+
+    但是对于超过 sys.float_info.dig 位有效数字的字符串，转换前后并非总是相同:
+    >>>
+
+    >>> s = '9876543211234567'    # 16 significant digits is too many!
+    >>> format(float(s), '.16g')  # conversion changes value
+    '9876543211234568'
+
+
+sys.float_repr_style
+
+    一个字符串，反映 repr() 函数在浮点数上的行为。
+    如果该字符串是 'short'，那么对于（非无穷的）浮点数 x，repr(x) 将会生成一个短字符串，满足 float(repr(x)) == x 的特性。
+    这是 Python 3.1 及更高版本中的常见行为。
+    否则 float_repr_style 的值将是 'legacy'，此时 repr(x) 的行为方式将与 Python 3.1 之前的版本相同。
+
+    3.1 新版功能.
+
+
+
+测试:
 
     Python 3.10.4 (tags/v3.10.4:9d38120, Mar 23 2022, 23:13:41)
     >>>
-    >>> a = 0.10000000000000001
-    >>> b = 0.1000000000000000055511151231257827021181583404541015625
-    >>> id(a) == id(b)
-    False
-    >>> a == b
-    True
-    >>> a.as_integer_ratio()
-    (3602879701896397, 36028797018963968)
-    >>> b.as_integer_ratio()
-    (3602879701896397, 36028797018963968)
-    >>>
-    >>> a = 42
-    >>> b = 42
-    >>> id(a) == id(b)
-    True
-    >>> a == b
-    True
-    >>>
-    >>> a = 42
-    >>> b = 42.0
-    >>> id(a) == id(b)
-    False
-    >>> a == b
-    True
-    >>> a.as_integer_ratio()
-    (42, 1)
-    >>> b.as_integer_ratio()
-    (42, 1)
-    >>>
+
+        >>> import sys
+        >>> sys.float_info
+        sys.float_info(
+            max=1.7976931348623157e+308,
+            max_exp=1024,
+            max_10_exp=308,
+            min=2.2250738585072014e-308,
+            min_exp=-1021,
+            min_10_exp=-307,
+            dig=15,
+            mant_dig=53,
+            epsilon=2.220446049250313e-16,
+            radix=2,
+            rounds=1
+        )
+        >>> sys.float_repr_style
+        'short'
+        >>>
+
+        >>> a = 0.10000000000000001
+        >>> b = 0.1000000000000000055511151231257827021181583404541015625
+        >>> id(a) == id(b)
+        False
+        >>> a == b
+        True
+        >>> a.as_integer_ratio()
+        (3602879701896397, 36028797018963968)
+        >>> b.as_integer_ratio()
+        (3602879701896397, 36028797018963968)
+        >>>
+
+        >>> a = 42
+        >>> b = 42
+        >>> id(a) == id(b)
+        True
+        >>> a == b
+        True
+        >>>
+
+        >>> a = 42
+        >>> b = 42.0
+        >>> id(a) == id(b)
+        False
+        >>> a == b
+        True
+        >>> a.as_integer_ratio()
+        (42, 1)
+        >>> b.as_integer_ratio()
+        (42, 1)
+        >>>
+
+        >>> a = 0.1 + 0.1 + 0.1
+        >>> b = 0.3
+        >>> id(a) == id(b)
+        False
+        >>> a == b
+        False
+        >>> a.as_integer_ratio()
+        (1351079888211149, 4503599627370496)
+        >>> b.as_integer_ratio()
+        (5404319552844595, 18014398509481984)
+        >>>
+
+
+    go1.18.3.windows-amd64
+
+        //a == b true
+        //a == b false
+
+        func main() {
+
+            var a float64
+            var b float64
+
+            a = 0.10000000000000001
+            b = 0.1000000000000000055511151231257827021181583404541015625
+            fmt.Println("a == b", a == b)
+
+            a = 0.1
+            a += 0.1
+            a += 0.1
+            b = 0.3
+            fmt.Println("a == b", a == b)
+        }
