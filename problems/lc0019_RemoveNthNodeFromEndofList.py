@@ -1,4 +1,4 @@
-from pypkg.datatype import ListNode
+from pkg.data_structure import ListNode
 
 
 def remove_nth_node_from_end_of_list(head: ListNode | None, n: int) -> ListNode | None:

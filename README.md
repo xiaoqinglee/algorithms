@@ -4,13 +4,10 @@
 
 sort: heap sort、 merge sort、 quick sort、 radix sort
 
+data_structure: hash table、 binary heap、 ring buffer、 trie、 balanced tree、 redis zset
+
 huffman coding、 banker's algorithm
 
-set/map: hash table、 balanced tree、 redis zset
-
-### pypkg、pkg
-
-linkedlist、 doublelinkedlist、 binary tree、 binary heap、 trie、 circular queue
 
 ### problems
 

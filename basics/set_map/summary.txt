@@ -1,6 +1,0 @@
-hashset/hashmap key无序
-    closed hashing[open addressing]
-    open hashing[closed addressing, separate chaining. 如 extendable hash]
-
-treeset/treemap key有序
-    二叉查找树，AVL二叉查找树，红黑树，b树，b plus树

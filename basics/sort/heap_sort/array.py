@@ -7,7 +7,7 @@ def heap_sort(nums: list[int]) -> list[int]:
         return nums
 
     sorted_ = []
-    from pypkg.datatype import PriorityQueue
+    from basics.data_structure.PriorityQueue import PriorityQueue
     heap = PriorityQueue(elements=nums, has_higher_priority=lambda x, y: x < y)  # 最小堆
     while not heap.is_empty():
         sorted_.append(heap.pop())

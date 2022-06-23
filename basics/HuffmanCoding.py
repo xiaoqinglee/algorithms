@@ -22,7 +22,7 @@
 # 编码：char -> bits, 等长 -> 不等长, 使用哈希就可以。
 # 解码：bits -> char, 不等长 -> 等长, 使用霍夫曼树。
 
-from pypkg.datatype import TreeNode
+from pkg.data_structure import TreeNode
 
 
 class HaffmanCoding:

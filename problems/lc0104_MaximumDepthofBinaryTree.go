@@ -1,6 +1,6 @@
 package problems
 
-import "github.com/XiaoqingLee/LeetCodeProblems/pkg"
+import "github.com/xiaoqinglee/algorithm/pkg"
 
 /**
  * Definition for a binary tree node.

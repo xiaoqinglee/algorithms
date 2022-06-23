@@ -1,16 +1,16 @@
 package problems
 
 import (
-	"github.com/xiaoqinglee/algorithm/basics/set_map"
+	"github.com/xiaoqinglee/algorithm/basics/data_structure"
 	"strconv"
 )
 
 type MyHashMap struct {
-	set_map.HashMap
+	data_structure.HashMap
 }
 
 func Constructor() MyHashMap {
-	return MyHashMap{set_map.NewHashMap()}
+	return MyHashMap{data_structure.NewHashMap()}
 }
 
 func (this *MyHashMap) Put(key int, value int) {

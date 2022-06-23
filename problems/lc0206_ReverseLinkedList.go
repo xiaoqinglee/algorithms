@@ -1,6 +1,6 @@
 package problems
 
-import . "github.com/XiaoqingLee/LeetCodeProblems/pkg"
+import . "github.com/xiaoqinglee/algorithm/pkg"
 
 func ReverseLinkedList(head *ListNode) *ListNode {
 	if head == nil {

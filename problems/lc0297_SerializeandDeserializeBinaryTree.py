@@ -1,4 +1,4 @@
-from pypkg.datatype import TreeNode
+from pkg.data_structure import TreeNode
 
 # Definition for a binary tree node.
 # class TreeNode(object):

@@ -1,0 +1,25 @@
+hashset/hashmap key无序
+
+    closed hashing[open addressing]
+    open hashing[closed addressing, separate chaining. 如 extendable hash]
+
+
+treeset/treemap key有序
+
+    Binary Search Tree
+    AVL BST
+    Red Black Tree
+    Left Leaning Red Black Tree (2008/Algorithm 4ed)
+    AA Tree
+    2-3 Tree
+    2-3-4 Tree
+    B Tree
+    B Plus Tree
+
+    SkipList
+    Treap
+    FHQ Treap
+
+
+有序数据结构允许key重复可以实现有序列表
+

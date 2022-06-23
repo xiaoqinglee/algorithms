@@ -1,6 +1,6 @@
 import heapq
 
-from pypkg.datatype import ListNode
+from pkg.data_structure import ListNode
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):

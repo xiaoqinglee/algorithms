@@ -1,4 +1,4 @@
-package set_map
+package data_structure
 
 import (
 	"container/list"

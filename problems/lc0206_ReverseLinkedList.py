@@ -1,4 +1,4 @@
-from pypkg.datatype import ListNode
+from pkg.data_structure import ListNode
 
 
 def reverse_linked_list(head: ListNode | None) -> ListNode | None:

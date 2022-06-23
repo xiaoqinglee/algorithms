@@ -1,6 +1,6 @@
 package problems
 
-import "github.com/XiaoqingLee/LeetCodeProblems/pkg"
+import "github.com/xiaoqinglee/algorithm/pkg"
 
 func RemoveNthFromEnd(head *pkg.ListNode, n int) *pkg.ListNode {
 	if head == nil || n <= 0 {

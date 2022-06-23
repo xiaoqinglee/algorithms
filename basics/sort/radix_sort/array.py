@@ -65,7 +65,7 @@ def radix_sort_msd(nums: list[int]) -> list[int]:
 
 # 二. 单词排序 (符合 MSD 情景，使用Trie树, 排序结果即是先序遍历结果)
 def radix_sort_msd_using_trie(words: list[str]) -> list[str]:
-    from pypkg.datatype import Trie
+    from basics.data_structure.Trie import Trie
     trie: Trie = Trie()
     for word in words:
         trie.insert(word)

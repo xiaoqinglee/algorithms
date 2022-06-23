@@ -1,7 +1,7 @@
 package problems
 
 import (
-	. "github.com/XiaoqingLee/LeetCodeProblems/pkg"
+	. "github.com/xiaoqinglee/algorithm/pkg"
 )
 
 func AddTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {

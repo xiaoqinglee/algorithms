@@ -1,4 +1,5 @@
-from pypkg.datatype import CircularQueue
+from basics.data_structure.CircularQueue import CircularQueue
+
 
 class MyCircularQueue:
     def __init__(self, k: int):
