@@ -7,6 +7,9 @@
 # 相应的叶结点的路径长度为Li（i=1,2,...n）。
 # 可以证明霍夫曼树的WPL是最小的。
 
+# 霍夫曼树元素的查找总是在叶子节点结束， 就像 B Plus 树元素value的查找总在叶子节点结束一样。
+# 叶子节点的权重是叶子节点被查询的概率， 霍夫曼树WPL最小所以一个正确构建的霍夫曼树在解码过程中平均查找高度最小。
+
 # https://github.com/dayu321/leetcode-6/blob/master/thinkings/run-length-encode-and-huffman-encode.md
 # character 	frequency 	encoding
 # a 	5 	1100
@@ -22,32 +25,41 @@
 # 编码：char -> bits, 等长 -> 不等长, 使用哈希就可以。
 # 解码：bits -> char, 不等长 -> 等长, 使用霍夫曼树。
 
+
+import heapq
 from pkg.data_structure import TreeNode
 
 
-class HaffmanCoding:
+class HuffmanCoding:
 
     def __init__(self, char_to_frequency: dict[str, int]):
 
-        if len(char_to_frequency) < 2:
-            raise "待编码的字符个数小于2，编码无意义"
+        def build_tree(char_to_frequency: dict[str, int]) -> TreeNode:
+            if len(char_to_frequency) < 2:
+                raise "待编码的字符小于2， 没有编码意义"
 
-        # 这个工作交给堆比较合适
-        def pop_node_with_min_value(list_: list[TreeNode]) -> TreeNode:
-            min_value = min((node.val for node in list_))
-            for i, node in enumerate(list_):
-                if node.val == min_value:
-                    return list_.pop(i)
+            node_list: list[TreeNode] = []
+            for char, frequency in char_to_frequency.items():
+                node: TreeNode = TreeNode(val=frequency, left=None, right=None)
+                node.char = char  # 叶子结点 char 值为非 None
+                node_list.append(node)
 
-        def build_tree(list_: list[TreeNode]) -> TreeNode:
-            while len(list_) >= 2:
-                node1 = pop_node_with_min_value(list_)
-                node2 = pop_node_with_min_value(list_)
-                # 这里 node1.val <= node2.val
-                root: TreeNode = TreeNode(val=node1.val + node2.val, left=node1, right=node2)
-                root.char = None  # 非叶子节点 char 值为 None
-                list_.append(root)
-            return list_[0]
+            # heap value: tuple(frequency, node_index_in_original_list)
+            min_heap: list[tuple[int, int]] = [(node.val, i) for i, node in enumerate(node_list)]
+            heapq.heapify(min_heap)
+            while len(min_heap) >= 2:
+                _, min1_index = heapq.heappop(min_heap)
+                _, min2_index = heapq.heappop(min_heap)
+                # 这里 min1.val <= min2.val
+                node: TreeNode = TreeNode(val=node_list[min1_index].val + node_list[min2_index].val,
+                                          left=node_list[min1_index],
+                                          right=node_list[min2_index])
+                node.char = None  # 非叶子节点 char 值为 None
+                node_list.append(node)
+                heapq.heappush(min_heap, (node.val, len(node_list)-1))
+
+            root: TreeNode = node_list[-1]
+            return root
 
         def init_encoding_map(root: TreeNode) -> dict[str, list[int]]:
             temp: list[int] = []
@@ -57,7 +69,7 @@ class HaffmanCoding:
                 if node.char is not None:
                     result[node.char] = temp.copy()
                     return
-                # haffman tree 中所有非叶子节点都有两个孩子
+                # huffman tree 中所有非叶子节点都有两个孩子
                 temp.append(0)
                 traverse(node.left)
                 temp.pop()
@@ -68,14 +80,8 @@ class HaffmanCoding:
             traverse(root)
             return result
 
-        node_list: list[TreeNode] = []
-        for char, frequency in char_to_frequency.items():
-            node: TreeNode = TreeNode(val=frequency, left=None, right=None)
-            node.char = char  # 叶子结点 char 值为非 None
-            node_list.append(node)
-
-        self.__haffman_tree: TreeNode = build_tree(node_list)
-        self.__encoding_map: dict[str, list[int]] = init_encoding_map(self.__haffman_tree)
+        self.__huffman_tree: TreeNode = build_tree(char_to_frequency)
+        self.__encoding_map: dict[str, list[int]] = init_encoding_map(self.__huffman_tree)
 
     def encode(self, chars: str) -> list[int]:
         bits: list[int] = []
@@ -86,7 +92,7 @@ class HaffmanCoding:
 
     def decode(self, bits: list[int]) -> str:
         chars: list[str] = []
-        node: TreeNode = self.__haffman_tree
+        node: TreeNode = self.__huffman_tree
         for bit in bits:
             if bit == 0:
                 node = node.left
@@ -95,7 +101,7 @@ class HaffmanCoding:
             # 判断叶子结点
             if node.char is not None:
                 chars.append(node.char)
-                node = self.__haffman_tree
+                node = self.__huffman_tree
         return "".join(chars)
 
 
@@ -117,13 +123,13 @@ if __name__ == '__main__':
         "e": 16,
         "f": 45,
     }
-    haffman: HaffmanCoding = HaffmanCoding(frequency_table)
+    huffman: HuffmanCoding = HuffmanCoding(frequency_table)
     for char in frequency_table:
-        print(haffman.encode(char))
+        print(huffman.encode(char))
     for char in frequency_table:
-        print(haffman.decode(haffman.encode(char)))
-    print(haffman.encode("abcdef"))
-    print(haffman.decode([1, 1, 0, 0] +
+        print(huffman.decode(huffman.encode(char)))
+    print(huffman.encode("abcdef"))
+    print(huffman.decode([1, 1, 0, 0] +
                          [1, 1, 0, 1] +
                          [1, 0, 0] +
                          [1, 0, 1] +
