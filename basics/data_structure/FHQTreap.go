@@ -25,6 +25,7 @@ func (root *FHQTreap[K, V]) splitByKey(key K) (tree1, freeNode, tree2 *FHQTreap[
 	if key == root.key {
 		tree1, tree2 = root.l, root.r
 		root.l, root.r = nil, nil
+		root.len = 1
 		return tree1, root, tree2
 	} else if key < root.key {
 		tree1, freeNode, tree2 = root.l.splitByKey(key)
