@@ -116,6 +116,7 @@ func (this *HashMap) rehash(rehashOperation int) {
 
 func (this *HashMap) getBucketIndex(key string) int {
 	this.hashFunc.WriteString(key)
+	this.hashFunc.WriteString("jack&rose") // 防止哈希攻击
 	index := int(this.hashFunc.Sum64() % uint64(len(this.buckets)))
 	this.hashFunc.Reset()
 	return index
