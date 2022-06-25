@@ -11,31 +11,31 @@ type key interface {
 
 type FHQTreap[K key, V any] struct {
 	len      int
-	key      K
-	val      V
+	Key      K
+	Val      V
 	priority float64
-	l        *FHQTreap[K, V]
-	r        *FHQTreap[K, V]
+	L        *FHQTreap[K, V]
+	R        *FHQTreap[K, V]
 }
 
 func (root *FHQTreap[K, V]) splitByKey(key K) (tree1, freeNode, tree2 *FHQTreap[K, V]) {
 	if root == nil {
 		return nil, nil, nil
 	}
-	if key == root.key {
-		tree1, tree2 = root.l, root.r
-		root.l, root.r = nil, nil
+	if key == root.Key {
+		tree1, tree2 = root.L, root.R
+		root.L, root.R = nil, nil
 		root.len = 1
 		return tree1, root, tree2
-	} else if key < root.key {
-		tree1, freeNode, tree2 = root.l.splitByKey(key)
-		root.l = tree2
+	} else if key < root.Key {
+		tree1, freeNode, tree2 = root.L.splitByKey(key)
+		root.L = tree2
 		root.len -= tree1.Len()
 		root.len -= freeNode.Len()
 		return tree1, freeNode, root
 	} else {
-		tree1, freeNode, tree2 = root.r.splitByKey(key)
-		root.r = tree1
+		tree1, freeNode, tree2 = root.R.splitByKey(key)
+		root.R = tree1
 		root.len -= tree2.Len()
 		root.len -= freeNode.Len()
 		return root, freeNode, tree2
@@ -49,21 +49,21 @@ func (root *FHQTreap[K, V]) splitByRank(rank int) (tree1, freeNode, tree2 *FHQTr
 	if root == nil {
 		return nil, nil, nil
 	}
-	rootRank := root.l.Len() + 1
+	rootRank := root.L.Len() + 1
 	if rank == rootRank {
-		tree1, tree2 = root.l, root.r
-		root.l, root.r = nil, nil
+		tree1, tree2 = root.L, root.R
+		root.L, root.R = nil, nil
 		root.len = 1
 		return tree1, root, tree2
 	} else if rank < rootRank {
-		tree1, freeNode, tree2 = root.l.splitByRank(rank)
-		root.l = tree2
+		tree1, freeNode, tree2 = root.L.splitByRank(rank)
+		root.L = tree2
 		root.len -= tree1.Len()
 		root.len -= 1
 		return tree1, freeNode, root
 	} else {
-		tree1, freeNode, tree2 = root.r.splitByRank(rank - rootRank)
-		root.r = tree1
+		tree1, freeNode, tree2 = root.R.splitByRank(rank - rootRank)
+		root.R = tree1
 		root.len -= tree2.Len()
 		root.len -= 1
 		return root, freeNode, tree2
@@ -79,13 +79,13 @@ func (root *FHQTreap[K, V]) mergeWith(tree *FHQTreap[K, V]) (newTree *FHQTreap[K
 		return tree
 	}
 	if root.priority > tree.priority {
-		newTree = root.r.mergeWith(tree)
-		root.r = newTree
+		newTree = root.R.mergeWith(tree)
+		root.R = newTree
 		root.len += tree.len
 		return root
 	} else {
-		newTree = root.mergeWith(tree.l)
-		tree.l = newTree
+		newTree = root.mergeWith(tree.L)
+		tree.L = newTree
 		tree.len += root.len
 		return tree
 	}
@@ -95,19 +95,19 @@ func (root *FHQTreap[K, V]) search(key K) *FHQTreap[K, V] {
 	if root == nil {
 		return nil
 	}
-	if key == root.key {
+	if key == root.Key {
 		return root
-	} else if key < root.key {
-		return root.l.search(key)
+	} else if key < root.Key {
+		return root.L.search(key)
 	} else {
-		return root.r.search(key)
+		return root.R.search(key)
 	}
 }
 
 func (root *FHQTreap[K, V]) Get(key K) (val V, ok bool) {
 	node := root.search(key)
 	if node != nil {
-		return node.val, true
+		return node.Val, true
 	}
 	return
 }
@@ -116,31 +116,31 @@ func (root *FHQTreap[K, V]) GetByRank(rank int) (key K, val V) {
 	if rank < 0 || rank > root.Len() {
 		panic("invalid argument rank")
 	}
-	rootRank := root.l.Len() + 1
+	rootRank := root.L.Len() + 1
 	if rank == rootRank {
-		return root.key, root.val
+		return root.Key, root.Val
 	} else if rank < rootRank {
-		return root.l.GetByRank(rank)
+		return root.L.GetByRank(rank)
 	} else {
-		return root.r.GetByRank(rank - rootRank)
+		return root.R.GetByRank(rank - rootRank)
 	}
 }
 
 func (root *FHQTreap[K, V]) Insert(key K, val V) (newTree *FHQTreap[K, V]) {
 	node := root.search(key)
 	if node != nil {
-		node.val = val
+		node.Val = val
 		return root
 	}
 	tree1, _, tree2 := root.splitByKey(key)
 	// assert freeNode is nil
 	newNode := &FHQTreap[K, V]{
 		len:      1,
-		key:      key,
-		val:      val,
+		Key:      key,
+		Val:      val,
 		priority: rand.Float64(),
-		l:        nil,
-		r:        nil,
+		L:        nil,
+		R:        nil,
 	}
 	return tree1.mergeWith(newNode).mergeWith(tree2)
 }
@@ -202,5 +202,4 @@ func TestFHQTreap() {
 
 	spew.Dump(root.Get("h"))
 	spew.Dump(root.Get("he"))
-
 }
