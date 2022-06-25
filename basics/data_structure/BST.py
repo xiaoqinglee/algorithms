@@ -15,16 +15,22 @@ class BST:
             return self.left.search(key)
         elif key > self.key and self.right is not None:
             return self.right.search(key)
-        return None
+        else:
+            return None
 
     def insert(self, key: int, val: Any) -> None:
         if key == self.key:
             self.val = val
-            return
-        elif key < self.key and self.left is not None:
-            return self.left.insert(key, val)
-        elif key > self.key and self.right is not None:
-            return self.right.insert(key, val)
+        elif key < self.key:
+            if self.left is not None:
+                self.left.insert(key, val)
+            else:
+                self.left = BST(key, val)
+        elif key > self.key:
+            if self.right is not None:
+                self.right.insert(key, val)
+            else:
+                self.right = BST(key, val)
 
     @classmethod
     def remove(cls, root, key: int):  # 调用方式 tree = BST.remove(tree, key)
@@ -35,7 +41,7 @@ class BST:
                 node = node.right
             return node
 
-        def _remove(tree):
+        def _remove(tree):  # tree is not None
             if tree.left is None:
                 return tree.right
             if tree.right is None:
@@ -54,4 +60,3 @@ class BST:
         elif key > root.key and root.right is not None:
             root.right = BST.remove(root.right, key)
             return root
-        return root
