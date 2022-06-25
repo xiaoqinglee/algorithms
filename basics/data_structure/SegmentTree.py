@@ -17,6 +17,8 @@ from functools import reduce
 # 所以使用4n
 # 这里的实现不使用数组存储了
 
+# binary index tree 只能解决点查询、点更新问题
+# segment tree 可以覆盖前者的所有能力，还能解决区间更新、区间查询的问题
 
 ListElemVal = int
 

@@ -8,7 +8,7 @@ class Solution:
 
         distance_sum: int = 0
         points = [tuple(p) for p in points]
-        sets: UnionFind = UnionFind(from_vertex=points)
+        sets: UnionFind = UnionFind(from_vertexes=points)
 
         # dict 已经具备OrderedDict的key写入与读出顺序一致的特性
         distance_to_point_pairs: dict[int, list[tuple[tuple[int, int], tuple[int, int]]]] = {}

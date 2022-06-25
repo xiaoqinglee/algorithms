@@ -7,11 +7,11 @@ ImmutableComparableElem = Any
 class UnionFind:
     # 一个UnionFind中存储着多个集合，每个集合有一个代表，这个代表是这个集合的名片
     def __init__(self,
-                 from_vertex: list[ImmutableComparableElem] | None = None,
+                 from_vertexes: list[ImmutableComparableElem] | None = None,
                  from_edges: list[tuple[ImmutableComparableElem, ImmutableComparableElem]] | None = None):
         self.follows: dict[ImmutableComparableElem, ImmutableComparableElem] = {}
-        if from_vertex:
-            self.init_with_free_elements(from_vertex)
+        if from_vertexes:
+            self.init_with_free_elements(from_vertexes)
             return
         if from_edges:
             self.init_with_linked_element_pairs(from_edges)

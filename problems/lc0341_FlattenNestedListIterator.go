@@ -25,8 +25,8 @@ package problems
 //func (this NestedInteger) GetList() []*NestedInteger {}
 
 const (
-	list     = 0
-	intValue = 1
+	LIST     = 0
+	INTVALUE = 1
 )
 
 type NodeType int
@@ -47,7 +47,7 @@ type NestedIterator struct {
 
 func Constructor(nestedList []*NestedInteger) *NestedIterator {
 	iter := &NestedIterator{currNode: &Node{
-		nodeType:             list,
+		nodeType:             LIST,
 		list:                 nestedList,
 		listNextReadingIndex: 0,
 	}}
@@ -63,12 +63,12 @@ func (this *NestedIterator) produceOneChild(listTypeNodeInTree *Node) (aChildToI
 	var newNode *Node
 	if nestedInteger.IsInteger() {
 		newNode = &Node{
-			nodeType: intValue,
+			nodeType: INTVALUE,
 			intValue: nestedInteger.GetInteger(),
 		}
 	} else {
 		newNode = &Node{
-			nodeType:             list,
+			nodeType:             LIST,
 			list:                 nestedInteger.GetList(),
 			listNextReadingIndex: 0,
 		}
@@ -86,9 +86,9 @@ func (this *NestedIterator) next() (element int, ok bool) {
 
 			this.nodeStack = append(this.nodeStack, currNode)
 
-			if currNode.nodeType == list {
+			if currNode.nodeType == LIST {
 				currNode = this.produceOneChild(currNode)
-			} else if currNode.nodeType == intValue {
+			} else if currNode.nodeType == INTVALUE {
 				ok = true
 				element = currNode.intValue
 				currNode = nil
