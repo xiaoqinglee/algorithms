@@ -191,8 +191,8 @@ sys.float_repr_style
         (5404319552844595, 18014398509481984)
         >>>
 
-        >>> b = 0.1 +0.1+ 0.1
-        >>> c = 0.1 +0.1+ 0.1
+        >>> b = 0.1 + 0.1 + 0.1
+        >>> c = 0.1 + 0.1 + 0.1
         >>> b == c
         True
         >>> id(b) == id(c)
@@ -202,6 +202,48 @@ sys.float_repr_style
         >>> c.as_integer_ratio()
         (1351079888211149, 4503599627370496)
         >>>
+
+        >>> 0.75 + 0.75 ==  1.5
+        True
+        >>> 0.125 + 0.75 == 0.875
+        True
+
+
+        # https://www.zhihu.com/question/21645386
+        # https://pic1.zhimg.com/80/ee202540b7cbdb71882da0e0d74aca9b_720w.jpg?source=1940ef5c
+        # 所有计算机可表示的浮点数在实数轴上的分布是不均匀的
+
+        >>> sys.float_info.min # 第一个比0大的浮点数减去0的值
+        2.2250738585072014e-308
+        >>> sys.float_info.epsilon # 第一个比1大的浮点数减去1的值
+        2.220446049250313e-16
+        >>>
+
+        >>> sys.float_info.min - 0 == sys.float_info.min
+        True
+        >>> sys.float_info.epsilon >  sys.float_info.min
+        True
+
+        >>> 5 + sys.float_info.min == 5
+        True
+        >>> 5 + sys.float_info.epsilon == 5
+        True
+
+        >>> 1 + sys.float_info.min == 1
+        True
+        >>> 1 + sys.float_info.epsilon == 1
+        False
+
+        >>> 0 + sys.float_info.min == 0
+        False
+        >>> 0 + sys.float_info.epsilon == 0
+        False
+        >>>
+
+        # https://docs.python.org/zh-cn/3/library/random.html#real-valued-distributions
+        # 虽然计算机科可表示的浮点数在数轴上分布不均匀，但是各个语言所提供的随机数标准库包生成的随机数在数轴上是分布均匀的。
+        # python random 包提供了两个随机数生成器，一个默认的，一个操作系统的。
+        # 用户权衡待解决的问题对于计算性能和密码学安全性的要求选择合适的生成器。
 
 
     go1.18.3.windows-amd64
