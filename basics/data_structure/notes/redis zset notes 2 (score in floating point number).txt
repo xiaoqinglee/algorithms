@@ -265,3 +265,70 @@ sys.float_repr_style
             b = 0.3
             fmt.Println("a == b", a == b)
         }
+
+
+测试Inf值：
+
+    Python 3.10.4 (tags/v3.10.4:9d38120, Mar 23 2022, 23:13:41)
+    >>>
+        # =============
+        # inf
+        # inf
+        # -inf
+        # =============
+        # True
+        # False
+        # True
+        # False
+
+        inf = float("inf")
+        inf2 = inf + 1
+        neg_inf = -float("inf")
+        print("=============")
+        print(inf)
+        print(inf2)
+        print(neg_inf)
+        print("=============")
+        print(inf == inf2)
+        print(inf == 42)
+        print(inf > 1)
+        print(inf < 1)
+
+    go1.18.3.windows-amd64
+
+        //==========
+        //2147483647
+        //-2147483648
+        //1.7976931348623157e+308
+        //==========
+        //+Inf
+        //+Inf
+        //-Inf
+        //==========
+        //+Inf +Inf
+        //true
+        //false
+        //true
+        //true
+        func main() {
+            fmt.Println("==========")
+            fmt.Println(math.MaxInt32)
+            fmt.Println(math.MinInt32)
+            fmt.Println(math.MaxFloat64)
+
+            fmt.Println("==========")
+            var f1, f2, f3 float64
+            f1 = math.Inf(1)
+            fmt.Println(f1)
+            f2 = f1 + 1
+            fmt.Println(f2)
+            f3 = -f1
+            fmt.Println(f3)
+
+            fmt.Println("==========")
+            fmt.Println(f1, f2)
+            fmt.Println(f1 == f2)
+            fmt.Println(f1 == 42)
+            fmt.Println(f1 > 1)
+            fmt.Println(f3 < 1)
+        }
