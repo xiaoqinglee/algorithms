@@ -3,7 +3,19 @@ from pprint import pprint
 
 BusId = int
 StopId = int
-Change = list[StopId]
+
+
+class Change:
+    def __init__(self, between_two_buses):
+        if not between_two_buses[0] <= between_two_buses[1]:
+            between_two_buses = between_two_buses[1], between_two_buses[0]
+        self.between: tuple[BusId, BusId] = between_two_buses
+        self.stops_can_choose: list[StopId] = []  # 第二辆车的上车车站
+
+    def __repr__(self):
+        return repr(self.between) + repr(self.stops_can_choose)
+
+
 SuccessiveChanges = list[Change]
 
 
@@ -14,7 +26,7 @@ class Solution:
 
         n_buses = len(routes)
         successive_n_changes_min: list[list[float]] = [[float("inf")] * n_buses for bus in range(n_buses)]
-        successive_changes_detail: list[list[SuccessiveChanges]] \
+        successive_changes: list[list[SuccessiveChanges]] \
             = [[[] for bus in range(n_buses)] for bus in range(n_buses)]
         stop_to_buses: dict[StopId, list[BusId]] = {}
         for bus, stops in enumerate(routes):
@@ -29,18 +41,19 @@ class Solution:
             for i, bus1 in enumerate(buses):
                 for bus2 in buses[i:]:
                     successive_n_changes: float = successive_n_changes_min[bus1][bus2]
+                    if successive_n_changes == float("inf"):
+                        one_change: Change = Change(between_two_buses=(bus1, bus2))
+                        successive_changes[bus1][bus2].append(one_change)
+                        successive_changes[bus2][bus1].append(one_change)
                     if bus1 == bus2:
                         successive_n_changes_min[bus1][bus2] = 0.0
                     else:
-                        if successive_n_changes == float("inf"):
-                            successive_n_changes_min[bus1][bus2] = 1.0
-                            successive_n_changes_min[bus2][bus1] = 1.0
-                            successive_changes_detail[bus1][bus2].append([])
-                            successive_changes_detail[bus2][bus1].append([])
-                        successive_changes_detail[bus1][bus2][0].append(stop)
-                        successive_changes_detail[bus2][bus1][0].append(stop)
-        # pprint(successive_n_changes_min)
-        # pprint(successive_changes_detail)
+                        successive_n_changes_min[bus1][bus2] = 1.0
+                        successive_n_changes_min[bus2][bus1] = 1.0
+                        successive_changes[bus1][bus2][0].stops_can_choose.append(stop)
+
+        pprint(successive_n_changes_min)
+        pprint(successive_changes)
 
         for bus1 in range(n_buses):
             for bus2 in range(n_buses):
@@ -51,11 +64,11 @@ class Solution:
                             successive_n_changes_min[bus1][bus2]):
                         successive_n_changes_min[bus1][bus2] = \
                             successive_n_changes_min[bus1][bus3] + successive_n_changes_min[bus3][bus2]
-                        successive_changes_detail[bus1][bus2] = \
-                            successive_changes_detail[bus1][bus3] + successive_changes_detail[bus3][bus2]
+                        successive_changes[bus1][bus2] = \
+                            successive_changes[bus1][bus3] + successive_changes[bus3][bus2]
 
-        # pprint(successive_n_changes_min)
-        # pprint(successive_changes_detail)
+        pprint(successive_n_changes_min)
+        pprint(successive_changes)
 
         n_min: float = float("inf")
         n_changes_in_detail: SuccessiveChanges = None
@@ -63,6 +76,10 @@ class Solution:
             for bus2 in stop_to_buses[target]:
                 if successive_n_changes_min[bus1][bus2] < n_min:
                     n_min = successive_n_changes_min[bus1][bus2]
-                    n_changes_in_detail = successive_changes_detail[bus1][bus2]
+                    n_changes_in_detail = successive_changes[bus1][bus2]
+
+        print("=========================================")
+        print(int(n_min) + 1 if n_min != float("inf") else -1)
+        pprint(n_changes_in_detail)
 
         return int(n_min) + 1 if n_min != float("inf") else -1
