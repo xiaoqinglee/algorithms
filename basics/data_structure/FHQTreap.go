@@ -5,6 +5,9 @@ import (
 	"math/rand"
 )
 
+//算法训练营 陈小玉 5.1 Treap
+//https://oi-wiki.org/ds/treap/
+
 type key interface {
 	~int | ~int8 | ~int16 | ~int32 | ~int64 | ~string
 }

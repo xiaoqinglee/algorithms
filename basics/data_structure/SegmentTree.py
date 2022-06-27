@@ -3,7 +3,8 @@ from functools import reduce
 
 # # SegmentTree 的意图：
 # 一个固定长度的数组， 数组中的不定某个元素和不定某个区间数据发生更新动作，
-# 想用logN的复杂度查询任意区间内的元素统计信息， 比如元素的和，最大元素值，最小元素值。
+# 给定任意原数组索引下标值index_left和index_right确定的一个区间
+# 想用logN的复杂度查询该区间内的元素统计信息， 比如元素的和，最大元素值，最小元素值。
 #
 # 如果不借助任何数据结构，时间复杂度是n。
 # 使用前缀和和哈希表可以做大常数时间复杂度，但是不允许数组元素发生变化。
@@ -37,6 +38,11 @@ class Segment:
 
     # 到底
     def update_segment(self, left: int, right: int, new_val: ListElemVal) -> None:
+        # left right 可以覆盖并超过本区间的大小，但是必须是个有效的区间，且该区间和本segment有交集
+        assert (left <= right
+                and self.segment_left_idx <= right
+                and left <= self.segment_right_idx), \
+            "Invalid input left:{} right:{}".format(left, right)
         if self.segment_left_idx == self.segment_right_idx:
             self.val = new_val
             return
@@ -56,6 +62,11 @@ class Segment:
 
     # 不到底
     def query_segment(self, left: int, right: int) -> ListElemVal:
+        # left right 可以覆盖并超过本区间的大小，但是必须是个有效的区间，且该区间和本segment有交集
+        assert (left <= right
+                and self.segment_left_idx <= right
+                and left <= self.segment_right_idx), \
+            "Invalid input left:{} right:{}".format(left, right)
         if self.segment_left_idx == self.segment_right_idx:
             return self.val
         if self.segment_left_idx == left and self.segment_right_idx == right:
