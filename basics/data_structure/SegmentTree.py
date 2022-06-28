@@ -40,8 +40,7 @@ class Segment:
     def update_segment(self, left: int, right: int, new_val: ListElemVal) -> None:
         # left right 可以覆盖并超过本区间的大小，但是必须是个有效的区间，且该区间和本segment有交集
         assert (left <= right
-                and self.segment_left_idx <= right
-                and left <= self.segment_right_idx), \
+                and not (right < self.segment_left_idx or self.segment_right_idx < left)), \
             "Invalid input left:{} right:{}".format(left, right)
         if self.segment_left_idx == self.segment_right_idx:
             self.val = new_val
@@ -64,8 +63,7 @@ class Segment:
     def query_segment(self, left: int, right: int) -> ListElemVal:
         # left right 可以覆盖并超过本区间的大小，但是必须是个有效的区间，且该区间和本segment有交集
         assert (left <= right
-                and self.segment_left_idx <= right
-                and left <= self.segment_right_idx), \
+                and not (right < self.segment_left_idx or self.segment_right_idx < left)), \
             "Invalid input left:{} right:{}".format(left, right)
         if self.segment_left_idx == self.segment_right_idx:
             return self.val
