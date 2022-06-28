@@ -5,8 +5,8 @@ class BST:
     def __init__(self, key, val, left=None, right=None):
         self.key: int = key
         self.val: Any = val
-        self.left: BST = left
-        self.right: BST = right
+        self.left: BST | None = left
+        self.right: BST | None = right
 
     def search(self, key: int) -> Any:
         if key == self.key:

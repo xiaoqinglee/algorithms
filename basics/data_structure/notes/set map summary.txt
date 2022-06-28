@@ -21,12 +21,59 @@ treeset/treemap key有序
     FHQ Treap
 
 
-有序树中, avl tree、 red black tree 获得一个元素的排名和根据排名获得一个元素的复杂度是n.
-对于 Treap 和 skiplist, 这两个操作复杂度是logn
-
-
 有序树允许key重复可以实现有序列表:
-    思路如同 Trie, 在node上附加count字段
+    思路如同 Trie, 在node上附加count字段, 使用链表存储一个key对应的多个value
 
 
+有序树中, avl tree、 red black tree 获得一个元素的排名和根据排名获得一个元素的复杂度是n.
+对于 Treap 和 skiplist, 这两个操作复杂度是logn。 Treap 是 augmented search tree 的代表。
 
+
+http://www.mit.edu/~6.005/sp11/psets/ps2/assignment.html
+
+Part C: Augmented Binary Search Trees [35 points]
+
+For this problem, only modify the source code provided in the ps2.bst_augmented_abstract package.
+
+So far, we have described and implemented Binary Search Trees with no special properties:
+nodes were simply sorted and arranged by key values.
+
+Now, we will extend the functionality of our Binary Search Trees to create Augmented Search Trees.
+Augmented Search Trees are special types of Binary Search Trees
+that, apart from maintaining a sorted order of elements (based on their keys),
+also track some information about elements based on where these elements are stored in Binary Search Trees.
+We provide an abstract class for augmented search trees in AugmentedBinarySearchTree.java.
+
+Augmented Binary Search trees have numerous applications, but we will focus on a few simple examples.
+For this part, you will encounter three different Augmented Binary Search trees:
+
+    An augmented search tree that stores the number of descendants below each node.
+    An augmented search tree that stores the sum of the keys of all leaves below each node.
+    An augmented search tree that stores the range of node values below each node.
+
+The first augmented search tree simply stores, at each node, the number
+of descendant nodes below it (excluding the node itself).
+This information must be dynamically updated during insertion and deletion of elements from the Binary Search Tree,
+without needing to visit all of the elements in the tree.
+A working implementation of this augmented tree is provided to you in NumberDescendantsBinarySearchTree.java.
+This implementation uses code from the AugmentedBinarySearchTree class, and is thus surprisingly simple.
+
+The second augmented tree stores, at each node, the sum
+of the keys of all descendant leaves below it (excluding the node itself).
+A leaf node is defined as a node that has no descendant nodes.
+Note that a tree with a single node should have an augmented value of 0,
+since the node has no descendant leaves.
+This information must again be dynamically updated during insertion and deletion of elements as before,
+without having to visit all the elements in the tree.
+It will be your job to fill in code for this augmentation in LeafSumBinarySearchTree.java.
+
+The third and final augmented tree stores, at each node, the range
+of values stored in the subtree containing the node (that is the difference between the max and min values).
+Again, this information must be dynamically updated during insertion and deletion of elements,
+without having to visit all the elements in the tree.
+Note that in this case we have given you
+a new class to work with, RangeBinaryNode.java, which
+in addition to the augmented value (representing the range) stores the value
+of the minimum and maximum elements in the tree.
+It will be your job to fill in code for this augmentation in RangeBinarySearchTree.java
+to update the augmented value (range), along with the minimum and maximum.
