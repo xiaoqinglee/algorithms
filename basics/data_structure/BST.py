@@ -48,6 +48,10 @@ class BST:
                 return tree.left
             pre = _pre_node(tree)
             pre.right = tree.right
+
+            # no need to worry about the value of "tree", it will get collected when no reference points to it.
+            # https://docs.python.org/zh-cn/3/library/sys.html#sys.getrefcount
+
             return tree.left
 
         if root is None:

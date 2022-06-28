@@ -27,12 +27,8 @@ class AugmentedIntervalTree:
             self.root.interval_right_max = max(self.root.interval_right_max, interval_r)
             return self.root.interval_right_max
         if interval_l < self.root.interval_left:
-            if self.root.left is None:
-                self.root.left = IntervalTreeNode(interval_left=interval_l)
             subtree_interval_right_max = self.root.left.add_interval(interval)
         else:
-            if self.root.right is None:
-                self.root.right = IntervalTreeNode(interval_left=interval_l)
             subtree_interval_right_max = self.root.right.add_interval(interval)
         self.root.interval_right_max = max(self.root.interval_right_max, subtree_interval_right_max)
         return self.root.interval_right_max
