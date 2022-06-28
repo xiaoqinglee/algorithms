@@ -7,7 +7,7 @@ def radix_sort_lsd(nums: list[int]) -> list[int]:
     num_strings: list[str] = [str(num) for num in nums]
     digit_count = max(len(num_string) for num_string in num_strings)
 
-    def get_lowest_nth_digit(string: str, nth: int) -> str:
+    def get_nth_lowest_digit(string: str, nth: int) -> str:
         if len(string) - nth < 0:
             return '0'
         return string[-nth]
@@ -17,7 +17,7 @@ def radix_sort_lsd(nums: list[int]) -> list[int]:
 
     for nth_digit in range(1, digit_count + 1):
         for num_string in num_strings:
-            buckets[get_lowest_nth_digit(num_string, nth_digit)].append(num_string)
+            buckets[get_nth_lowest_digit(num_string, nth_digit)].append(num_string)
         num_strings = []
         for key in bucket_keys:
             num_strings.extend(buckets[key])
@@ -35,13 +35,13 @@ def radix_sort_msd(nums: list[int]) -> list[int]:
     num_strings: list[str] = [str(num) for num in nums]
     digit_count = max(len(num_string) for num_string in num_strings)
 
-    def get_lowest_nth_digit(string: str, nth: int) -> str:
+    def get_nth_lowest_digit(string: str, nth: int) -> str:
         if len(string) - nth < 0:
             return '0'
         return string[-nth]
 
-    def get_highest_nth_digit(string: str, nth: int) -> str:
-        return get_lowest_nth_digit(string, digit_count + 1 - nth)
+    def get_nth_highest_digit(string: str, nth: int) -> str:
+        return get_nth_lowest_digit(string, digit_count + 1 - nth)
 
     bucket_keys = "0123456789"
 
@@ -50,7 +50,7 @@ def radix_sort_msd(nums: list[int]) -> list[int]:
             return strings
         buckets: dict[str, list[str]] = {key: [] for key in bucket_keys}
         for num_string in strings:
-            buckets[get_highest_nth_digit(num_string, sorted_n_digits + 1)].append(num_string)
+            buckets[get_nth_highest_digit(num_string, sorted_n_digits + 1)].append(num_string)
         strings = []
         for key in bucket_keys:
             strings.extend(sort(sorted_n_digits + 1, buckets[key]))
