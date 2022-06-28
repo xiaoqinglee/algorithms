@@ -1,25 +1,6 @@
 import collections.abc
 from functools import reduce
 
-# # SegmentTree 的意图：
-# 一个固定长度的数组， 数组中的不定某个元素和不定某个区间数据发生更新动作，
-# 给定任意原数组索引下标值index_left和index_right确定的一个区间
-# 想用logN的复杂度查询该区间内的元素统计信息， 比如元素的和，最大元素值，最小元素值。
-#
-# 如果不借助任何数据结构，时间复杂度是n。
-# 使用前缀和和哈希表可以做大常数时间复杂度，但是不允许数组元素发生变化。
-
-
-# SegmentTree 的是个满二叉树，只有最后一行存在空Node， 所以我们可以使用数组存储，使用数组运算寻找孩子节点。
-# 满二叉树意味着 SegmentTree能很方便的持久化
-# （使用连个list，一个list存储segment_left_end_index, 一个存segment_right_end_index， 空Node在两个数组中都为nil）
-# 源数组长度为n，最坏情况下，当n >= 3时，总的非空Node个数为 4n-5
-# （最后一行有连个节点， 到第二行有n-2个叶子节点，1个非叶子节点， 可得最后一行node空间一共有2(n-1), 可得总节点数4n-5）
-# 所以使用4n
-# 这里的实现不使用数组存储了
-
-# binary index tree 只能解决点查询、点更新问题
-# segment tree 可以覆盖前者的所有能力，还能解决区间更新、区间查询的问题
 
 ListElemVal = int
 
@@ -108,3 +89,23 @@ class SegmentTree:
 
         self.root: Segment = build_tree(0, len(self.elements)-1)
 
+
+# # SegmentTree 的意图：
+# 一个固定长度的数组， 数组中的不定某个元素和不定某个区间数据发生更新动作，
+# 给定任意原数组索引下标值index_left和index_right确定的一个区间
+# 想用logN的复杂度查询该区间内的元素统计信息， 比如元素的和，最大元素值，最小元素值。
+#
+# 如果不借助任何数据结构，时间复杂度是n。
+# 使用前缀和和哈希表可以做大常数时间复杂度，但是不允许数组元素发生变化。
+
+
+# SegmentTree 的是个满二叉树，只有最后一行存在空Node， 所以我们可以使用数组存储，使用数组运算寻找孩子节点。
+# 满二叉树意味着 SegmentTree能很方便的持久化
+# （使用连个list，一个list存储segment_left_end_index, 一个存segment_right_end_index， 空Node在两个数组中都为nil）
+# 源数组长度为n，最坏情况下，当n >= 3时，总的非空Node个数为 4n-5
+# （最后一行有连个节点， 到第二行有n-2个叶子节点，1个非叶子节点， 可得最后一行node空间一共有2(n-1), 可得总节点数4n-5）
+# 所以使用4n
+# 这里的实现不使用数组存储了
+
+# binary index tree 只能解决点查询、点更新问题
+# segment tree 可以覆盖前者的所有能力，还能解决区间更新、区间查询的问题

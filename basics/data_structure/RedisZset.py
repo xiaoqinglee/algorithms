@@ -1,13 +1,3 @@
-# https://segmentfault.com/a/1190000037435499
-# 在Redis中，SkipList主要作为Sorted Set的底层数据结构，
-# 它的实现几乎是William Pugh在论文中描述的原始算法的C语言版的翻译。
-# 除了对以下三个方面进行了修改:
-#
-# 该实现允许重复的分数（score）
-# 同时通过键（即score）和对应的元素进行比较
-# 有一个向前指针，所以第一层是双向链表，以此允许从尾到头的遍历。
-
-
 class ZSet:
     def __init__(self, elem_to_score=None):
         if elem_to_score is None:
@@ -208,6 +198,16 @@ class Skiplist:
         # 现在，x 肯定不是self.dummy_header了，因为rank > 1 而且我们已经访问过第0层了
         # 此时 rank == node_rank,
         return x.score, x.elem
+
+
+# https://segmentfault.com/a/1190000037435499
+# 在Redis中，SkipList主要作为Sorted Set的底层数据结构，
+# 它的实现几乎是William Pugh在论文中描述的原始算法的C语言版的翻译。
+# 除了对以下三个方面进行了修改:
+#
+# 该实现允许重复的分数（score）
+# 同时通过键（即score）和对应的元素进行比较
+# 有一个向前指针，所以第一层是双向链表，以此允许从尾到头的遍历。
 
 
 def test_zset():

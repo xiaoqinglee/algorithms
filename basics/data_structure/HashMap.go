@@ -6,44 +6,6 @@ import (
 	"hash/maphash"
 )
 
-//	import "hash/maphash"
-//
-//	// The zero Hash value is valid and ready to use; setting an
-//	// initial seed is not necessary.
-//	var h maphash.Hash
-//
-//	// Add a string to the hash, and print the current hash value.
-//	h.WriteString("hello, ")
-//	fmt.Printf("%#x\n", h.Sum64())
-//
-//	// Reset discards all data previously added to the Hash, without
-//	// changing its seed.
-//	h.Reset()
-
-//	list是个package，内含两个type：
-//
-//	type Element struct {
-//	 next, prev *Element  // 上一个元素和下一个元素
-//	 list *List  // 元素所在链表
-//	 Value interface{}  // 元素
-//	}
-//	type List struct {
-//	 root Element  // 链表的根元素
-//	 len  int      // 链表的长度
-//	}
-//
-//	type Element
-//	  func (e *Element) Next() *Element
-//	  func (e *Element) Prev() *Element
-//	type List
-//	  func New() *List
-//	  func (l *List) Len() int // 在链表长度
-//	  func (l *List) Back() *Element   // 最后一个元素
-//	  func (l *List) Front() *Element  // 第一个元素
-//	  func (l *List) PushBack(v interface{}) *Element  // 在队列最后插入元素
-//	  func (l *List) PushFront(v interface{}) *Element  // 在队列头部插入元素
-//	  func (l *List) Remove(e *Element) interface{} // 删除某个元素
-
 type KVPair struct {
 	K string
 	V interface{}
@@ -203,3 +165,41 @@ func (this *HashMap) Remove(key string) (ok bool) {
 	}
 	return true
 }
+
+//	import "hash/maphash"
+//
+//	// The zero Hash value is valid and ready to use; setting an
+//	// initial seed is not necessary.
+//	var h maphash.Hash
+//
+//	// Add a string to the hash, and print the current hash value.
+//	h.WriteString("hello, ")
+//	fmt.Printf("%#x\n", h.Sum64())
+//
+//	// Reset discards all data previously added to the Hash, without
+//	// changing its seed.
+//	h.Reset()
+
+//	list是个package，内含两个type：
+//
+//	type Element struct {
+//	 next, prev *Element  // 上一个元素和下一个元素
+//	 list *List  // 元素所在链表
+//	 Value interface{}  // 元素
+//	}
+//	type List struct {
+//	 root Element  // 链表的根元素
+//	 len  int      // 链表的长度
+//	}
+//
+//	type Element
+//	  func (e *Element) Next() *Element
+//	  func (e *Element) Prev() *Element
+//	type List
+//	  func New() *List
+//	  func (l *List) Len() int // 在链表长度
+//	  func (l *List) Back() *Element   // 最后一个元素
+//	  func (l *List) Front() *Element  // 第一个元素
+//	  func (l *List) PushBack(v interface{}) *Element  // 在队列最后插入元素
+//	  func (l *List) PushFront(v interface{}) *Element  // 在队列头部插入元素
+//	  func (l *List) Remove(e *Element) interface{} // 删除某个元素

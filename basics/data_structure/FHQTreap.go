@@ -5,12 +5,6 @@ import (
 	"math/rand"
 )
 
-//算法训练营 陈小玉 5.1 Treap
-//https://oi-wiki.org/ds/treap/
-
-//普通有序树中, avl tree、 red black tree 获得一个元素的排名和根据排名获得一个元素的复杂度是n.
-//对于本例中的 Treap, 这两个操作复杂度是logn。 Treap 是 augmented search tree 的代表。
-
 type key interface {
 	~int | ~int8 | ~int16 | ~int32 | ~int64 | ~string
 }
@@ -177,6 +171,12 @@ func (root *FHQTreap[K, V]) Len() (len_ int) {
 	}
 	return len_
 }
+
+//算法训练营 陈小玉 5.1 Treap
+//https://oi-wiki.org/ds/treap/
+
+//普通有序树中, avl tree、 red black tree 获得一个元素的排名和根据排名获得一个元素的复杂度是n.
+//对于本例中的 Treap, 这两个操作复杂度是logn。 Treap 是 augmented search tree 的代表。
 
 func TestFHQTreap() {
 

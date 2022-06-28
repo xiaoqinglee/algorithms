@@ -2,9 +2,9 @@
 
 ### basics
 
-sort: heap sort、 merge sort、 quick sort、 radix sort
+data_structure: hash table、 balanced search tree、 binary heap、 ring buffer、 trie、 skiplist、 segment tree、 interval tree、 union find.
 
-data_structure: hash table、 binary heap、 ring buffer、 trie、 balanced search tree、 skiplist
+sort: merge sort、 quick sort、 radix sort、data_structure based sort(heap sort、 balanced search tree sort)
 
 huffman coding、 banker's algorithm
 

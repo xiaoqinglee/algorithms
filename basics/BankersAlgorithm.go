@@ -2,6 +2,58 @@ package basics
 
 import "fmt"
 
+type ProcessId int
+
+type ProcessStatus struct {
+	//currently allocated resources
+	Allocation []int
+	//maximum resources
+	Max []int
+}
+
+func BankersAlgorithm(processes map[ProcessId]ProcessStatus, systemAvailable []int) (systemStatusIsSafe bool, anyProcessSequence []ProcessId) {
+	if len(processes) == 0 {
+		return true, []ProcessId{}
+	}
+	resourceDimension := len(systemAvailable)
+	var processSequence []ProcessId
+	for len(processes) > 0 {
+		foundNextProcess := false
+		for processId_, processStatus := range processes {
+			systemAvailableCanMeetRequirement := true
+			//processNeed该程序所有剩余所需资源量
+			processNeed := make([]int, resourceDimension)
+			for resourceIndex := 0; resourceIndex < resourceDimension; resourceIndex++ {
+				processNeed[resourceIndex] = processStatus.Max[resourceIndex] - processStatus.Allocation[resourceIndex]
+				if processNeed[resourceIndex] > systemAvailable[resourceIndex] {
+					systemAvailableCanMeetRequirement = false
+					break
+				}
+			}
+			if systemAvailableCanMeetRequirement {
+				foundNextProcess = true
+				for resourceIndex := 0; resourceIndex < resourceDimension; resourceIndex++ {
+					systemAvailable[resourceIndex] += processStatus.Allocation[resourceIndex]
+				}
+				delete(processes, processId_)
+				processSequence = append(processSequence, processId_)
+				// 迭代过程中被迭代的容器结构和大小发生了变化，所以需要重新迭代。
+				break
+			}
+		}
+		if foundNextProcess == false {
+			return false, []ProcessId{}
+		}
+	}
+	return true, processSequence
+}
+
+func OnResourceRequest(processes map[ProcessId]ProcessStatus, systemAvailable []int,
+	requestingProcessId ProcessId, requestedResource []int) (grant bool) {
+
+	return true
+}
+
 //https://en.wikipedia.org/wiki/Banker's_algorithm
 
 //Banker's algorithm
@@ -52,15 +104,6 @@ import "fmt"
 //	}
 //	return OK;
 
-type ProcessId int
-
-type ProcessStatus struct {
-	//currently allocated resources
-	Allocation []int
-	//maximum resources
-	Max []int
-}
-
 //BankersAlgorithm()判断当前状态是否是安全的，安全的意思是：
 //存在一个进程序列，进程们按此序列运行，每次运行进程都一口气请求系统分配给该进程该进程剩余所需全部资源，系统允许该请求，最终所有的进程都执行完毕。
 
@@ -69,43 +112,6 @@ type ProcessStatus struct {
 
 //在尝试构建某个安全的进程序列的过程中，如果当前子序列导致系统进入死锁，那么其他的子序列同样也会导致系统进入死锁，这在数学上可以被证明，
 //所以BankersAlgorithm()没有回溯并尝试构建其他的序列。
-
-func BankersAlgorithm(processes map[ProcessId]ProcessStatus, systemAvailable []int) (systemStatusIsSafe bool, anyProcessSequence []ProcessId) {
-	if len(processes) == 0 {
-		return true, []ProcessId{}
-	}
-	resourceDimension := len(systemAvailable)
-	var processSequence []ProcessId
-	for len(processes) > 0 {
-		foundNextProcess := false
-		for processId_, processStatus := range processes {
-			systemAvailableCanMeetRequirement := true
-			//processNeed该程序所有剩余所需资源量
-			processNeed := make([]int, resourceDimension)
-			for resourceIndex := 0; resourceIndex < resourceDimension; resourceIndex++ {
-				processNeed[resourceIndex] = processStatus.Max[resourceIndex] - processStatus.Allocation[resourceIndex]
-				if processNeed[resourceIndex] > systemAvailable[resourceIndex] {
-					systemAvailableCanMeetRequirement = false
-					break
-				}
-			}
-			if systemAvailableCanMeetRequirement {
-				foundNextProcess = true
-				for resourceIndex := 0; resourceIndex < resourceDimension; resourceIndex++ {
-					systemAvailable[resourceIndex] += processStatus.Allocation[resourceIndex]
-				}
-				delete(processes, processId_)
-				processSequence = append(processSequence, processId_)
-				// 迭代过程中被迭代的容器结构和大小发生了变化，所以需要重新迭代。
-				break
-			}
-		}
-		if foundNextProcess == false {
-			return false, []ProcessId{}
-		}
-	}
-	return true, processSequence
-}
 
 // 因为BankersAlgorithm()可以检测某个状态是否安全，所以它可以用于死锁提前避免：
 //当某个进程向系统发出资源请求，请求立刻分配一定数量的资源时，系统思考：
@@ -130,12 +136,6 @@ func BankersAlgorithm(processes map[ProcessId]ProcessStatus, systemAvailable []i
 //1.进程进入系统的进程集合时要标明自己各个资源维度所使用的的最大资源量Max
 //2.已经占用的资源不会中途释放，只会在所有的资源都得到满足后才会一起释放。
 
-func OnResourceRequest(processes map[ProcessId]ProcessStatus, systemAvailable []int,
-	requestingProcessId ProcessId, requestedResource []int) (grant bool) {
-
-	return true
-}
-
 ////input case
 //Available system resources are:
 //A B C D
@@ -152,6 +152,13 @@ func OnResourceRequest(processes map[ProcessId]ProcessStatus, systemAvailable []
 //P1 3 3 2 2
 //P2 1 2 3 4
 //P3 1 3 5 0
+
+//Status is safe: true
+//anySeq: [1 2 3]
+//Status is safe: true
+//anySeq: [1 2 3]
+//Status is safe: false
+//anySeq: []
 
 func TestBankersAlgorithm() {
 
@@ -216,10 +223,3 @@ func TestBankersAlgorithm() {
 	fmt.Println("Status is safe:", isSafe)
 	fmt.Println("anySeq:", anySeq)
 }
-
-//Status is safe: true
-//anySeq: [1 2 3]
-//Status is safe: true
-//anySeq: [1 2 3]
-//Status is safe: false
-//anySeq: []

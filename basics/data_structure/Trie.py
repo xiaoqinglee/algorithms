@@ -1,6 +1,3 @@
-# 叶子节点的数据为全null数组
-# 叶子节点代表的字符串的最后一个字符是什么这个信息存在parent的children数组里面
-# 一个空树只有一个root节点，self即是root
 class Trie:
     ARRAY_LEN = 26
 
@@ -93,3 +90,8 @@ class Trie:
                 return exists
         exists = True
         return exists
+
+
+# 叶子节点的数据为全null数组
+# 叶子节点代表的字符串的最后一个字符是什么这个信息存在parent的children数组里面
+# 一个空树只有一个root节点，self即是root
