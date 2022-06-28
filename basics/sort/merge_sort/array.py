@@ -31,14 +31,28 @@ def merge_sort(nums: list[int]) -> list[int]:
             right_pointer += 1
             merging_pointer += 1
 
-    def sort(left_index: int, right_index: int) -> None:
+    def sort_top_down(left_index: int, right_index: int) -> None:  # 自顶向下
         if left_index >= right_index:
             return
         mid = (left_index + right_index) // 2
-        sort(left_index, mid)
-        sort(mid+1, right_index)
+        sort_top_down(left_index, mid)
+        sort_top_down(mid+1, right_index)
         merge(left_index, mid, right_index)
 
-    sort(0, len(nums) - 1)
+    def sort_bottom_up() -> None:  # 自底向上
+
+        subarray_size = 1
+        while subarray_size <= len(nums)-1:
+
+            left_index = 0
+            while left_index + subarray_size <= len(nums) - 1:
+                merge(left_index, left_index + subarray_size - 1,
+                      min(left_index + subarray_size * 2 - 1, len(nums) - 1))
+                left_index += (subarray_size * 2)
+
+            subarray_size *= 2
+
+    # sort_top_down(0, len(nums) - 1)
+    sort_bottom_up()
     return nums
 
