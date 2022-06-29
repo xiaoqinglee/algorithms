@@ -2,11 +2,15 @@ import heapq
 from pkg.data_structure import TreeNode
 
 
+Char = str
+Bit = int
+
+
 class HuffmanCoding:
 
-    def __init__(self, char_to_frequency: dict[str, int]):
+    def __init__(self, char_to_frequency: dict[Char, int]):
 
-        def build_tree(char_to_frequency: dict[str, int]) -> TreeNode:
+        def build_tree(char_to_frequency: dict[Char, int]) -> TreeNode:
             if len(char_to_frequency) < 2:
                 raise "待编码的字符小于2， 没有编码意义"
 
@@ -33,9 +37,9 @@ class HuffmanCoding:
             root: TreeNode = node_list[-1]
             return root
 
-        def init_encoding_map(root: TreeNode) -> dict[str, list[int]]:
-            temp: list[int] = []
-            result: dict[str, list[int]] = {}
+        def init_encoding_map(root: TreeNode) -> dict[Char, list[Bit]]:
+            temp: list[Bit] = []
+            result: dict[Char, list[Bit]] = {}
 
             def traverse(node: TreeNode) -> None:
                 if node.char is not None:
@@ -53,17 +57,17 @@ class HuffmanCoding:
             return result
 
         self.__huffman_tree: TreeNode = build_tree(char_to_frequency)
-        self.__encoding_map: dict[str, list[int]] = init_encoding_map(self.__huffman_tree)
+        self.__encoding_map: dict[Char, list[Bit]] = init_encoding_map(self.__huffman_tree)
 
-    def encode(self, chars: str) -> list[int]:
-        bits: list[int] = []
+    def encode(self, chars: str) -> list[Bit]:
+        bits: list[Bit] = []
         for char in chars:
             bits_ = self.__encoding_map[char]
             bits.extend(bits_)
         return bits
 
-    def decode(self, bits: list[int]) -> str:
-        chars: list[str] = []
+    def decode(self, bits: list[Bit]) -> str:
+        chars: list[Char] = []
         node: TreeNode = self.__huffman_tree
         for bit in bits:
             if bit == 0:
