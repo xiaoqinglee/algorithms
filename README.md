@@ -2,11 +2,14 @@
 
 ### basics
 
-data_structure: hash table、 balanced search tree、 binary heap、 ring buffer、 trie、 skiplist、 segment tree、 interval tree、 union find.
+data_structure: 
+hash table、 treap、 binary heap、 ring buffer、 trie、 
+skiplist、 segment tree、 interval tree、 union find、 
+huffman tree、 optimal BST. 
 
-sort: merge sort、 quick sort、 radix sort、data_structure based sort(heap sort、 balanced search tree sort)
+sort: merge sort、 quick sort、 radix sort、data_structure based sort(heap sort、 balanced search tree sort).
 
-huffman coding、 banker's algorithm
+banker's algorithm.
 
 
 ### problems
