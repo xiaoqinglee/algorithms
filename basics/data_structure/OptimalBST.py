@@ -1,6 +1,6 @@
 # 算法导论 第三版 15.5 最优二叉搜索树
+# 一棵期望搜索代价最小的二叉搜索树, 我们称之为最优二叉搜索树.
 # https://www.youtube.com/playlist?list=PL4IH6CVPpTZUwOOyNioJgPnDOnOYO0MO9
-# 一棵期望搜索代价最小的二叉搜索树, 我们称之为最优二叉搜索树. 
 
 
 # root 节点的深度是0
@@ -48,4 +48,3 @@
 #     w[i, i-1]=qi-1 for i in [1...n+1]
 # 对j>=i 的情况, 可如下计算：
 #     w[i, j] = w[i, j-1] + pj + qj
-
