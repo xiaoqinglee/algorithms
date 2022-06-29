@@ -63,15 +63,6 @@ class OptimalBST:
             return TreeNode(val=r, left=left, right=right)
 
         e_func(1, n)
-
-        import pprint
-        print("===============")
-        pprint.pprint(e_matrix)
-        print("===============")
-        pprint.pprint(w_matrix)
-        print("===============")
-        pprint.pprint(root_matrix)
-
         self.root: TreeNode = build_tree(1, n)
 
 
