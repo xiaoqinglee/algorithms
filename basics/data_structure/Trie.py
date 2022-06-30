@@ -6,13 +6,15 @@ class Trie:
         self.value: str | None = None  # 仅当self.is_terminal为True时有意义
         self.value_count: int = 0  # 仅当self.is_terminal为True时有意义
         self.children: list[Trie | None] = [None] * self.ARRAY_LEN
+        self.child_count: int = 0
 
     def insert(self, word: str) -> None:
         node: Trie = self
         for char in word:
+            node.child_count += 1
             child: Trie | None = node.children[ord(char) - ord('a')]
             if child is None:
-                print("inserting", char)
+                # print("inserting", char)
                 child = Trie()
                 node.children[ord(char) - ord('a')] = child
             node = child
@@ -24,17 +26,17 @@ class Trie:
             node.value_count = 1
 
     def delete(self, word: str) -> None:
-        nodes_to_delete: list[Trie] = []
-        paths_to_delete: list[str] = []
+        parent_nodes_to_update: list[Trie] = []
+        paths_leading_to_child_node: list[str] = []
 
         node: Trie = self
         for char in word:
+            parent_nodes_to_update.append(node)
+            paths_leading_to_child_node.append(char)
             child: Trie | None = node.children[ord(char) - ord('a')]
             if child is None:
                 raise "word not in trie"
             node = child
-            nodes_to_delete.append(node)
-            paths_to_delete.append(char)
 
         if not node.is_terminal:
             raise "word not in trie"
@@ -42,32 +44,29 @@ class Trie:
             node.value_count -= 1
         elif node.value_count == 1:
             node.is_terminal = False
-            node.value = None
-            node.value_count = 0
 
         child_is_kept: bool | None = None
-        if not node.is_terminal and all(x is None for x in node.children):
+        if not node.is_terminal and node.child_count == 0:
             # print("deleting node", node.value)
             child_is_kept = False
         else:
             child_is_kept = True
 
-        nodes_to_delete.pop()
-        path_leading_to_child: str = paths_to_delete.pop()
+        while len(parent_nodes_to_update) > 0:
+            node: node = parent_nodes_to_update.pop()
+            path_leading_to_child: str = paths_leading_to_child_node.pop()
+            node.child_count -= 1
 
-        while len(nodes_to_delete) > 0:
-            node = nodes_to_delete.pop()
             if child_is_kept:
-                return
+                continue
             # print("deleting path", path_leading_to_child)
             node.children[ord(path_leading_to_child)-ord('a')] = None
 
-            if not node.is_terminal and all(x is None for x in node.children):
+            if not node.is_terminal and node.child_count == 0:
                 # print("deleting node", node.value)
                 child_is_kept = False
             else:
                 child_is_kept = True
-            path_leading_to_child = paths_to_delete.pop()
 
     def search(self, word: str) -> bool:
         exists: bool = False
@@ -88,7 +87,7 @@ class Trie:
             node: Trie | None = node.children[ord(char) - ord('a')]
             if node is None:
                 return exists
-        exists = True
+        exists = node.is_terminal or node.child_count > 0
         return exists
 
 
