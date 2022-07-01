@@ -14,49 +14,46 @@ class SuffixTree:
     def is_substring(self, substring: str) -> bool:
         return self.radix_tree.starts_with(substring)
 
-    def substring_matching_indexes(self, substring: str) -> list[int]:
-        matching_indexes: list[int] = []
+    def substrings(self, substring: str) -> list[int]:
 
-        def get_leaf_indexes(tree: RadixTree | None) -> None:
-            if tree is None:
-                return
-            if tree.is_terminal():
-                matching_indexes.append(tree.full_word_attachment)
-                return
-            for char in range(ord(tree.TERMINAL_CHAR), ord(tree.TERMINAL_CHAR) + 26 + 1):
-                get_leaf_indexes(tree.children.get(chr(char), None))
+        def get_leaf_indexes(tree: RadixTree | None) -> list[int]:
 
-        substring += self.radix_tree.TERMINAL_CHAR
+            substring_left_indexes: list[int] = []
+
+            def _get_leaf_indexes(tree: RadixTree | None) -> None:
+                if tree is None:
+                    return
+                if tree.is_terminal():
+                    substring_left_indexes.append(tree.full_word_attachment)
+                    return
+                for char in range(ord(tree.TERMINAL_CHAR), ord(tree.TERMINAL_CHAR) + 26 + 1):
+                    _get_leaf_indexes(tree.children.get(chr(char), None))
+
+            _get_leaf_indexes(tree)
+            return sorted(substring_left_indexes)
+
         word_suffix = substring
         node = self.radix_tree
 
+        if word_suffix == "":
+            return get_leaf_indexes(node)  # node is the root
+
         while True:
             child: RadixTree | None = node.children.get(word_suffix[0], None)
-            # assert node is an internal node, node might be the root
             if child is None:
-                if word_suffix[0] == self.radix_tree.TERMINAL_CHAR and len(node.children) > 0:
-                    get_leaf_indexes(node)
-                    matching_indexes.sort()
-                    return matching_indexes
-                else:
-                    return []
+                return []
 
             common_prefix, string1_suffix, string2_suffix = \
                 self.radix_tree.cut_strings_at_diverging_index(child.label, word_suffix)
             assert len(common_prefix) > 0
+
             if string1_suffix == string2_suffix == "":
-                assert common_prefix[-1] == self.radix_tree.TERMINAL_CHAR
-                return [child.full_word_attachment]
+                # assert child is an internal node, child can not be the root
+                return get_leaf_indexes(child)
             elif string1_suffix == "" and string2_suffix != "":
-                assert common_prefix[-1] != self.radix_tree.TERMINAL_CHAR
                 word_suffix = string2_suffix
                 node = child
-            elif string1_suffix != "" and string2_suffix == "":  # 这种情况不存在
-                pass
+            elif string1_suffix != "" and string2_suffix == "":
+                return get_leaf_indexes(child)
             else:  # string1_suffix != "" and string2_suffix != ""
-                if string2_suffix[0] == self.radix_tree.TERMINAL_CHAR:
-                    get_leaf_indexes(child)
-                    matching_indexes.sort()
-                    return matching_indexes
-                else:
-                    return []
+                return []

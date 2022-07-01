@@ -1,4 +1,7 @@
-def merge_sort(nums: list[int]) -> list[int]:
+from typing import Callable
+
+
+def merge_sort(nums: list[int], key: Callable[[int], int] = lambda x: x) -> list[int]:
     # # 应对 leetcode极端测试用例: 升序超大数组
     # import random
     # random.shuffle(nums)
@@ -15,7 +18,7 @@ def merge_sort(nums: list[int]) -> list[int]:
         right_pointer = mid_index + 1
         merging_pointer = left_index
         while left_pointer <= mid_index and right_pointer <= right_index:
-            if container[left_pointer] <= container[right_pointer]:
+            if key(container[left_pointer]) <= key(container[right_pointer]):
                 nums[merging_pointer] = container[left_pointer]
                 left_pointer += 1
             else:
@@ -55,4 +58,3 @@ def merge_sort(nums: list[int]) -> list[int]:
     # sort_top_down(0, len(nums) - 1)
     sort_bottom_up()
     return nums
-

@@ -1,5 +1,6 @@
 from typing import Any
 
+
 Char = str
 
 
@@ -152,33 +153,49 @@ class RadixTree:
                 return False, None
 
     def starts_with(self, prefix: str) -> bool:
-        prefix += self.TERMINAL_CHAR
         word_suffix = prefix
         node = self
 
+        if word_suffix == "":
+            return len(node.children) > 0  # node is the root
+
         while True:
             child: RadixTree | None = node.children.get(word_suffix[0], None)
-            # assert node is an internal node, node might be the root
             if child is None:
-                if word_suffix[0] == self.TERMINAL_CHAR and len(node.children) > 0:
-                    return True
-                else:
-                    return False
+                return False
 
             common_prefix, string1_suffix, string2_suffix = \
                 self.cut_strings_at_diverging_index(child.label, word_suffix)
             assert len(common_prefix) > 0
+
             if string1_suffix == string2_suffix == "":
-                assert common_prefix[-1] == self.TERMINAL_CHAR
+                # assert child is an internal node, child can not be the root
                 return True
             elif string1_suffix == "" and string2_suffix != "":
-                assert common_prefix[-1] != self.TERMINAL_CHAR
                 word_suffix = string2_suffix
                 node = child
-            elif string1_suffix != "" and string2_suffix == "":  # 这种情况不存在
-                pass
+            elif string1_suffix != "" and string2_suffix == "":
+                return True
             else:  # string1_suffix != "" and string2_suffix != ""
-                if string2_suffix[0] == self.TERMINAL_CHAR:
-                    return True
-                else:
-                    return False
+                return False
+
+
+if __name__ == "__main__":
+    t = RadixTree()
+    print("======")
+    t.insert("hello")
+    print(t.search(""))
+    print(t.starts_with(""))
+    print("==============")
+    t.insert("")
+    print(t.search(""))
+    print(t.starts_with(""))
+    print("============================")
+    t.delete("")
+    print(t.search(""))
+    print(t.starts_with(""))
+    print("======")
+    t.delete("hello")
+    print(t.search(""))
+    print(t.starts_with(""))
+    print("================")
