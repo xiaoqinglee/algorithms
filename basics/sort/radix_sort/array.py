@@ -76,8 +76,8 @@ def radix_sort_msd_using_trie(words: list[str]) -> list[str]:
         if trie is None:
             return
         if trie.is_terminal:
-            for n_times in range(trie.value_count):
-                sorted_words.append(trie.value)
+            for n_times in range(trie.full_word_count):
+                sorted_words.append(trie.full_word)
         for child in trie.children:
             traverse(child)
 

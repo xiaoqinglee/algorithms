@@ -3,30 +3,31 @@ class Trie:
 
     def __init__(self):
         self.is_terminal: bool = False
-        self.value: str | None = None  # 仅当self.is_terminal为True时有意义
-        self.value_count: int = 0  # 仅当self.is_terminal为True时有意义
+        self.full_word: str | None = None  # 仅当self.is_terminal为True时有意义
+        self.full_word_count: int = 0  # 仅当self.is_terminal为True时有意义
         self.children: list[Trie | None] = [None] * self.ARRAY_LEN
-        self.child_count: int = 0
+        # 该 trie 有多少个单词(不含当前 trie node 本身), 不一定等于children数组中非 None 元素个数
+        self.children_have_n_words: int = 0
 
     def insert(self, word: str) -> None:
         node: Trie = self
         for char in word:
-            node.child_count += 1
+            node.children_have_n_words += 1
             child: Trie | None = node.children[ord(char) - ord('a')]
             if child is None:
-                # print("inserting", char)
+                print("inserting", char)
                 child = Trie()
                 node.children[ord(char) - ord('a')] = child
             node = child
         if node.is_terminal:
-            node.value_count += 1
+            node.full_word_count += 1
         else:
             node.is_terminal = True
-            node.value = word
-            node.value_count = 1
+            node.full_word = word
+            node.full_word_count = 1
 
     def delete(self, word: str) -> None:
-        parent_nodes_to_update: list[Trie] = []
+        parent_nodes_to_update: list[Trie] = []  # root 在这个栈里， 但是 root node 永远不会被 delete
         paths_leading_to_child_node: list[str] = []
 
         node: Trie = self
@@ -40,30 +41,30 @@ class Trie:
 
         if not node.is_terminal:
             raise "word not in trie"
-        if node.value_count > 1:
-            node.value_count -= 1
-        elif node.value_count == 1:
+        if node.full_word_count > 1:
+            node.full_word_count -= 1
+        elif node.full_word_count == 1:
             node.is_terminal = False
 
         child_is_kept: bool | None = None
-        if not node.is_terminal and node.child_count == 0:
-            # print("deleting node", node.value)
+        if not node.is_terminal and node.children_have_n_words == 0:
+            print("deleting node", node.full_word)
             child_is_kept = False
         else:
             child_is_kept = True
 
         while len(parent_nodes_to_update) > 0:
-            node: node = parent_nodes_to_update.pop()
+            node: Trie = parent_nodes_to_update.pop()
             path_leading_to_child: str = paths_leading_to_child_node.pop()
-            node.child_count -= 1
+            node.children_have_n_words -= 1
 
             if child_is_kept:
                 continue
-            # print("deleting path", path_leading_to_child)
+            print("deleting path", path_leading_to_child)
             node.children[ord(path_leading_to_child)-ord('a')] = None
 
-            if not node.is_terminal and node.child_count == 0:
-                # print("deleting node", node.value)
+            if not node.is_terminal and node.children_have_n_words == 0:
+                print("deleting node", node.full_word)
                 child_is_kept = False
             else:
                 child_is_kept = True
@@ -80,14 +81,14 @@ class Trie:
             return exists
         return exists
 
-    def startsWith(self, prefix: str) -> bool:
+    def starts_with(self, prefix: str) -> bool:
         exists: bool = False
         node: Trie = self
         for char in prefix:
             node: Trie | None = node.children[ord(char) - ord('a')]
             if node is None:
                 return exists
-        exists = node.is_terminal or node.child_count > 0
+        exists = node.is_terminal or node.children_have_n_words > 0
         return exists
 
 
