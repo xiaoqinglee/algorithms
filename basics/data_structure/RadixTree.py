@@ -71,7 +71,7 @@ class RadixTree:
 
                 node.children[common_prefix[0]] = new_internal_node
 
-                break
+                return
 
     def delete(self, word: str) -> None:
         word += self.TERMINAL_CHAR
