@@ -180,6 +180,10 @@ class RadixTree:
                 return False
 
 
+# https://www.cs.jhu.edu/~langmea/resources/lecture_notes/suffix_trees.pdf
+# https://nbviewer.org/gist/BenLangmead/6665861
+
+
 if __name__ == "__main__":
     t = RadixTree()
     print("======")

@@ -67,8 +67,10 @@ class SuffixArray:
     def substrings(self, substring: str) -> list[int]:
 
         # 两次二分查找, 目标区间是 [lower, upper)
+
         # lower_boundary是第一个满足suffix[:len(substring)] >= substring的元素的索引
-        def binary_search_lower_boundary(lo: int, hi: int) -> int:  # 返回值范围[0...len()]
+        def binary_search_lower_boundary(lo: int, hi: int) -> int:
+            # 返回值范围[0...len()]: 所有元素都满足 -> 0, 所有元素都不满足 -> len()
             while True:
                 if lo == hi:
                     return lo
@@ -79,7 +81,8 @@ class SuffixArray:
                     hi = mid
 
         # upper_boundary是第一个满足suffix[:len(substring)] > substring的元素的索引
-        def binary_search_upper_boundary(lo: int, hi: int) -> int:  # 返回值范围[0...len()]
+        def binary_search_upper_boundary(lo: int, hi: int) -> int:
+            # 返回值范围[0...len()]: 所有元素都满足 -> 0, 所有元素都不满足 -> len()
             while True:
                 if lo == hi:
                     return lo
