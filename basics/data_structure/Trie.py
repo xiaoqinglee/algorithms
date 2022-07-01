@@ -15,7 +15,7 @@ class Trie:
             node.children_have_n_words += 1
             child: Trie | None = node.children[ord(char) - ord('a')]
             if child is None:
-                print("inserting", char)
+                # print("inserting", char)
                 child = Trie()
                 node.children[ord(char) - ord('a')] = child
             node = child
@@ -48,7 +48,7 @@ class Trie:
 
         child_is_kept: bool | None = None
         if not node.is_terminal and node.children_have_n_words == 0:
-            print("deleting node", node.full_word)
+            # print("deleting node", node.full_word)
             child_is_kept = False
         else:
             child_is_kept = True
@@ -60,11 +60,11 @@ class Trie:
 
             if child_is_kept:
                 continue
-            print("deleting path", path_leading_to_child)
+            # print("deleting path", path_leading_to_child)
             node.children[ord(path_leading_to_child)-ord('a')] = None
 
             if not node.is_terminal and node.children_have_n_words == 0:
-                print("deleting node", node.full_word)
+                # print("deleting node", node.full_word)
                 child_is_kept = False
             else:
                 child_is_kept = True

@@ -85,7 +85,29 @@ def radix_sort_msd_using_trie(words: list[str]) -> list[str]:
     return sorted_words
 
 
+def radix_sort_msd_using_radix_tree(words: list[str]) -> list[str]:
+    from basics.data_structure.RadixTree import RadixTree
+    radix_tree: RadixTree = RadixTree()
+    for word in words:
+        radix_tree.insert(word)
+
+    sorted_words: list[str] = []
+
+    def traverse(tree: RadixTree | None) -> None:
+        if tree is None:
+            return
+        if tree.is_terminal():
+            for n_times in range(tree.full_word_count):
+                sorted_words.append(tree.full_word)
+        for char in range(ord(RadixTree.TERMINAL_CHAR), ord(RadixTree.TERMINAL_CHAR) + 26 + 1):
+            traverse(tree.children.get(chr(char), None))
+
+    traverse(radix_tree)
+    return sorted_words
+
+
 if __name__ == '__main__':
     print(radix_sort_lsd([1, 124, 35, 4]))
     print(radix_sort_msd([1, 124, 35, 4]))
     print(radix_sort_msd_using_trie(["leef", "leetcode", "leef", "leet", "michael", "leave", "alike"]))
+    print(radix_sort_msd_using_radix_tree(["leef", "leetcode", "leef", "leet", "michael", "leave", "alike"]))
