@@ -95,6 +95,10 @@ class SuffixArray:
         return sorted(self.suffix_start_index_array[lower_boundary: upper_boundary])
 
 
+# https://www.youtube.com/playlist?list=PLDV1Zeh2NRsCQ_Educ7GCNs3mvzpXhHW5
+# https://www.youtube.com/watch?v=IzMxbboPcqQ&list=PLM_KIlU0WoXmkV4QB1Dg8PtJaHTdWHwRS&index=72
+
+
 if __name__ == '__main__':
 
     suffix_array = SuffixArray("mississippi")

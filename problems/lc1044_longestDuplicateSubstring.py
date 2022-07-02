@@ -2,6 +2,9 @@ from basics.data_structure.SuffixArray import SuffixArray
 
 
 class Solution:
+
+    # naive 的做法是把所有的子串都放到字典{substring: count}里，然后遍历出来
+
     def longestDupSubstring(self, s: str) -> str:
         suffix_array = SuffixArray(s)
 
