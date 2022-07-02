@@ -22,7 +22,7 @@ class RadixTree:
         self.full_word: str | None = None  # 仅当是叶子节点时有意义
         self.full_word_count: int = 0  # 仅当是叶子节点时有意义
         self.full_word_attachment: Any = None  # 仅当是叶子节点时有意义
-        self.children: dict[Char, RadixTree | None] = {}  # maps characters to nodes
+        self.children: dict[Char, RadixTree] = {}  # maps characters to nodes
 
     def is_terminal(self) -> int:
         # if self is terminal, assert len(self.children) == 0 and self is not the root

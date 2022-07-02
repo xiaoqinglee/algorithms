@@ -4,7 +4,7 @@ from basics.data_structure.RadixTree import RadixTree
 class SuffixTree:
     def __init__(self, word: str):
         self.radix_tree = RadixTree()
-        for suffix_starting_index in range(len(word)-1, -1, -1):
+        for suffix_starting_index in range(len(word), -1, -1):  # 包含末尾的空串后缀
             self.radix_tree.insert(word=word[suffix_starting_index:], word_attachment=suffix_starting_index)
 
     def ends_with(self, suffix: str) -> bool:
