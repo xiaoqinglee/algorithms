@@ -1,6 +1,6 @@
 package LinkedList
 
-import . "github.com/xiaoqinglee/algorithm/pkg"
+import . "github.com/xiaoqinglee/algorithms/pkg"
 
 func ReverseLinkedList(head *ListNode) *ListNode {
 	if head == nil {

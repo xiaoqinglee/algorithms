@@ -1,7 +1,7 @@
 package LinkedList
 
 import (
-	. "github.com/xiaoqinglee/algorithm/pkg"
+	. "github.com/xiaoqinglee/algorithms/pkg"
 )
 
 func AddTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {

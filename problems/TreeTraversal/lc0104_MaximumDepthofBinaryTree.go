@@ -1,6 +1,6 @@
 package problems
 
-import "github.com/xiaoqinglee/algorithm/pkg"
+import "github.com/xiaoqinglee/algorithms/pkg"
 
 /**
  * Definition for a binary tree node.

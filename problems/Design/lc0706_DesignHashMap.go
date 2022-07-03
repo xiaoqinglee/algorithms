@@ -1,7 +1,7 @@
 package Design
 
 import (
-	"github.com/xiaoqinglee/algorithm/basics/data_structure"
+	"github.com/xiaoqinglee/algorithms/basics/data_structure"
 	"strconv"
 )
 

@@ -1,7 +1,7 @@
 package problems
 
 import (
-	"github.com/xiaoqinglee/algorithm/pkg"
+	"github.com/xiaoqinglee/algorithms/pkg"
 	"math"
 )
 

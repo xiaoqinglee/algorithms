@@ -1,6 +1,6 @@
 package LinkedList
 
-import "github.com/xiaoqinglee/algorithm/pkg"
+import "github.com/xiaoqinglee/algorithms/pkg"
 
 func RemoveNthFromEnd(head *pkg.ListNode, n int) *pkg.ListNode {
 	if head == nil || n <= 0 {

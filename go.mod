@@ -1,4 +1,4 @@
-module github.com/xiaoqinglee/algorithm
+module github.com/xiaoqinglee/algorithms
 
 go 1.18
 

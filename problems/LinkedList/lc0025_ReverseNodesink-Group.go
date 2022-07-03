@@ -1,6 +1,6 @@
 package LinkedList
 
-import "github.com/xiaoqinglee/algorithm/pkg"
+import "github.com/xiaoqinglee/algorithms/pkg"
 
 /**
  * Definition for singly-linked list.
