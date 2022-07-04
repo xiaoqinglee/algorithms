@@ -39,8 +39,8 @@ class Solution:
 
         adj_vs: dict[int, list[int]] = {}
         visited: dict[int, bool] = {}
-        path_length: dict[int, int] = {}
-        prev_v: dict[int, int] = {}
+        length_of_shortest_path: dict[int, int] = {}
+        prev_v_on_shortest_path: dict[int, int] = {}
 
         for v in range(n):
             visited[v] = False
@@ -66,8 +66,8 @@ class Solution:
                     continue
                 print("visit v", v)
                 visited[v] = True
-                path_length[v] = length
-                prev_v[v] = prev
+                length_of_shortest_path[v] = length
+                prev_v_on_shortest_path[v] = prev
                 for adj_v in adj_vs.get(v, []):  # 不能在此处判断visited, 因为判断后仍然会让一个visited==False的node入队两次
                     v_pairs.append((adj_v, v))
 
@@ -76,13 +76,13 @@ class Solution:
 
         if visited[target]:
             print("存在可行解.")
-            print("从起点到终点的 length:", path_length[target])
+            print("从起点到终点的 length:", length_of_shortest_path[target])
 
             nodes_on_path: list[int] = []
             node = target
             while node != start:
                 nodes_on_path.append(node)
-                node = prev_v[node]
+                node = prev_v_on_shortest_path[node]
             nodes_on_path.append(node)
             nodes_on_path.reverse()
             print("从起点到终点的路径:", nodes_on_path)
