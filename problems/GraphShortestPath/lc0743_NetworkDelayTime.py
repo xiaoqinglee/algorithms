@@ -4,7 +4,7 @@ from pprint import pprint
 class Solution:
     def networkDelayTime(self, times: list[tuple[int, int, int]], n: int, k: int) -> int:
 
-        # 有权重的有向无环图, 且权重无负数, 的单源最短路径问题, 使用迪杰斯特拉算法
+        # 权重非负的有向无环或有环图的单源最短路径问题, 使用 Dijkstra 算法
 
         # 本题目v的标号从1开始
         time_matrix: list[list[int | float]] = [[float("inf")] * (n + 1) for i in range(n + 1)]
@@ -34,6 +34,8 @@ class Solution:
 
             for adj_v, time in enumerate(time_matrix[this_v]):
                 if adj_v == 0:  # v的标号不存在
+                    continue
+                if adj_v in solved_vs:  # Dijkstra 可以用于有环图 https://www.zhihu.com/question/61830552
                     continue
                 if time == float("inf"):  # this_v -> adj_v 的 edge 不存在
                     continue
