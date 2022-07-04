@@ -1,30 +1,29 @@
 from math import sqrt
-
 from basics.data_structure.UnionFind import UnionFind
 
 
+Point = tuple[int, int]
+
+
 class Solution:
-    def minCostConnectPoints(self, points: list[tuple[int, int]]) -> int:
+    def minCostConnectPoints(self, points: list[Point]) -> int:
 
         distance_sum: int = 0
         points = [tuple(p) for p in points]
         sets: UnionFind = UnionFind(from_vertexes=points)
 
-        distance_to_point_pairs: dict[int, list[tuple[tuple[int, int], tuple[int, int]]]] = {}
+        # distance_and_edge_list 的元素是 tuple[distance, tuple[point1, point2]]
+        distance_and_edge_list: list[tuple[int, tuple[Point, Point]]] = []
 
         for i, (p1_x, p1_y) in enumerate(points):
             for p2_x, p2_y in points[i+1:]:
-                distance_to_point_pairs.setdefault(abs(p1_x - p2_x) + abs(p1_y - p2_y),
-                                                   []).append(((p1_x, p1_y), (p2_x, p2_y)))
+                distance_and_edge_list.append((abs(p1_x - p2_x) + abs(p1_y - p2_y), ((p1_x, p1_y), (p2_x, p2_y))))
 
-        # dict 已经具备OrderedDict的key写入与读出顺序一致的特性
-        # sorted(dict_a) == sorted([x for x in dict_a])
-        distance_to_point_pairs = {k: distance_to_point_pairs[k] for k in sorted(distance_to_point_pairs)}
-        for distance, point_pairs in distance_to_point_pairs.items():
-            for p1, p2 in point_pairs:
-                if sets.belongs_to_same_set(p1, p2):
-                    continue
-                sets.union(p1, p2)
-                distance_sum += distance
+        distance_and_edge_list.sort(key=lambda x: x[0])
+        for distance, (p1, p2) in distance_and_edge_list:
+            if sets.belongs_to_same_set(p1, p2):
+                continue
+            sets.union(p1, p2)
+            distance_sum += distance
 
         return distance_sum
