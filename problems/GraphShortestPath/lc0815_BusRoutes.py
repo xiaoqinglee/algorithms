@@ -40,8 +40,7 @@ class Solution:
         pprint("车站对->共享车站:")
         pprint(bus_pair_to_shared_stops)
 
-        for bus in range(n_buses):
-            shortest_path_between_buses[bus][bus] = 0
+        # 如果 bus1 == bus2, 我们要排除自环的干扰, 我们让 shortest_path_between_buses[bus1][bus2] == float("inf") 不去管他
         for (bus1, bus2), shared_stops in bus_pair_to_shared_stops.items():
             shortest_path_between_buses[bus1][bus2] = 1
         pprint("shortest_path初始状态:")
@@ -70,15 +69,21 @@ class Solution:
         all_buses: list[BusId] = []
         for bus1 in stop_to_buses[source]:
             for bus2 in stop_to_buses[target]:
+                if bus1 == bus2:
+                    shortest_path = 0
+                    all_buses = [bus1]
+                    break
                 if shortest_path_between_buses[bus1][bus2] < shortest_path:
                     shortest_path = shortest_path_between_buses[bus1][bus2]
                     middle_buses = middle_buses_in_shortest_path[bus1][bus2]
                     all_buses = [bus1] + middle_buses + [bus2]
+            if shortest_path == 0:
+                break
 
         if shortest_path != float("inf"):
             if shortest_path == 0:
                 pprint(f"一共乘坐1辆公交车:")
-                pprint(all_buses[:-1])
+                pprint(all_buses)
 
                 pprint("上车车站/换乘车站/下车车站分别为:")
                 pprint([[source], [target]])

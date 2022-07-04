@@ -6,17 +6,14 @@ class Solution:
         # v1 != v2,
         # 从v1到v2的最短路径长度是reach_cost_min[v1][v2]的值, 是len(reach_via[v1][v2]) + 1.
         # len(reach_via[v1][v2]) + 2 是包含起点和终点路径上所有的节点数.
-        reach_cost_min: list[list[float]] = [[float("inf")] * n for v in range(n)]
+        reach_cost_min: list[list[int | float]] = [[float("inf")] * n for v in range(n)]
         reach_via: list[list[list[int]]] = [[[] for v in range(n)] for v in range(n)]  # 不含起点和终点
 
-        for v1 in range(n):
-            for v2 in range(n):
-                if v1 == v2:
-                    reach_cost_min[v1][v2] = 0.0
-
         for edge in graph:
-            v1, v2 = edge  # 有向图 存在自环
-            reach_cost_min[v1][v2] = min(reach_cost_min[v1][v2], 1.0)
+            v1, v2 = edge
+            if v1 == v2:  # 有向图存在平行边存在自环, 我们要排除这些干扰, 将图转换为没有平行边的有向无环图
+                continue
+            reach_cost_min[v1][v2] = min(reach_cost_min[v1][v2], 1)
 
         for v1 in range(n):
             for v2 in range(n):
