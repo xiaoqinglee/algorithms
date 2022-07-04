@@ -98,16 +98,12 @@ class LFUCache:
         self.__key_to_node: dict[int, LFUDoublyLinkedListNode] = {}
         self.__frequency_to_node_list: dict[int, LFUDoublyLinkedListNode] = {}  # key从1开始
 
-    def __min_frequency(self) -> int:  # 没有元素的时候返回0, 有元素的时候返回值大于等于1
+    def __min_frequency(self) -> int:  # 没有元素的时候返回值等于0, 有元素的时候返回值大于等于1
         if len(self.__key_to_node) == 0:
             return 0
         for freq in range(1, len(self.__frequency_to_node_list) + 1):
             if self.__frequency_to_node_list[freq].next != self.__frequency_to_node_list[freq]:
                 return freq
-
-    def __max_frequency(self) -> int:
-        # self.__frequency_to_node_list 是一个元素一个元素地增长的, key是从1开始的连续的整数
-        return len(self.__frequency_to_node_list)
 
     def __init_node_list_for_specific_frequency(self, freq: int) -> None:
         list_dummy_head: LFUDoublyLinkedListNode \
