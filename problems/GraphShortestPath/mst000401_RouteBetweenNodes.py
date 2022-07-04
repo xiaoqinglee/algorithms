@@ -1,5 +1,5 @@
 class Solution:
-    def findWhetherExistsPath(self, n: int, graph: list[list[int]], start: int, target: int) -> bool:
+    def findWhetherExistsPath2(self, n: int, graph: list[list[int]], start: int, target: int) -> bool:
         if start == target:
             return True
 
@@ -29,6 +29,65 @@ class Solution:
         # pprint.pprint(reach_via[start][target])
 
         return reach_cost_min[start][target] != float("inf")
+
+    def findWhetherExistsPath(self, n: int, graph: list[list[int]], start: int, target: int) -> bool:
+        if start == target:
+            return True
+
+        # 无权重的有向无环图的单源最短路径问题可以使用广度优先遍历,
+        # 如果是确定起点终点的最短路径问题那么我们可以在找到终点后提前停下来
+
+        adj_vs: dict[int, list[int]] = {}
+        visited: dict[int, bool] = {}
+        path_length: dict[int, int] = {}
+        prev_v: dict[int, int] = {}
+
+        for v in range(n):
+            visited[v] = False
+
+        for edge in graph:
+            v1, v2 = edge
+            if v1 == v2:  # 有向图存在平行边存在自环, 我们要排除这些干扰, 将图转换为没有平行边的有向无环图
+                continue
+            adj_vs.setdefault(v1, []).append(v2)
+
+        from collections import deque
+        # v_pairs 的元素是 tuple[v, prev]
+        v_pairs: deque[tuple[int, int]] = deque()
+        v_pairs.append((start, start))
+
+        length: int = 0
+        n_vs_in_this_round: int = 1
+        while len(v_pairs) > 0:
+
+            for i in range(n_vs_in_this_round):
+                v, prev = v_pairs.popleft()
+                if visited[v] is True:  # 只能在这里判断visited
+                    continue
+                print("visit v", v)
+                visited[v] = True
+                path_length[v] = length
+                prev_v[v] = prev
+                for adj_v in adj_vs.get(v, []):  # 不能在此处判断visited, 因为判断后仍然会让一个visited==False的node入队两次
+                    v_pairs.append((adj_v, v))
+
+            length += 1
+            n_vs_in_this_round = len(v_pairs)
+
+        if visited[target]:
+            print("存在可行解.")
+            print("从起点到终点的 length:", path_length[target])
+
+            nodes_on_path: list[int] = []
+            node = target
+            while node != start:
+                nodes_on_path.append(node)
+                node = prev_v[node]
+            nodes_on_path.append(node)
+            nodes_on_path.reverse()
+            print("从起点到终点的路径:", nodes_on_path)
+
+        return visited[target]
 
 
 # Floyd-Warshall algorithm 是解决任意两点间的最短路径的一种算法, 可以正确处理有向图或负权（但不可存在负权回路）的最短路径问题.
