@@ -11,9 +11,9 @@ class Solution:
         reach_cost_min: list[list[int | float]] = [[float("inf")] * n for v in range(n)]
         reach_via: list[list[list[int]]] = [[[] for v in range(n)] for v in range(n)]  # 不含起点和终点
 
-        for edge in graph:
+        for edge in graph:  # 存在平行边和自环, 我们要排除这些干扰
             v1, v2 = edge
-            if v1 == v2:  # 有向图存在平行边存在自环, 我们要排除这些干扰, 将图转换为没有平行边的有向无环图
+            if v1 == v2:
                 continue
             reach_cost_min[v1][v2] = min(reach_cost_min[v1][v2], 1)
 
@@ -38,10 +38,10 @@ class Solution:
 
         # BFS 算法, 时间复杂度E+V
 
-        # 无权重的有向无环图的单源最短路径问题可以使用广度优先遍历,
+        # 无权重的有向无环或有环图的单源最短路径问题可以使用广度优先遍历,
         # 如果是确定起点终点的最短路径问题那么我们可以在找到终点后提前停下来
 
-        adj_vs: dict[int, list[int]] = {}
+        adj_vs: dict[int, set[int]] = {}
         visited: dict[int, bool] = {}
         length_of_shortest_path: dict[int, int] = {}
         prev_v_on_shortest_path: dict[int, int] = {}
@@ -49,11 +49,11 @@ class Solution:
         for v in range(n):
             visited[v] = False
 
-        for edge in graph:
+        for edge in graph:  # 存在平行边和自环, 我们要排除这些干扰
             v1, v2 = edge
-            if v1 == v2:  # 有向图存在平行边存在自环, 我们要排除这些干扰, 将图转换为没有平行边的有向无环图
+            if v1 == v2:
                 continue
-            adj_vs.setdefault(v1, []).append(v2)
+            adj_vs.setdefault(v1, set()).add(v2)
 
         from collections import deque
         # v_pairs 的元素是 tuple[v, prev]
@@ -72,7 +72,7 @@ class Solution:
                 visited[v] = True
                 length_of_shortest_path[v] = length
                 prev_v_on_shortest_path[v] = prev
-                for adj_v in adj_vs.get(v, []):  # 不能在此处判断visited, 因为判断后仍然会让一个visited==False的node入队两次
+                for adj_v in adj_vs.get(v, set()):  # 不能在此处判断visited, 因为判断后仍然会让一个visited==False的node入队两次
                     v_pairs.append((adj_v, v))
 
             length += 1
