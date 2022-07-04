@@ -3,7 +3,7 @@ class Solution:
         if start == target:
             return True
 
-        # Floyd 算法
+        # Floyd 算法, 时间复杂度V^3
 
         # v1 != v2,
         # 从v1到v2的最短路径长度是reach_cost_min[v1][v2]的值, 是len(reach_via[v1][v2]) + 1.
@@ -36,7 +36,7 @@ class Solution:
         if start == target:
             return True
 
-        # BFS 算法
+        # BFS 算法, 时间复杂度E+V
 
         # 无权重的有向无环图的单源最短路径问题可以使用广度优先遍历,
         # 如果是确定起点终点的最短路径问题那么我们可以在找到终点后提前停下来
@@ -95,7 +95,6 @@ class Solution:
 
 
 # Floyd-Warshall algorithm 是解决任意两点间的最短路径的一种算法, 可以正确处理有向图或负权（但不可存在负权回路）的最短路径问题.
-# 复杂度 N^3 (N是节点数目)
 #
 #
 # https://zh.wikipedia.org/wiki/最短路问题

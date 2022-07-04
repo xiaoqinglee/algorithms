@@ -4,7 +4,7 @@ from pprint import pprint
 class Solution:
     def networkDelayTime(self, times: list[tuple[int, int, int]], n: int, k: int) -> int:
 
-        # 权重非负的有向无环或有环图的单源最短路径问题, 使用 Dijkstra 算法
+        # 权重非负的有向无环或有环图的单源最短路径问题, 使用 Dijkstra 算法, 时间复杂度V^2
 
         # 本题目v的标号从1开始
         time_matrix: list[list[int | float]] = [[float("inf")] * (n + 1) for i in range(n + 1)]

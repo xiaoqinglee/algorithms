@@ -8,7 +8,7 @@ Point = tuple[int, int]
 class Solution:
     def minCostConnectPoints2(self, points: list[Point]) -> int:
 
-        # Kruskal 算法
+        # Kruskal 算法, 时间复杂度ElogV
 
         distance_sum: int = 0
         points = [tuple(p) for p in points]
@@ -32,7 +32,7 @@ class Solution:
 
     def minCostConnectPoints(self, points: list[Point]) -> int:
 
-        # Prim 算法
+        # Prim 算法, 时间复杂度 V^2
 
         distance_sum: int = 0
 
