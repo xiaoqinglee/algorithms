@@ -1,7 +1,7 @@
 class Solution:
     def findCircleNum(self, isConnected: list[list[int]]) -> int:
         # 根据邻接矩阵计算连通分量
-        # 无向图的邻接表的右上角（不含对角线有意义），i < j
+        # 无向图的邻接表的右上角（不含对角线）有意义，i < j
 
         city_to_city_is_visited: dict[int, bool] = {}
         for city in range(len(isConnected)):
