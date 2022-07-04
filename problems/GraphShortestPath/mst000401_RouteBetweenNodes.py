@@ -3,6 +3,8 @@ class Solution:
         if start == target:
             return True
 
+        # Floyd 算法
+
         # v1 != v2,
         # 从v1到v2的最短路径长度是reach_cost_min[v1][v2]的值, 是len(reach_via[v1][v2]) + 1.
         # len(reach_via[v1][v2]) + 2 是包含起点和终点路径上所有的节点数.
@@ -33,6 +35,8 @@ class Solution:
     def findWhetherExistsPath(self, n: int, graph: list[list[int]], start: int, target: int) -> bool:
         if start == target:
             return True
+
+        # BFS 算法
 
         # 无权重的有向无环图的单源最短路径问题可以使用广度优先遍历,
         # 如果是确定起点终点的最短路径问题那么我们可以在找到终点后提前停下来

@@ -32,7 +32,7 @@ class Solution:
                 return -1
             solved_vs.add(this_v)
 
-            for adj_v, time in enumerate(time_matrix[this_v]):
+            for adj_v, time in enumerate(time_matrix[this_v]):  # 松弛所有和this_v邻接的点
                 if adj_v == 0:  # v的标号不存在
                     continue
                 if adj_v in solved_vs:  # Dijkstra 可以用于有环图 https://www.zhihu.com/question/61830552
