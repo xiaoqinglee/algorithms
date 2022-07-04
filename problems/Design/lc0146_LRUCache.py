@@ -80,8 +80,6 @@ class LFUDoublyLinkedListNode:
         self.key: int = key
         self.val: int = val
         self.frequency: int = freq
-        self.is_dummy_head: bool = False
-        self.is_dummy_tail: bool = False
         self.prev: LFUDoublyLinkedListNode = prev
         self.next: LFUDoublyLinkedListNode = next
 
@@ -98,87 +96,82 @@ class LFUCache:
     def __init__(self, capacity: int):
         self.__capacity = capacity
         self.__key_to_node: dict[int, LFUDoublyLinkedListNode] = {}
-        self.__min_frequency: int | None = None
-        self.__frequency_to_node_list: list[LFUDoublyLinkedListNode | None] = [None]  # (len == max_frequency + 1)
+        self.__frequency_to_node_list: dict[int, LFUDoublyLinkedListNode] = {}  # key从1开始
 
-    def __max_frequency(self) -> int | None:
-        return len(self.__frequency_to_node_list) - 1 if len(self.__key_to_node) > 0 else None
+    def __min_frequency(self) -> int:  # 没有元素的时候返回0, 有元素的时候返回值大于等于1
+        if len(self.__key_to_node) == 0:
+            return 0
+        for freq in range(1, len(self.__frequency_to_node_list) + 1):
+            if self.__frequency_to_node_list[freq].next != self.__frequency_to_node_list[freq]:
+                return freq
+
+    def __max_frequency(self) -> int:
+        # self.__frequency_to_node_list 是一个元素一个元素地增长的, key是从1开始的连续的整数
+        return len(self.__frequency_to_node_list)
+
+    def __init_node_list_for_specific_frequency(self, freq: int) -> None:
+        list_dummy_head: LFUDoublyLinkedListNode \
+            = LFUDoublyLinkedListNode(key=0, val=0, freq=freq, prev=None, next=None)
+        list_dummy_tail = list_dummy_head
+        list_dummy_head.next = list_dummy_tail
+        list_dummy_tail.prev = list_dummy_head
+        self.__frequency_to_node_list[freq] = list_dummy_head
 
     def __len__(self) -> int:
         return len(self.__key_to_node)
 
-    def __grow_frequency_list(self):
-        list_dummy_head: LFUDoublyLinkedListNode = LFUDoublyLinkedListNode(key=0, val=0, freq=0, prev=None, next=None)
-        list_dummy_head.is_dummy_head = True
-        list_dummy_tail: LFUDoublyLinkedListNode = LFUDoublyLinkedListNode(key=0, val=0, freq=0, prev=None, next=None)
-        list_dummy_tail.is_dummy_tail = True
-        list_dummy_head.prev = list_dummy_tail
-
-        list_dummy_head.next = list_dummy_tail
-        list_dummy_tail.prev = list_dummy_head
-        self.__frequency_to_node_list.append(list_dummy_head)
-
-    def __lookup_existing_node_and_update_list(self, key: int) -> LFUDoublyLinkedListNode | None:
+    def __lookup_node_and_update_list(self, key: int) -> LFUDoublyLinkedListNode | None:
         if key not in self.__key_to_node:
             return None
         node = self.__key_to_node[key]
         # 此时有效元素个数大于等于1
         freq: int = node.frequency
-        self.__pop_existing_node_from_list(node)
-        if freq+1 > self.__max_frequency():
-            self.__grow_frequency_list()
-        self.__insert_existing_node_at_front(self.__frequency_to_node_list[freq+1], node)
-        node.frequency += 1
-        if freq == self.__min_frequency and self.__frequency_to_node_list[freq].next.is_dummy_tail:
-            self.__min_frequency += 1
+        self.__pop_node_from_list(node)
+        if freq+1 not in self.__frequency_to_node_list:
+            self.__init_node_list_for_specific_frequency(freq + 1)
+        self.__insert_node_at_front(self.__frequency_to_node_list[freq + 1], node)
+        node.frequency = freq + 1
         return node
 
-    def __pop_existing_node_from_list(self, node: LFUDoublyLinkedListNode) -> None:
+    @staticmethod
+    def __pop_node_from_list(node: LFUDoublyLinkedListNode) -> None:
         node.prev.next = node.next
         node.next.prev = node.prev
-        # 如果不写，那么仍然存在引用，垃圾永远不会被回收
+        # 可以不写, node是否被gc取决于别人引用它的次数而不是它引用别人的次数.
         node.prev = None
         node.next = None
 
-    def __insert_existing_node_at_front(self, dummy_head: LFUDoublyLinkedListNode, node: LFUDoublyLinkedListNode) -> None:
+    @staticmethod
+    def __insert_node_at_front(dummy_head: LFUDoublyLinkedListNode, node: LFUDoublyLinkedListNode) -> None:
         node.prev = dummy_head
         node.next = dummy_head.next
         dummy_head.next.prev = node
         dummy_head.next = node
 
     def get(self, key: int) -> int:
-        node = self.__lookup_existing_node_and_update_list(key)
+        if self.__capacity == 0:
+            return -1
+        node = self.__lookup_node_and_update_list(key)
         return node.val if node is not None else -1
 
     def put(self, key: int, value: int) -> None:
-        node = self.__lookup_existing_node_and_update_list(key)
+        if self.__capacity == 0:
+            return
+        node = self.__lookup_node_and_update_list(key)
         if node is not None:  # key in hash
             node.val = value
-        else:  # key not in hash
-            if self.__capacity == 0:
-                return
+        else:  # key not in hash and assert self.__capacity > 0
             if len(self.__key_to_node) == self.__capacity:
-                node_to_pop = self.__frequency_to_node_list[self.__min_frequency].prev.prev
+                node_to_pop = self.__frequency_to_node_list[self.__min_frequency()].prev
+                self.__pop_node_from_list(node_to_pop)
                 self.__key_to_node.pop(node_to_pop.key)
-                self.__pop_existing_node_from_list(node_to_pop)
-                if len(self.__key_to_node) > 0:
-                    while self.__frequency_to_node_list[self.__min_frequency].next.is_dummy_tail:
-                        self.__min_frequency += 1
-                else:
-                    self.__min_frequency = None
-                    self.__frequency_to_node_list = [None]
 
             freq: int = 1
             node: LFUDoublyLinkedListNode = LFUDoublyLinkedListNode(key=key, val=value, freq=freq, prev=None, next=None)
-
-            if len(self.__key_to_node) == 0:
-                self.__min_frequency = freq
-                self.__grow_frequency_list()
-            else:
-                if freq < self.__min_frequency:
-                    self.__min_frequency = freq
+            if freq not in self.__frequency_to_node_list:
+                self.__init_node_list_for_specific_frequency(freq)
+            self.__insert_node_at_front(self.__frequency_to_node_list[freq], node)
             self.__key_to_node[key] = node
-            self.__insert_existing_node_at_front(self.__frequency_to_node_list[freq], node)
 
 
 # Your LFUCache object will be instantiated and called as such:
