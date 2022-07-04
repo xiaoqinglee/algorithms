@@ -20,52 +20,53 @@ class LRUCache:
         self.__capacity = capacity
         self.__key_to_node: dict[int, LRUDoublyLinkedListNode] = {}
         self.__list_dummy_head: LRUDoublyLinkedListNode = LRUDoublyLinkedListNode(key=0, val=0, prev=None, next=None)
-        self.__list_dummy_tail: LRUDoublyLinkedListNode = LRUDoublyLinkedListNode(key=0, val=0, prev=None, next=None)
+        self.__list_dummy_tail: LRUDoublyLinkedListNode = self.__list_dummy_head
         self.__list_dummy_head.next = self.__list_dummy_tail
         self.__list_dummy_tail.prev = self.__list_dummy_head
 
     def __len__(self) -> int:
         return len(self.__key_to_node)
 
-    def __lookup_existing_node_and_update_list(self, key: int) -> LRUDoublyLinkedListNode | None:
+    def __lookup_node_and_update_list(self, key: int) -> LRUDoublyLinkedListNode | None:
         if key not in self.__key_to_node:
             return None
         node = self.__key_to_node[key]
         # 此时有效元素个数大于等于1
         if self.__list_dummy_head.next != node:  # 需要移动node
-            self.__pop_existing_node_from_list(node)
-            self.__insert_existing_node_at_front(node)
+            self.__pop_node_from_list(node)
+            self.__insert_node_at_front(node)
         return node
 
-    def __pop_existing_node_from_list(self, node: LRUDoublyLinkedListNode) -> None:
+    @staticmethod
+    def __pop_node_from_list(node: LRUDoublyLinkedListNode) -> None:
         node.prev.next = node.next
         node.next.prev = node.prev
-        # 如果不写，那么仍然存在引用，垃圾永远不会被回收
+        # 可以不写, node是否被gc取决于别人引用它的次数而不是它引用别人的次数.
         node.prev = None
         node.next = None
 
-    def __insert_existing_node_at_front(self, node: LRUDoublyLinkedListNode) -> None:
+    def __insert_node_at_front(self, node: LRUDoublyLinkedListNode) -> None:
         node.prev = self.__list_dummy_head
         node.next = self.__list_dummy_head.next
         self.__list_dummy_head.next.prev = node
         self.__list_dummy_head.next = node
 
     def get(self, key: int) -> int:
-        node = self.__lookup_existing_node_and_update_list(key)
+        node = self.__lookup_node_and_update_list(key)
         return node.val if node is not None else -1
 
     def put(self, key: int, value: int) -> None:
-        node = self.__lookup_existing_node_and_update_list(key)
+        node = self.__lookup_node_and_update_list(key)
         if node is not None:  # key in hash
             node.val = value
         else:  # key not in hash
-            if len(self.__key_to_node) == self.__capacity:
+            if len(self.__key_to_node) == self.__capacity:  # assert self.__capacity >= 1
                 node_to_pop = self.__list_dummy_tail.prev
                 self.__key_to_node.pop(node_to_pop.key)
-                self.__pop_existing_node_from_list(node_to_pop)
+                self.__pop_node_from_list(node_to_pop)
             node: LRUDoublyLinkedListNode = LRUDoublyLinkedListNode(key=key, val=value, prev=None, next=None)
             self.__key_to_node[key] = node
-            self.__insert_existing_node_at_front(node)
+            self.__insert_node_at_front(node)
 
 
 # Your LRUCache object will be instantiated and called as such:
