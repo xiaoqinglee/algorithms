@@ -66,13 +66,17 @@ class Solution:
 
             for i in range(n_vs_in_this_round):
                 v, prev = v_pairs.popleft()
-                if visited[v] is True:  # 只能在这里判断visited
+                # 仅在此处判断visited
+                # [这里必须要判断, 因为不管另一处位置有没有判断, 此处都能遇到visited==True的节点]
+                if visited[v] is True:
                     continue
                 print("visit v", v)
                 visited[v] = True
                 length_of_shortest_path[v] = length
                 prev_v_on_shortest_path[v] = prev
-                for adj_v in adj_vs.get(v, set()):  # 不能在此处判断visited, 因为这样做后仍然可能会让一个visited==False的node入队两次
+                # 不能只在此处判断visited, 因为这样做后仍然可能会让同一个visited==False的node入队两次
+                # [这里判断不判断visited都行, 因为这里不管判断不判断都会让真正访问时遇到visited==True的节点]
+                for adj_v in adj_vs.get(v, set()):
                     v_pairs.append((adj_v, v))
 
             length += 1

@@ -1,6 +1,8 @@
 class Solution:
     def criticalConnections2(self, n: int, connections: list[tuple[int, int]]) -> list[tuple[int, int]]:
 
+        # DFS 算法
+
         # 邻接表
         adj: list[list[int]] = [[] for _ in range(n)]
         for edge in connections:
@@ -57,6 +59,8 @@ class Solution:
 
     def criticalConnections(self, n: int, connections: list[tuple[int, int]]) -> list[tuple[int, int]]:
 
+        # DFS 算法
+
         # 邻接表
         adj: list[list[int]] = [[] for _ in range(n)]
         for edge in connections:
@@ -71,7 +75,9 @@ class Solution:
         low: list[int | None] = [None for _ in range(n)]
 
         def traverse(v: int, level: int, parent_v: int) -> bool:  # 进行了有效访问返回True否则返回False
-            if visited[v] is True:  # 仅在此判断visited
+            # 仅在此判断visited
+            # [这里必须要判断, 因为不管另一处位置有没有判断, 此处都能遇到visited==True的节点]
+            if visited[v] is True:
                 return False
 
             visited[v] = True
@@ -86,6 +92,7 @@ class Solution:
             # 不在此处筛选visited,
             # 把所有邻接的节点(包括child节点, grandchild节点, parent节点和grandparent节点)全部拿去遍历,
             # 只有traverse()返回true的才是深度优先搜索树上的child节点.
+            # [这里判断不判断visited都行, 因为这里不管判断不判断都会让 traverse() 遇到visited==True的节点]
             adj_vs = adj[v]
 
             # child节点
