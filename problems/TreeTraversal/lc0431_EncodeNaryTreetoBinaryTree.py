@@ -2,16 +2,16 @@ from pkg.data_structure import TreeNode
 
 
 # N 叉树的 node
-class Node:
+class NaryTreeNode:
     def __init__(self, val, children: list = None):
         self.val: int = val
-        self.children: list[Node] = children or []
+        self.children: list[NaryTreeNode] = children or []
 
 
 class Codec:
 
     # Encodes an n-ary tree to a binary tree
-    def encode(self, root: Node | None) -> TreeNode | None:
+    def encode(self, root: NaryTreeNode | None) -> TreeNode | None:
         if root is None:
             return None
         binary_tree_root = TreeNode(val=root.val)
@@ -19,17 +19,17 @@ class Codec:
         return binary_tree_root
 
     # Decodes your binary tree to an n-ary tree
-    def decode(self, root: TreeNode | None) -> Node | None:
+    def decode(self, root: TreeNode | None) -> NaryTreeNode | None:
         if root is None:
             return None
         if root.right is not None:
             raise "解码后会变成森林而不是1棵N叉树"
-        nary_tree_root = Node(val=root.val)
+        nary_tree_root = NaryTreeNode(val=root.val)
         nary_tree_root.children = self.decode_to_forest(root.left)
         return nary_tree_root
 
     # Encodes an n-ary tree forest to a binary tree
-    def encode_from_forest(self, roots: list[Node | None]) -> TreeNode | None:
+    def encode_from_forest(self, roots: list[NaryTreeNode | None]) -> TreeNode | None:
         roots = [tree for tree in roots if tree is not None]  # 编码再解码森林后,原顶层森林中的空树会消失
         if len(roots) == 0:
             return None
@@ -39,10 +39,10 @@ class Codec:
         return binary_tree_roots[0]
 
     # Decodes your binary tree to an n-ary tree forest
-    def decode_to_forest(self, root: TreeNode | None) -> list[Node]:
+    def decode_to_forest(self, root: TreeNode | None) -> list[NaryTreeNode]:
         if root is None:
             return []
-        siblings: list[Node] = []
+        siblings: list[NaryTreeNode] = []
         pointer: TreeNode | None = root
         while pointer is not None:
             pointer_ = pointer
