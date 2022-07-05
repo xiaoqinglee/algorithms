@@ -72,7 +72,7 @@ class Solution:
                 visited[v] = True
                 length_of_shortest_path[v] = length
                 prev_v_on_shortest_path[v] = prev
-                for adj_v in adj_vs.get(v, set()):  # 不能在此处判断visited, 因为判断后仍然会让一个visited==False的node入队两次
+                for adj_v in adj_vs.get(v, set()):  # 不能在此处判断visited, 因为这样做后仍然可能会让一个visited==False的node入队两次
                     v_pairs.append((adj_v, v))
 
             length += 1
