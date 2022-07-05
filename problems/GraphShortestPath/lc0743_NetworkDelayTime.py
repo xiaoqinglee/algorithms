@@ -16,7 +16,7 @@ class Solution:
         solved_vs: set[int] = set()
 
         shortest_path_from_source[k] = 0
-        prev_v_on_shortest_path[k] = k
+        prev_v_on_shortest_path[k] = -1
 
         for _ in range(n):
 

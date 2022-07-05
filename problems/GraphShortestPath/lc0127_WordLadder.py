@@ -43,8 +43,8 @@ class Solution:
         solved_vs: list[set[int]] = [set(), set()]
         prev_v: list[list[int | None]] = [[None] * len(word_list), [None] * len(word_list)]
 
-        queue[FRONT_TO_BACK].append((0, 0))
-        queue[BACK_TO_FRONT].append((len(word_list)-1, len(word_list)-1))
+        queue[FRONT_TO_BACK].append((0, -1))
+        queue[BACK_TO_FRONT].append((len(word_list)-1, -1))
 
         joining_v: int = None
         direction: int = FRONT_TO_BACK
