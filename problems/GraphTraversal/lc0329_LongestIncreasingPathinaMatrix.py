@@ -58,7 +58,7 @@ class Solution:
             return longest_path_
 
         longest_max: int = -float("inf")
-        longest_max_start_point_ = None
+        longest_max_start_point_: Point = None
         for i in range(len(matrix)):
             for j in range(len(matrix[0])):
                 longest_ = compute_longest_path((i, j))

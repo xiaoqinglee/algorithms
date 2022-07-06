@@ -98,9 +98,6 @@ class Solution:
         return visited[target]
 
 
-# Floyd-Warshall algorithm 是解决任意两点间的最短路径的一种算法, 可以正确处理有向图或负权（但不可存在负权回路）的最短路径问题.
-#
-#
 # https://zh.wikipedia.org/wiki/最短路问题
 # 最短路径问题是图论研究中的一个经典算法问题，旨在寻找图（由结点和路径组成的）中两结点之间的最短路径。算法具体的形式包括：
 #
@@ -120,7 +117,8 @@ class Solution:
 #             source vertex u, you solve this problem also. Moreover, all known
 #             algorithms for this problem have the same worst-case asymptotic
 #             running time as the best single-source algorithms.
-#         如果我们能找到一个有效的 heuristic function, 可以使用 A* 搜索.
+#         如果我们能找到一个有效的 heuristic function, 可以使用 A* 搜索算法高效地寻找近似最短路径.
 #
 #     全局最短路径问题(All-pairs shortest-paths problem)
-#         也叫多源最短路问题，求图中所有的最短路径。适合使用Floyd-Warshall算法。
+#         也叫多源最短路问题，求图中任意两点间的最短路径。
+#         适合使用Floyd-Warshall算法, 它可以正确处理有向图或负权（但不可存在负权回路）的最短路径问题。
