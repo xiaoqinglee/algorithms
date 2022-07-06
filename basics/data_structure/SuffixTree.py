@@ -57,3 +57,7 @@ class SuffixTree:
                 return get_leaf_indexes(child)
             else:  # string1_suffix != "" and string2_suffix != ""
                 return []
+
+
+# https://www.youtube.com/watch?v=VA9m_l6LpwI
+# https://www.youtube.com/watch?v=UrmjCSM7wDw
