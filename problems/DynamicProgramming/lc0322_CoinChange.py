@@ -70,19 +70,20 @@ class Solution:
 #         所有可行方案中物品件数的最小值[0...Inf]，如果不存在可行方案那么f[i][j] == None
 #
 #         for j in [0...W]:
-#             f[1][j] = j // f[1] if j % f[1] == 0 else None
+#             f[1][j] = (j // weight[1]) if j % weight[1] == 0 else None
 #
 #         # 递归过程考虑一种多件物品
-#         f[i][j] = min(f[i−1][j], min( (f[i−1][j−k∗weight[i]] + k) for k in [1...Inf] if j−k∗weight[i] >= 0))
+#         f[i][j] = min(f[i−1][j] + 0, min( (f[i−1][j−k∗weight[i]] + k) for k in [1...Inf] if j−k∗weight[i] >= 0))
 #         #要求参与运算的f[i−1][...]都不为None
 #
 #         建模方法2.
 #         定义 f[j] 为考虑所有种类物品，恰好存放于容量等于 j (i in [0...W]) 的背包，
-#         所有可行方案中物品件数的最小值[0...Inf]，如果不存在可行方案那么f[i][j] == None
+#         所有可行方案中物品件数的最小值[0...Inf]，如果不存在可行方案那么f[j] == None
+#
 #         f[0] = 0
 #
 #         # 递归过程仅仅考虑一件物品
-#         f[j] = min(f[j−weight[i]] + 1) for i in [1...N] if j−weight[i] >= 0  #要求参与运算的f[...]都不为None
+#         f[j] = min( (f[j−weight[i]] + 1) for i in [1...N] if j−weight[i] >= 0)  #要求参与运算的f[...]都不为None
 #
 #
 #     518. 零钱兑换 II
@@ -91,21 +92,22 @@ class Solution:
 # 
 #
 #         定义 f[i][j] 为考虑完前 i (i in [1...N]) 种物品，恰好存放于容量等于 j (i in [0...W]) 的背包，的所有可行方案总数[0...Inf]
+#         如果不存在可行方案那么f[i][j] == 0
 #
 #         for j in [0...W]:
-#             f[1][j] = 1 if j % f[1] == 0 else 0
+#             f[1][j] = 1 if j % weight[1] == 0 else 0
 #
-#         f[i][j] = sum(f[i−1][j], sum( f[i−1][j−k∗weight[i]] for k in [1...Inf] if j−k∗weight[i] >= 0 ))
-#         #要求参与运算的f[i−1][...]都不为None
+#         f[i][j] = sum(f[i−1][j] * 1, sum( (f[i−1][j−k∗weight[i]] * 1) for k in [1...Inf] if j−k∗weight[i] >= 0 ))
 #
 #
 #         另一个建模方法在该求解目标上使用是错误的: （原因: 子问题被重复累加， 考虑问题7元钱，被[3,4]找零的方案总数）
-#         定义 f[j] 为考虑所有种类物品，恰好存放于容量等于 j (i in [0...W]) 的背包，
-#         所有可行方案总数[0...Inf]
+#         定义 f[j] 为考虑所有种类物品，恰好存放于容量等于 j (i in [0...W]) 的背包，所有可行方案总数[0...Inf]
+#         如果不存在可行方案那么f[j] == 0
+#
 #         f[0] = 1
 #
 #         # 递归过程仅仅考虑一件物品
-#         f[j] = sum((f[j−weight[i]] * 1) for i in [1...N] if j−weight[i] >= 0) #要求参与运算的f[...]都不为None
+#         f[j] = sum( (f[j−weight[i]] * 1) for i in [1...N] if j−weight[i] >= 0)
 #
 #
 #
