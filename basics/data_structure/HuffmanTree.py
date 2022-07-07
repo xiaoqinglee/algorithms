@@ -72,7 +72,7 @@ class HuffmanCoding:
         for bit in bits:
             if bit == 0:
                 node = node.left
-            elif bit == 1:
+            else:  # bit == 1
                 node = node.right
             # 判断叶子结点
             if node.char is not None:

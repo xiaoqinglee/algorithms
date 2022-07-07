@@ -29,16 +29,16 @@ class Solution:
                     l2 = l2.next
             if l1 is not None:
                 l3_last_node.next = l1
-            elif l2 is not None:
+            if l2 is not None:
                 l3_last_node.next = l2
             return l3_dummy_head.next
 
-        def merge(left_index: int, right_index: int) -> ListNode | None: # 左右边界都包含
+        def merge(left_index: int, right_index: int) -> ListNode | None:  # 左右边界都包含
             if left_index == right_index:  # 1个元素
                 return lists[left_index]
             elif right_index - left_index == 1:  # 2个元素
                 return merge_two_linked_lists(lists[left_index], lists[right_index])
-            elif right_index - left_index >= 2:  # 3或3个以上元素
+            else:  # right_index - left_index >= 2  3或3个以上元素
                 mid_index = (left_index + right_index) // 2
                 left_half = merge(left_index, mid_index)
                 right_half = merge(mid_index + 1, right_index)

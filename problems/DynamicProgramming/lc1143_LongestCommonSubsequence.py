@@ -13,10 +13,11 @@ class Solution:
 
             if i == 0 or j == 0:
                 result = 0
-            elif text1[i-1] == text2[j-1]:
-                result = __longest_common_subsequence(i-1, j-1) + 1
-            else:  # text1[i-1] != text2[j-1]
-                result = max(__longest_common_subsequence(i-1, j), __longest_common_subsequence(i, j-1))
+            else:
+                if text1[i-1] == text2[j-1]:
+                    result = __longest_common_subsequence(i-1, j-1) + 1
+                else:  # text1[i-1] != text2[j-1]
+                    result = max(__longest_common_subsequence(i-1, j), __longest_common_subsequence(i, j-1))
 
             dp[i][j] = result
             return result

@@ -31,11 +31,12 @@ class PriorityQueue:
                 children_indexes.append(2*element_index + 1)
             if 2*element_index + 2 <= self.size() - 1:
                 children_indexes.append(2*element_index + 2)
+
             if len(children_indexes) == 0:
                 break
-            if len(children_indexes) == 1:
+            elif len(children_indexes) == 1:
                 index_of_child_with_higher_priority = children_indexes[0]
-            elif len(children_indexes) == 2:
+            else:  # len(children_indexes) == 2
                 index_of_child_with_higher_priority = children_indexes[0] \
                     if self.__has_higher_priority(self.__elements[children_indexes[0]],
                                                   self.__elements[children_indexes[1]]) \

@@ -34,7 +34,7 @@ def three_sum(nums: list[int]) -> list[tuple[int, int, int]]:
                 mid_pointer += 1
                 while mid_pointer < right_pointer and nums[mid_pointer] == nums[mid_pointer - 1]:
                     mid_pointer += 1
-            elif nums[left_pointer] + nums[mid_pointer] + nums[right_pointer] > 0:
+            else:  # nums[left_pointer] + nums[mid_pointer] + nums[right_pointer] > 0
                 # 移动中间指针
                 right_pointer -= 1
                 while mid_pointer < right_pointer and nums[right_pointer] == nums[right_pointer + 1]:

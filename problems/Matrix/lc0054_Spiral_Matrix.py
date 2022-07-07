@@ -29,7 +29,7 @@ class Solution:
                 front_position = (current_position[0] + 1, current_position[1])
             elif current_direction == 2:
                 front_position = (current_position[0], current_position[1] - 1)
-            elif current_direction == 3:
+            else:  # current_direction == 3
                 front_position = (current_position[0] - 1, current_position[1])
             return front_position
 

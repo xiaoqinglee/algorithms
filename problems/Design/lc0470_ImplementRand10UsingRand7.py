@@ -11,12 +11,18 @@ class Solution:
                 return 1
             elif 4 <= r <= 6:
                 return 2
+            else:
+                # do nothing
+                pass
 
     def __rand5(self) -> int:
         while True:
             r = rand7()
             if 1 <= r <= 5:
                 return r
+            else:
+                # do nothing
+                pass
 
     def rand10(self) -> int:
         r1 = self.__rand2()

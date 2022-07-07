@@ -11,5 +11,5 @@ def binary_search(nums: list[int], target: int) -> int:
 			return mid_index
 		elif nums[mid_index] > target:
 			right_index = mid_index - 1
-		elif nums[mid_index] < target:
+		else:  # nums[mid_index] < target
 			left_index = mid_index + 1

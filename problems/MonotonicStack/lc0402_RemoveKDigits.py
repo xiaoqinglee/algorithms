@@ -22,7 +22,7 @@ class Solution:
     # def removeKdigits(self, num: str, k: int) -> str:
     #     if len(num) == k:
     #         return "0"
-    #     elif len(num) < k:
+    #     if len(num) < k:
     #         raise "Invalid Input"
     #
     #     digits: list[str] = list(num)
@@ -48,7 +48,7 @@ class Solution:
     def removeKdigits(self, num: str, k: int) -> str:
         if len(num) == k:
             return "0"
-        elif len(num) < k:
+        if len(num) < k:
             raise "Invalid Input"
 
         digits: list[str] = list(num)

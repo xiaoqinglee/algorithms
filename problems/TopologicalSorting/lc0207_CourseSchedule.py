@@ -45,7 +45,7 @@ class Solution:
                 return False
             elif course_id_to_course_status_map[course_id] == "1":  # 存在环
                 return True
-            elif course_id_to_course_status_map[course_id] == "2":
+            else:  # course_id_to_course_status_map[course_id] == "2"
                 return False
         
         # 这个图可能有多个连通分量
@@ -87,7 +87,7 @@ class Solution:
                 return False
             elif course_id_to_course_status_map[course_id] == "1":  # 存在环
                 return True
-            elif course_id_to_course_status_map[course_id] == "2":
+            else:  # course_id_to_course_status_map[course_id] == "2"
                 return False
 
         # 这个图可能有多个连通分量

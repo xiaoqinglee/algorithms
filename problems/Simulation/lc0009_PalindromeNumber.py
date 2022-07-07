@@ -12,5 +12,6 @@ def palindrome_number(x: int) -> bool:
 			return True
 		elif reversed_number > x:
 			return False
-		reversed_number = reversed_number * 10 + x % 10
-		x = x // 10
+		else:
+			reversed_number = reversed_number * 10 + x % 10
+			x = x // 10

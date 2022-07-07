@@ -29,7 +29,7 @@ class Solution:
                 new_list_last_node.next = array[front_pointer]
                 new_list_last_node = new_list_last_node.next
                 new_list_last_node.next = None
-            elif back_pointer > front_pointer:
+            else:  # back_pointer > front_pointer
                 new_list_last_node.next = array[front_pointer]
                 new_list_last_node = new_list_last_node.next
                 new_list_last_node.next = array[back_pointer]

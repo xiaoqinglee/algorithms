@@ -49,6 +49,9 @@ class Solution:
             elif height < min_height:
                 min_height = height
                 beginning_vertexes = [beginning_vertex]
+            else:
+                # do nothing
+                pass
             reset_traversal_status_dict()
 
         return beginning_vertexes

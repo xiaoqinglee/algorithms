@@ -45,6 +45,8 @@ class Trie:
             node.full_word_count -= 1
         elif node.full_word_count == 1:
             node.is_terminal = False
+        else:  # 这种情况不存在
+            pass
 
         child_is_kept: bool | None = None
         if not node.is_terminal and node.children_have_n_words == 0:
