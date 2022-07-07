@@ -48,7 +48,6 @@ class Solution:
             else:  # course_id_to_course_status_map[course_id] == "2"
                 return False
         
-        # 这个图可能有多个连通分量
         loop_found_: bool = False
         for course in course_id_to_course_status_map:
             loop_found_ = traverse(course)
@@ -90,7 +89,6 @@ class Solution:
             else:  # course_id_to_course_status_map[course_id] == "2"
                 return False
 
-        # 这个图可能有多个连通分量
         loop_found_: bool = False
         for course in course_id_to_course_status_map:
             loop_found_ = traverse(course)
