@@ -18,7 +18,5 @@ def heap_sort(nums: list[int]) -> list[int]:
         heap.insert(elem)
     while not heap.is_empty():
         sorted_2.append(heap.pop())
-    from basics.sorting.quick_sort.array import quick_sort
-    assert quick_sort(nums) == sorted_ == sorted_2
 
     return sorted_

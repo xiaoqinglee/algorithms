@@ -19,7 +19,7 @@ class Solution:
         # 等价于向下遍历时遇到一个状态为not_finished_and_being_considered的节点
 
         # 现在你总共有 numCourses 门课需要选，记为 0 到 numCourses - 1
-        course_id_to_course_status_map: dict[int, "str"] = {}
+        course_id_to_course_status_map: dict[int, str] = {}
         for course in range(numCourses):
             course_id_to_course_status_map[course] = "0"
 
@@ -61,7 +61,7 @@ class Solution:
 
         result: list[int] = []
 
-        course_id_to_course_status_map: dict[int, "str"] = {}
+        course_id_to_course_status_map: dict[int, str] = {}
         for course in range(numCourses):
             course_id_to_course_status_map[course] = "0"
 
