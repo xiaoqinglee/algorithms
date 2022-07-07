@@ -1,66 +1,66 @@
 from typing import Any
 
 
+class BSTNode:
+    def __init__(self, key: int, val: Any):
+        self.key = key
+        self.val = val
+        self.left: BST = BST()
+        self.right: BST = BST()
+
+
 class BST:
-    def __init__(self, key, val, left=None, right=None):
-        self.key: int = key
-        self.val: Any = val
-        self.left: BST | None = left
-        self.right: BST | None = right
+    def __init__(self):
+        self.root: BSTNode | None = None
+
+    def insert(self, key: int, val: Any = None) -> None:
+        if self.root is None:
+            self.root = BSTNode(key, val)
+            return
+        if key == self.root.key:
+            self.root.val = val
+        elif key < self.root.key:
+            self.root.left.insert(key, val)
+        else:
+            self.root.right.insert(key, val)
 
     def search(self, key: int) -> Any:
-        if key == self.key:
-            return self.val
-        elif key < self.key and self.left is not None:
-            return self.left.search(key)
-        elif key > self.key and self.right is not None:
-            return self.right.search(key)
-        else:
+        if self.root is None:
             return None
+        if key == self.root.key:
+            return self.root.val
+        elif key < self.root.key:
+            return self.root.left.search(key)
+        else:
+            return self.root.right.search(key)
 
-    def insert(self, key: int, val: Any) -> None:
-        if key == self.key:
-            self.val = val
-        elif key < self.key:
-            if self.left is not None:
-                self.left.insert(key, val)
-            else:
-                self.left = BST(key, val)
-        elif key > self.key:
-            if self.right is not None:
-                self.right.insert(key, val)
-            else:
-                self.right = BST(key, val)
+    def delete(self, key: int) -> None:
 
-    @classmethod
-    def remove(cls, root, key: int):  # 调用方式 tree = BST.remove(tree, key)
-
-        def _pre_node(tree):  # 要求 tree 一定存在 pre node
-            node = tree.left
-            while node is not None and node.right is not None:
-                node = node.right
+        def _pre_node(node: BSTNode) -> BSTNode:  # 要求 tree 一定存在 pre node
+            node = node.left.root
+            while node is not None and node.right.root is not None:
+                node = node.right.root
             return node
 
-        def _remove(tree):  # tree is not None
-            if tree.left is None:
-                return tree.right
-            if tree.right is None:
-                return tree.left
-            pre = _pre_node(tree)
-            pre.right = tree.right
+        def _remove(node: BSTNode) -> BSTNode | None:
+            if node.left.root is None:
+                return node.right.root
+            if node.right.root is None:
+                return node.left.root
+            pre = _pre_node(node)
+            pre.right.root = node.right.root
 
-            # no need to worry about the value of "tree", it will get collected when no reference points to it.
+            # no need to worry about the value of "node", it will get collected when no reference points to it.
             # https://docs.python.org/zh-cn/3/library/sys.html#sys.getrefcount
 
-            return tree.left
+            return node.left.root
 
-        if root is None:
-            return None
-        elif key == root.key:
-            return _remove(root)
-        elif key < root.key and root.left is not None:
-            root.left = BST.remove(root.left, key)
-            return root
-        elif key > root.key and root.right is not None:
-            root.right = BST.remove(root.right, key)
-            return root
+        if self.root is None:
+            return
+
+        if key == self.root.key:
+            self.root = _remove(self.root)
+        elif key < self.root.key:
+            self.root.left.delete(key)
+        else:
+            self.root.right.delete(key)
