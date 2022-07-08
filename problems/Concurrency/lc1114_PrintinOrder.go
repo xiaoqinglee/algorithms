@@ -19,90 +19,68 @@ func NewFoo(name string) *Foo {
 	}
 }
 
-func (foo *Foo) First(printFirst func()) {
-	fmt.Println("In instance: ", foo.name)
-	printFirst()
+func (foo *Foo) First() {
+	fmt.Println("In instance: ", foo.name, "First")
 	close(foo.firstIsDone)
 }
 
-func (foo *Foo) Second(printSecond func()) {
+func (foo *Foo) Second() {
 	<-foo.firstIsDone
-	fmt.Println("In instance: ", foo.name)
-	printSecond()
+	fmt.Println("In instance: ", foo.name, "Second")
 	close(foo.secondIsDone)
 }
 
-func (foo *Foo) Third(printThird func()) {
+func (foo *Foo) Third() {
 	<-foo.secondIsDone
-	fmt.Println("In instance: ", foo.name)
-	printThird()
-}
-
-func PrinterProvider(toPrint string) func() {
-	return func() {
-		fmt.Println(toPrint)
-	}
+	fmt.Println("In instance: ", foo.name, "Third")
 }
 
 func TestFoo() {
-	printerFuncs := [3]func(){
-		PrinterProvider("Fir"),
-		PrinterProvider("Sec"),
-		PrinterProvider("Thi"),
-	}
 	var wg sync.WaitGroup
+	wg.Add(9)
 	instance1 := NewFoo("1")
-	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		instance1.First(printerFuncs[0])
+		instance1.First()
 	}()
-	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		instance1.Second(printerFuncs[1])
+		instance1.Second()
 	}()
-	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		instance1.Third(printerFuncs[2])
+		instance1.Third()
 	}()
 
 	instance2 := NewFoo("2")
-	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		instance2.First(printerFuncs[0])
+		instance2.First()
 	}()
-	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		instance2.Third(printerFuncs[2])
+		instance2.Third()
 	}()
-	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		instance2.Second(printerFuncs[1])
+		instance2.Second()
 	}()
 
 	instance3 := NewFoo("3")
-	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		instance3.Third(printerFuncs[2])
+		instance3.Third()
 	}()
-	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		instance3.Second(printerFuncs[1])
+		instance3.Second()
 	}()
-	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		instance3.First(printerFuncs[0])
+		instance3.First()
 	}()
 
-	fmt.Println("Sub work is inited.")
+	fmt.Println("All sub work is inited.")
 	wg.Wait()
 	fmt.Println("All sub work is finished.")
 }
