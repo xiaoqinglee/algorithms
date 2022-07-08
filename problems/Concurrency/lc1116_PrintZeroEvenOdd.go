@@ -6,10 +6,10 @@ import (
 )
 
 type ZeroEvenOdd struct {
-	n       int
-	current int
-	turn    int // 0 1 2 3 轮转. 0 2 zero活动. 1, 3 其他两个函数活动.
-	cv      *sync.Cond
+	n           int
+	nextToPrint int  // need protection
+	zerosTurn   bool // need protection
+	cv          *sync.Cond
 }
 
 func NewZeroEvenOdd(n int) *ZeroEvenOdd {
@@ -17,26 +17,28 @@ func NewZeroEvenOdd(n int) *ZeroEvenOdd {
 		panic("Invalid Input")
 	}
 	return &ZeroEvenOdd{
-		n:       n,
-		current: 1,
-		turn:    0,
-		cv:      sync.NewCond(&sync.Mutex{}),
+		n:           n,
+		nextToPrint: 1,
+		zerosTurn:   true,
+		cv:          sync.NewCond(&sync.Mutex{}),
 	}
 }
 
 func (z *ZeroEvenOdd) Zero(printNumberFunc func(a ...any) (n int, err error)) {
 	for {
 		z.cv.L.Lock()
-		for z.turn != 0 && z.turn != 2 {
+		for !z.zerosTurn {
 			z.cv.Wait()
 		}
-		if z.current <= z.n {
+		if z.nextToPrint <= z.n {
 			printNumberFunc(0)
 		}
-		z.turn = (z.turn + 1) % 4
+		nextToPrintCopy := z.nextToPrint
+		z.zerosTurn = !z.zerosTurn
 		z.cv.Broadcast()
 		z.cv.L.Unlock()
-		if z.current > z.n {
+		if nextToPrintCopy > z.n {
+			fmt.Println("next to print:", nextToPrintCopy, "Zero return")
 			return
 		}
 	}
@@ -45,17 +47,19 @@ func (z *ZeroEvenOdd) Zero(printNumberFunc func(a ...any) (n int, err error)) {
 func (z *ZeroEvenOdd) Odd(printNumberFunc func(a ...any) (n int, err error)) {
 	for {
 		z.cv.L.Lock()
-		for z.turn != 1 {
+		for !(!z.zerosTurn && z.nextToPrint%2 == 1) {
 			z.cv.Wait()
 		}
-		if z.current <= z.n {
-			printNumberFunc(z.current)
+		if z.nextToPrint <= z.n {
+			printNumberFunc(z.nextToPrint)
 		}
-		z.current += 1
-		z.turn = (z.turn + 1) % 4
+		z.nextToPrint += 1
+		nextToPrintCopy := z.nextToPrint
+		z.zerosTurn = !z.zerosTurn
 		z.cv.Broadcast()
 		z.cv.L.Unlock()
-		if z.current > z.n {
+		if nextToPrintCopy > z.n {
+			fmt.Println("next to print:", nextToPrintCopy, "Odd return")
 			return
 		}
 	}
@@ -64,24 +68,26 @@ func (z *ZeroEvenOdd) Odd(printNumberFunc func(a ...any) (n int, err error)) {
 func (z *ZeroEvenOdd) Even(printNumberFunc func(a ...any) (n int, err error)) {
 	for {
 		z.cv.L.Lock()
-		for z.turn != 3 {
+		for !(!z.zerosTurn && z.nextToPrint%2 == 0) {
 			z.cv.Wait()
 		}
-		if z.current <= z.n {
-			printNumberFunc(z.current)
+		if z.nextToPrint <= z.n {
+			printNumberFunc(z.nextToPrint)
 		}
-		z.current += 1
-		z.turn = (z.turn + 1) % 4
+		z.nextToPrint += 1
+		nextToPrintCopy := z.nextToPrint
+		z.zerosTurn = !z.zerosTurn
 		z.cv.Broadcast()
 		z.cv.L.Unlock()
-		if z.current > z.n {
+		if nextToPrintCopy > z.n {
+			fmt.Println("next to print:", nextToPrintCopy, "Even return")
 			return
 		}
 	}
 }
 
 func TestZeroEvenOdd() {
-	zeo := NewZeroEvenOdd(12)
+	zeo := NewZeroEvenOdd(15)
 	var wg sync.WaitGroup
 	wg.Add(3)
 	go func() {
