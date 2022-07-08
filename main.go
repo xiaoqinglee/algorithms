@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	Concurrency.TestZeroEvenOdd()
+	Concurrency.TestZeroEvenOddII()
 }
