@@ -52,7 +52,7 @@ class DiningPhilosophers:
             while not self.fork_is_available(first):
                 # print(threading.current_thread().name + f" cv {first} not available")
                 self.fork_is_available_cv[first].wait()
-                # print(threading.current_thread().name + f" cv {first} now available")
+                # print(threading.current_thread().name + f" cv {first} might available")
             self.fork_is_taken_by[first] = philosopher
             # pick up first fork
             pickLeftFork()
@@ -63,7 +63,7 @@ class DiningPhilosophers:
                 while not self.fork_is_available(second):
                     # print(threading.current_thread().name + f" {second} not available")
                     self.fork_is_available_cv[second].wait()
-                    # print(threading.current_thread().name + f" {second} not available")
+                    # print(threading.current_thread().name + f" {second} might available")
                 self.fork_is_taken_by[second] = philosopher
                 # pick up second fork
                 pickRightFork()
