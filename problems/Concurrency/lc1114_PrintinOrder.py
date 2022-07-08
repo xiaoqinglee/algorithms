@@ -103,6 +103,30 @@ if __name__ == '__main__':
 # https://docs.python.org/zh-cn/3/library/threading.html
 
 
+# 条件对象
+#
+# 条件变量总是与某种类型的锁对象相关联，锁对象可以通过传入获得，或者在缺省的情况下自动创建。
+# 当多个条件变量需要共享同一个锁时，传入一个锁很有用。
+# 锁是条件对象的一部分，你不必单独地跟踪它。
+# (POSIX C 编程时需要手动跟踪这个锁, 来保证共享变量被修改这个动作的发生是互斥的, 见 OSTEP 线程API相关章节.
+# 但在python里, Condition.acquire()调用时就获得了这个锁,  Condition.release()调用时就释放了这个锁.)
+#
+# 条件变量遵循 上下文管理协议 ：
+# 使用 with 语句会在它包围的代码块内获取关联的锁。
+# acquire() 和 release() 方法也能调用关联锁的相关方法。
+#
+# 其它方法必须在持有关联的锁的情况下调用。
+# wait() 方法释放锁，然后阻塞直到其它线程调用 notify() 方法或 notify_all() 方法唤醒它。
+# 一旦被唤醒， wait() 方法重新获取锁并返回。它也可以指定超时时间。
+#
+# The notify() method wakes up one of the threads waiting for the condition variable, if any are waiting.
+# The notify_all() method wakes up all threads waiting for the condition variable.
+#
+# 注意：
+# notify() 方法和 notify_all() 方法并不会释放锁，这意味着被唤醒的线程不会立即从它们的 wait() 方法调用中返回，
+# 而是会在调用了 notify() 方法或 notify_all() 方法的线程最终放弃了锁的所有权后返回。
+
+
 # class threading.Condition(lock=None)
 #
 #     This class implements condition variable objects.
@@ -145,3 +169,60 @@ if __name__ == '__main__':
 #     # do something...
 # finally:
 #     some_lock.release()
+
+
+# golang goroutine 条件变量的 API 也和 POSIX C 类似
+# https://pkg.go.dev/sync#Cond
+
+
+#     // Cond implements a condition variable, a rendezvous point
+#     // for goroutines waiting for or announcing the occurrence
+#     // of an event.
+#     //
+#     // Each Cond has an associated Locker L (often a *Mutex or *RWMutex),
+#     // which must be held when changing the condition and
+#     // when calling the Wait method.
+#     //
+#     // A Cond must not be copied after first use.
+#     type Cond struct {
+#         noCopy noCopy
+#
+#         // L is held while observing or changing the condition
+#         L Locker
+#
+#         notify  notifyList
+#         checker copyChecker
+#     }
+#
+#     // NewCond returns a new Cond with Locker l.
+#     func NewCond(l Locker) *Cond
+#
+#     // Wait atomically unlocks c.L and suspends execution
+#     // of the calling goroutine. After later resuming execution,
+#     // Wait locks c.L before returning. Unlike in other systems,
+#     // Wait cannot return unless awoken by Broadcast or Signal.
+#     //
+#     // Because c.L is not locked when Wait first resumes, the caller
+#     // typically cannot assume that the condition is true when
+#     // Wait returns. Instead, the caller should Wait in a loop:
+#     //
+#     //    c.L.Lock()
+#     //    for !condition() {
+#     //        c.Wait()
+#     //    }
+#     //    ... make use of condition ...
+#     //    c.L.Unlock()
+#     //
+#     func (c *Cond) Wait()
+#
+#     // Signal wakes one goroutine waiting on c, if there is any.
+#     //
+#     // It is allowed but not required for the caller to hold c.L
+#     // during the call.
+#     func (c *Cond) Signal()
+#
+#     // Broadcast wakes all goroutines waiting on c.
+#     //
+#     // It is allowed but not required for the caller to hold c.L
+#     // during the call.
+#     func (c *Cond) Broadcast()

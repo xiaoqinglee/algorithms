@@ -86,4 +86,21 @@ func TestFoo() {
 
 //cap 大于 1 的 chan 实现信号量
 //cap 为 1 的 chan 实现 01 信号量, 也即互斥锁
-//cap 为 0 的 chan 实现 condition variable.
+//cap 为 0 的 chan 实现简陋的condition variable.
+
+//之所以称之为简陋, 是因为这种方案没有关联一个互斥锁来保证对一个共享变量condition的互斥读写.
+//所以这种方案只能实现简单的等停通知, 没有办法实现:
+
+//    c.L.Lock()
+//    for !condition {
+//        c.Wait()
+//    }
+//    ... make use of condition ...
+//    c.L.Unlock()
+
+//    c.L.Lock()
+//    condition = true
+//    c.Signal()
+//    c.L.Unlock()
+
+//即不支持通过再次检查某个共享变量的值与其他收到同样通知的goroutine保持协作.
