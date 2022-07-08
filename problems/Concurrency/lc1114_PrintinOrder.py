@@ -1,6 +1,6 @@
 import threading
 from typing import Callable
-from threading import Condition
+from threading import Thread, Condition
 
 
 class Foo(object):
@@ -10,7 +10,7 @@ class Foo(object):
         self.second_is_done_cv: Condition = Condition()
         self.second_is_done: bool = False
 
-    def first(self, print_first: Callable):  # print_first() outputs "first". Do not change or remove this line.
+    def first(self, print_first: Callable) -> None:  # print_first() outputs "first". Do not change or remove this line.
         self.first_is_done_cv.acquire()
         try:
             print_first()
@@ -19,7 +19,7 @@ class Foo(object):
         finally:
             self.first_is_done_cv.release()
 
-    def second(self, print_second: Callable):
+    def second(self, print_second: Callable) -> None:
         self.second_is_done_cv.acquire()
         try:
 
@@ -37,7 +37,7 @@ class Foo(object):
         finally:
             self.second_is_done_cv.release()
 
-    def third(self, print_third: Callable):
+    def third(self, print_third: Callable) -> None:
         self.second_is_done_cv.acquire()
         try:
             while not self.second_is_done:
@@ -48,7 +48,6 @@ class Foo(object):
 
 
 def test_foo() -> None:
-
     # 三个不同的线程 A、B、C 将会共用一个 Foo 实例。
     #
     #     线程 A 将会调用 first() 方法
@@ -58,15 +57,15 @@ def test_foo() -> None:
     # 请设计修改程序，以确保 second() 方法在 first() 方法之后被执行，third() 方法在 second() 方法之后被执行。
 
     foo = Foo()
-    t1 = threading.Thread(name="thread_1",
-                          target=foo.first,
-                          args=(lambda: print(threading.current_thread().name + " first"),))
-    t2 = threading.Thread(name="thread_2",
-                          target=foo.second,
-                          args=(lambda: print(threading.current_thread().name + " second"),))
-    t3 = threading.Thread(name="thread_3",
-                          target=foo.third,
-                          args=(lambda: print(threading.current_thread().name + " third"),))
+    t1 = Thread(name="thread_1",
+                target=foo.first,
+                args=(lambda: print(threading.current_thread().name + " first"),))
+    t2 = Thread(name="thread_2",
+                target=foo.second,
+                args=(lambda: print(threading.current_thread().name + " second"),))
+    t3 = Thread(name="thread_3",
+                target=foo.third,
+                args=(lambda: print(threading.current_thread().name + " third"),))
     t1.start()
     t2.start()
     t3.start()
@@ -75,15 +74,15 @@ def test_foo() -> None:
     t3.join()
 
     foo2 = Foo()
-    t21 = threading.Thread(name="thread_21",
-                           target=foo2.first,
-                           args=(lambda: print(threading.current_thread().name + " first"),))
-    t22 = threading.Thread(name="thread_22",
-                           target=foo2.second,
-                           args=(lambda: print(threading.current_thread().name + " second"),))
-    t23 = threading.Thread(name="thread_23",
-                           target=foo2.third,
-                           args=(lambda: print(threading.current_thread().name + " third"),))
+    t21 = Thread(name="thread_21",
+                 target=foo2.first,
+                 args=(lambda: print(threading.current_thread().name + " first"),))
+    t22 = Thread(name="thread_22",
+                 target=foo2.second,
+                 args=(lambda: print(threading.current_thread().name + " second"),))
+    t23 = Thread(name="thread_23",
+                 target=foo2.third,
+                 args=(lambda: print(threading.current_thread().name + " third"),))
     t23.start()
     t22.start()
     t21.start()
