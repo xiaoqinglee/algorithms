@@ -3,6 +3,7 @@ package Concurrency
 import (
 	"fmt"
 	"sync"
+	"time"
 )
 
 type Foo struct {
@@ -21,18 +22,21 @@ func NewFoo(name string) *Foo {
 
 func (foo *Foo) First() {
 	fmt.Println("In instance: ", foo.name, "First")
+	time.Sleep(2 * time.Second)
 	close(foo.firstIsDone)
 }
 
 func (foo *Foo) Second() {
 	<-foo.firstIsDone
 	fmt.Println("In instance: ", foo.name, "Second")
+	time.Sleep(2 * time.Second)
 	close(foo.secondIsDone)
 }
 
 func (foo *Foo) Third() {
 	<-foo.secondIsDone
 	fmt.Println("In instance: ", foo.name, "Third")
+	time.Sleep(2 * time.Second)
 }
 
 func TestFoo() {

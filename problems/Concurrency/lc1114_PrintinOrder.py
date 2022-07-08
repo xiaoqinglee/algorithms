@@ -1,4 +1,5 @@
 import threading
+import time
 from typing import Callable
 from threading import Thread, Condition
 
@@ -59,36 +60,39 @@ def test_foo() -> None:
     foo = Foo()
     t1 = Thread(name="thread_1",
                 target=foo.first,
-                args=(lambda: print(threading.current_thread().name + " first"),))
+                args=(lambda: (print(threading.current_thread().name + " first"), time.sleep(2)),))
     t2 = Thread(name="thread_2",
                 target=foo.second,
-                args=(lambda: print(threading.current_thread().name + " second"),))
+                args=(lambda: (print(threading.current_thread().name + " second"), time.sleep(2)),))
     t3 = Thread(name="thread_3",
                 target=foo.third,
-                args=(lambda: print(threading.current_thread().name + " third"),))
-    t1.start()
-    t2.start()
-    t3.start()
-    t1.join()
-    t2.join()
-    t3.join()
+                args=(lambda: (print(threading.current_thread().name + " third"),  time.sleep(2)),))
 
     foo2 = Foo()
     t21 = Thread(name="thread_21",
                  target=foo2.first,
-                 args=(lambda: print(threading.current_thread().name + " first"),))
+                 args=(lambda: (print(threading.current_thread().name + " first"), time.sleep(2)),))
     t22 = Thread(name="thread_22",
                  target=foo2.second,
-                 args=(lambda: print(threading.current_thread().name + " second"),))
+                 args=(lambda: (print(threading.current_thread().name + " second"), time.sleep(2)),))
     t23 = Thread(name="thread_23",
                  target=foo2.third,
-                 args=(lambda: print(threading.current_thread().name + " third"),))
+                 args=(lambda: (print(threading.current_thread().name + " third"), time.sleep(2)),))
+    t1.start()
+    t2.start()
+    t3.start()
+
     t23.start()
     t22.start()
     t21.start()
-    t21.join()
-    t22.join()
+
+    t1.join()
+    t2.join()
+    t3.join()
+
     t23.join()
+    t22.join()
+    t21.join()
 
 
 if __name__ == '__main__':
