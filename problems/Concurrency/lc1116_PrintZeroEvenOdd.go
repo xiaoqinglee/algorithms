@@ -36,7 +36,7 @@ func (z *ZeroEvenOdd) Zero(printNumberFunc func(a ...any) (n int, err error)) {
 		z.turn = (z.turn + 1) % 4
 		z.cv.Broadcast()
 		z.cv.L.Unlock()
-		if z.current > z.n && z.turn == 3 {
+		if z.current > z.n {
 			return
 		}
 	}
@@ -81,7 +81,7 @@ func (z *ZeroEvenOdd) Even(printNumberFunc func(a ...any) (n int, err error)) {
 }
 
 func TestZeroEvenOdd() {
-	zeo := NewZeroEvenOdd(15)
+	zeo := NewZeroEvenOdd(12)
 	var wg sync.WaitGroup
 	wg.Add(3)
 	go func() {
