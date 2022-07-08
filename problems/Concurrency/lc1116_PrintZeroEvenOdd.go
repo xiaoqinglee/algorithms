@@ -7,7 +7,7 @@ import (
 
 type ZeroEvenOdd struct {
 	n           int
-	nextToPrint int  // need protection
+	nextToPrint int  // need protection 保存下一个要打印的非零数字
 	zerosTurn   bool // need protection
 	cv          *sync.Cond
 }
@@ -30,57 +30,55 @@ func (z *ZeroEvenOdd) Zero(printNumberFunc func(a ...any) (n int, err error)) {
 		for !z.zerosTurn {
 			z.cv.Wait()
 		}
-		if z.nextToPrint <= z.n {
+		if z.nextToPrint <= z.n { // Zero 被动停下来
 			printNumberFunc(0)
-		}
-		nextToPrintCopy := z.nextToPrint
-		z.zerosTurn = !z.zerosTurn
-		z.cv.Broadcast()
-		z.cv.L.Unlock()
-		if nextToPrintCopy > z.n {
-			fmt.Println("next to print:", nextToPrintCopy, "Zero return")
+			z.zerosTurn = !z.zerosTurn
+			z.cv.Broadcast()
+			z.cv.L.Unlock()
+		} else {
+			z.cv.L.Unlock()
 			return
 		}
 	}
 }
 
 func (z *ZeroEvenOdd) Odd(printNumberFunc func(a ...any) (n int, err error)) {
+	needTerminate := false
 	for {
 		z.cv.L.Lock()
 		for !(!z.zerosTurn && z.nextToPrint%2 == 1) {
 			z.cv.Wait()
 		}
-		if z.nextToPrint <= z.n {
-			printNumberFunc(z.nextToPrint)
+		printNumberFunc(z.nextToPrint)
+		if z.nextToPrint == z.n || z.nextToPrint == z.n-1 { // Odd 和 Even 主动停下来
+			needTerminate = true
 		}
 		z.nextToPrint += 1
-		nextToPrintCopy := z.nextToPrint
 		z.zerosTurn = !z.zerosTurn
 		z.cv.Broadcast()
 		z.cv.L.Unlock()
-		if nextToPrintCopy > z.n {
-			fmt.Println("next to print:", nextToPrintCopy, "Odd return")
+		if needTerminate {
 			return
 		}
 	}
 }
 
 func (z *ZeroEvenOdd) Even(printNumberFunc func(a ...any) (n int, err error)) {
+	needTerminate := false
 	for {
 		z.cv.L.Lock()
 		for !(!z.zerosTurn && z.nextToPrint%2 == 0) {
 			z.cv.Wait()
 		}
-		if z.nextToPrint <= z.n {
-			printNumberFunc(z.nextToPrint)
+		printNumberFunc(z.nextToPrint)
+		if z.nextToPrint == z.n || z.nextToPrint == z.n-1 { // Odd 和 Even 主动停下来
+			needTerminate = true
 		}
 		z.nextToPrint += 1
-		nextToPrintCopy := z.nextToPrint
 		z.zerosTurn = !z.zerosTurn
 		z.cv.Broadcast()
 		z.cv.L.Unlock()
-		if nextToPrintCopy > z.n {
-			fmt.Println("next to print:", nextToPrintCopy, "Even return")
+		if needTerminate {
 			return
 		}
 	}
