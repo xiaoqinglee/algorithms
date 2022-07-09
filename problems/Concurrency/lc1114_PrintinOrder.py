@@ -6,46 +6,41 @@ from threading import Thread, Condition
 
 class Foo(object):
     def __init__(self):
-        self.first_is_done_cv: Condition = Condition()
-        self.first_is_done: bool = False
-        self.second_is_done_cv: Condition = Condition()
-        self.second_is_done: bool = False
+        self.turn_cv: Condition = Condition()
+        self.turn: int = 1  # protected by cv, values are enum type
 
     def first(self, print_first: Callable) -> None:  # print_first() outputs "first". Do not change or remove this line.
-        self.first_is_done_cv.acquire()
+        self.turn_cv.acquire()
         try:
+            while self.turn != 1:
+                self.turn_cv.wait()
             print_first()
-            self.first_is_done = True
-            self.first_is_done_cv.notify()
+            self.turn += 1
+            self.turn_cv.notify_all()
         finally:
-            self.first_is_done_cv.release()
+            self.turn_cv.release()
 
     def second(self, print_second: Callable) -> None:
-        self.second_is_done_cv.acquire()
+        self.turn_cv.acquire()
         try:
-
-            self.first_is_done_cv.acquire()
-            try:
-                while not self.first_is_done:
-                    self.first_is_done_cv.wait()
-                print_second()
-            finally:
-                self.first_is_done_cv.release()
-
-            self.second_is_done = True
-            self.second_is_done_cv.notify()
-
+            while self.turn != 2:
+                self.turn_cv.wait()
+            print_second()
+            self.turn += 1
+            self.turn_cv.notify_all()
         finally:
-            self.second_is_done_cv.release()
+            self.turn_cv.release()
 
     def third(self, print_third: Callable) -> None:
-        self.second_is_done_cv.acquire()
+        self.turn_cv.acquire()
         try:
-            while not self.second_is_done:
-                self.second_is_done_cv.wait()
+            while self.turn != 3:
+                self.turn_cv.wait()
             print_third()
+            self.turn += 1
+            self.turn_cv.notify_all()
         finally:
-            self.second_is_done_cv.release()
+            self.turn_cv.release()
 
 
 def test_foo() -> None:

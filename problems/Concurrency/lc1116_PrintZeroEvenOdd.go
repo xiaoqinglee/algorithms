@@ -7,8 +7,8 @@ import (
 
 type ZeroEvenOdd struct {
 	n           int
-	nextToPrint int  // need protection 保存下一个要打印的非零数字
-	zerosTurn   bool // need protection
+	nextToPrint int  // protected by cv 保存下一个要打印的非零数字
+	zerosTurn   bool // protected by cv
 	cv          *sync.Cond
 }
 
