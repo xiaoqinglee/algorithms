@@ -1,4 +1,4 @@
-from typing import Callable
+from collections.abc import Callable
 
 
 def merge_sort(nums: list[int], key: Callable[[int], int] = lambda x: x) -> list[int]:

@@ -1,10 +1,10 @@
-import collections.abc
+from collections.abc import Callable
 
 
 class PriorityQueue:
     def __init__(self,
                  elements: list[int],
-                 has_higher_priority: collections.abc.Callable[[int, int], bool]):
+                 has_higher_priority: Callable[[int, int], bool]):
         self.__elements = elements.copy()
         self.__has_higher_priority = has_higher_priority
         self.__heapify()

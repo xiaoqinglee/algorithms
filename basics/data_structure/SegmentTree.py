@@ -1,4 +1,4 @@
-import collections.abc
+from collections.abc import Callable
 from functools import reduce
 
 
@@ -65,8 +65,8 @@ class Segment:
 class SegmentTree:
     def __init__(self,
                  elements: list[ListElemVal],
-                 list_element_mapping_func: collections.abc.Callable[[ListElemVal], ListElemVal],
-                 list_reducing_func: collections.abc.Callable[[ListElemVal, ListElemVal], ListElemVal]):
+                 list_element_mapping_func: Callable[[ListElemVal], ListElemVal],
+                 list_reducing_func: Callable[[ListElemVal, ListElemVal], ListElemVal]):
 
         self.elements = elements.copy()
         self.list_element_mapping_func = list_element_mapping_func
