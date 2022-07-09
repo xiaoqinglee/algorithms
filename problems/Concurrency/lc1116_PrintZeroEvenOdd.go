@@ -30,56 +30,71 @@ func (z *ZeroEvenOdd) Zero(printNumberFunc func(a ...any) (n int, err error)) {
 		for !z.zerosTurn {
 			z.cv.Wait()
 		}
-		if z.nextToPrint <= z.n { // Zero 被动停下来
-			printNumberFunc(0)
+		printNumberFunc(0)
+		if z.nextToPrint == z.n {
 			z.zerosTurn = !z.zerosTurn
 			z.cv.Broadcast()
 			z.cv.L.Unlock()
-		} else {
-			z.cv.L.Unlock()
+			fmt.Println("z.nextToPrint is", z.nextToPrint, "Zero is returning")
 			return
+		} else {
+			z.zerosTurn = !z.zerosTurn
+			z.cv.Broadcast()
+			z.cv.L.Unlock()
 		}
 	}
 }
 
 func (z *ZeroEvenOdd) Odd(printNumberFunc func(a ...any) (n int, err error)) {
-	needTerminate := false
 	for {
 		z.cv.L.Lock()
 		for !(!z.zerosTurn && z.nextToPrint%2 == 1) {
 			z.cv.Wait()
 		}
 		printNumberFunc(z.nextToPrint)
-		if z.nextToPrint == z.n || z.nextToPrint == z.n-1 { // Odd 和 Even 主动停下来
-			needTerminate = true
-		}
-		z.nextToPrint += 1
-		z.zerosTurn = !z.zerosTurn
-		z.cv.Broadcast()
-		z.cv.L.Unlock()
-		if needTerminate {
+		if z.nextToPrint == z.n {
+			z.cv.L.Unlock()
+			fmt.Println("printed number is", z.nextToPrint, "Odd is returning")
 			return
+		} else if z.nextToPrint == z.n-1 {
+			z.nextToPrint += 1
+			z.zerosTurn = !z.zerosTurn
+			z.cv.Broadcast()
+			z.cv.L.Unlock()
+			fmt.Println("printed number is", z.nextToPrint-1, "Odd is returning")
+			return
+		} else {
+			z.nextToPrint += 1
+			z.zerosTurn = !z.zerosTurn
+			z.cv.Broadcast()
+			z.cv.L.Unlock()
 		}
 	}
 }
 
 func (z *ZeroEvenOdd) Even(printNumberFunc func(a ...any) (n int, err error)) {
-	needTerminate := false
 	for {
 		z.cv.L.Lock()
 		for !(!z.zerosTurn && z.nextToPrint%2 == 0) {
 			z.cv.Wait()
 		}
 		printNumberFunc(z.nextToPrint)
-		if z.nextToPrint == z.n || z.nextToPrint == z.n-1 { // Odd 和 Even 主动停下来
-			needTerminate = true
-		}
-		z.nextToPrint += 1
-		z.zerosTurn = !z.zerosTurn
-		z.cv.Broadcast()
-		z.cv.L.Unlock()
-		if needTerminate {
+		if z.nextToPrint == z.n {
+			z.cv.L.Unlock()
+			fmt.Println("printed number is", z.nextToPrint, "Even is returning")
 			return
+		} else if z.nextToPrint == z.n-1 {
+			z.nextToPrint += 1
+			z.zerosTurn = !z.zerosTurn
+			z.cv.Broadcast()
+			z.cv.L.Unlock()
+			fmt.Println("printed number is", z.nextToPrint-1, "Even is returning")
+			return
+		} else {
+			z.nextToPrint += 1
+			z.zerosTurn = !z.zerosTurn
+			z.cv.Broadcast()
+			z.cv.L.Unlock()
 		}
 	}
 }

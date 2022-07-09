@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	Concurrency.TestH2O()
+	Concurrency.TestZeroEvenOdd()
 }
