@@ -1,5 +1,6 @@
 import random
 import threading
+import time
 from typing import Callable
 from threading import Thread, Semaphore, Lock
 
@@ -23,6 +24,7 @@ class H2O:
             if self.locked_H_count >= 2 and self.locked_O_count >= 1:
                 self.locked_H_count -= 2
                 self.locked_O_count -= 1
+                time.sleep(2)
                 self.H_sem.release(2)
                 self.O_sem.release(1)
         finally:
@@ -42,6 +44,7 @@ class H2O:
             if self.locked_H_count >= 2 and self.locked_O_count >= 1:
                 self.locked_H_count -= 2
                 self.locked_O_count -= 1
+                time.sleep(2)
                 self.H_sem.release(2)
                 self.O_sem.release(1)
         finally:
@@ -57,19 +60,17 @@ if __name__ == '__main__':
     h2o = H2O()
     for i in chars:
         if i == "H":
-            t = Thread(target=h2o.hydrogen, args=(lambda: print("H"),))
+            t = Thread(target=h2o.hydrogen, args=(lambda: print("H", end=""),))
         else:
-            t = Thread(target=h2o.oxygen, args=(lambda: print("O"),))
+            t = Thread(target=h2o.oxygen, args=(lambda: print("O", end=""),))
         threads.append(t)
 
     random.shuffle(threads)
     for i in range(len(threads)):
         threads[i].start()
-    print("all threads started. count:", threading.active_count())
     random.shuffle(threads)
     for i in range(len(threads)):
         threads[i].join()
-    print("all threads finished.")
 
 
 # 信号量对象
