@@ -18,7 +18,7 @@ func NewZeroEvenOddII(n int) *ZeroEvenOddII {
 		panic("Invalid Input")
 	}
 	return &ZeroEvenOddII{
-		n:              n, // goroutine串行执行, 不会交叠地访问n
+		n:              n, // n 只读不写
 		oddToZeroChan:  make(chan struct{}, 0),
 		evenToZeroChan: make(chan struct{}, 0),
 		toOddChan:      make(chan int, 0),
