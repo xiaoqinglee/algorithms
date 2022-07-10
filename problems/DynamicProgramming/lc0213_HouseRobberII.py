@@ -32,8 +32,6 @@ class Solution:
             else:
                 dp_1[i][0] = max(dp_1[i-1][0], dp_1[i-1][1]) + 0
                 dp_1[i][1] = dp_1[i-1][0] + nums[i]
-        print(dp_0)
-        print(dp_1)
         return max(max(dp_0[len(nums)-1][0],
                        dp_0[len(nums)-1][1]),
                    max(dp_1[len(nums)-1][0],  # 可能只有一家受害者
