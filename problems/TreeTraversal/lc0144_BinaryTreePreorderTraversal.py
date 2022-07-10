@@ -8,11 +8,13 @@ from pkg.data_structure import TreeNode
 class Solution:
 
     # root is not None 代表正在进行由上到下遍历并让元素入栈的过程。
-    # root由非None变为None，我们只好判断stack是否为空，尝试从stack中pop数据时，正在进行由下到上回退的过程。
+    # root is None 代表正在进行由下到上回退并让元素出栈的过程。
+    # root由非None变为None，我们只好判断stack是否为空，尝试从stack中pop数据，进行由下到上回退的过程。
 
-    # 元素入栈的顺序都 父母 -> 左子 -> 右子，
-    # 所以对于先序遍历，node入栈前打印node的value。
-    # 对于中序遍历，node出栈后打印node的value。
+    # 前序和中序遍历都是: 父母入栈 -> 左子树入栈 -> 左子树出栈 -> 父母出栈 -> 右子树入栈 -> 右子树出栈
+    # 所以
+    # 对于先序遍历，node入栈时打印node的value。
+    # 对于中序遍历，node出栈时打印node的value。
 
     # 后序遍历部分节点需要将node入栈两次
 
