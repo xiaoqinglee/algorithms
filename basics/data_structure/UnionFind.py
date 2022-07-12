@@ -9,6 +9,8 @@ class UnionFind:
     def __init__(self,
                  from_vertexes: list[HashableComparableElem] | None = None,
                  from_edges: list[tuple[HashableComparableElem, HashableComparableElem]] | None = None):
+        # dict key: man who follows
+        # dict value: man who is followed
         self.follows: dict[HashableComparableElem, HashableComparableElem] = {}
         if from_vertexes:
             self.init_with_free_vertexes(from_vertexes)
