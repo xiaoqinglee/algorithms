@@ -10,7 +10,7 @@ class Solution:
                 if i == 0 or j == 0:
                     if i == 0:
                         min_distance[i][j] = j
-                    if j == 0:
+                    else:  # j == 0
                         min_distance[i][j] = i
                 else:
                     if word1[i-1] == word2[j-1]:  # word1 -> word2: 不操作, 删除, 插入
