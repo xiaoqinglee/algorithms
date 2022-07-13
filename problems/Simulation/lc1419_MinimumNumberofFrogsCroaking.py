@@ -26,10 +26,10 @@ class Solution:
                 prefix_to_prefix_count[char] += 1
             if char == croak[-1]:
                 # 青蛙的最小个数是所有叫声交错的事件中, 参与蛙最多的那一次事件的参与蛙数
-                n_frogs_min = max(n_frogs_min, sum([count for prefix, count in prefix_to_prefix_count.items()]))
+                n_frogs_min = max(n_frogs_min, sum(prefix_to_prefix_count.values()))
                 prefix_to_prefix_count[croak[-1]] = 0
 
         # 最终残留了半个croak 或 残留了许多半个croak
-        if sum([v for k, v in prefix_to_prefix_count.items()]) > 0:
+        if sum(prefix_to_prefix_count.values()) > 0:
             return -1
         return n_frogs_min
