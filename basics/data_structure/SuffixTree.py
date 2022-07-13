@@ -7,12 +7,12 @@ class SuffixTree:
         for suffix_starting_index in range(len(word), -1, -1):  # 包含末尾的空串后缀
             self.radix_tree.insert(word=word[suffix_starting_index:], word_attachment=suffix_starting_index)
 
-    def ends_with(self, suffix: str) -> bool:
+    def contains_suffix(self, suffix: str) -> bool:
         found, suffix_starting_index = self.radix_tree.search(suffix)
         return found
 
     def is_substring(self, substring: str) -> bool:
-        return self.radix_tree.starts_with(substring)
+        return self.radix_tree.contains_prefix(substring)
 
     def substrings(self, substring: str) -> list[int]:
 

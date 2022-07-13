@@ -42,7 +42,7 @@ class SuffixArray:
             self.longest_common_prefix_length_array
         ])
 
-    def ends_with(self, suffix: str) -> bool:
+    def contains_suffix(self, suffix: str) -> bool:
 
         def binary_search(lo: int, hi: int) -> bool:
             while True:
@@ -116,9 +116,9 @@ if __name__ == '__main__':
     print(suffix_array.substrings("ssi"))
     print(suffix_array.substrings("si"))
 
-    print(suffix_array.ends_with("sippi"))
-    print(suffix_array.ends_with("pp"))
-    print(suffix_array.ends_with(""))
+    print(suffix_array.contains_suffix("sippi"))
+    print(suffix_array.contains_suffix("pp"))
+    print(suffix_array.contains_suffix(""))
 
     suffix_tree = SuffixTree("mississippi")
 
@@ -132,6 +132,6 @@ if __name__ == '__main__':
     print(suffix_tree.substrings("ssi"))
     print(suffix_tree.substrings("si"))
 
-    print(suffix_tree.ends_with("sippi"))
-    print(suffix_tree.ends_with("pp"))
-    print(suffix_tree.ends_with(""))
+    print(suffix_tree.contains_suffix("sippi"))
+    print(suffix_tree.contains_suffix("pp"))
+    print(suffix_tree.contains_suffix(""))

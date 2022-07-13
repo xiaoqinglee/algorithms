@@ -1,3 +1,6 @@
+from collections import defaultdict
+
+
 class Trie:
     ARRAY_LEN = 26
 
@@ -83,7 +86,7 @@ class Trie:
             return exists
         return exists
 
-    def starts_with(self, prefix: str) -> bool:
+    def contains_prefix(self, prefix: str) -> bool:
         exists: bool = False
         node: Trie = self
         for char in prefix:
@@ -97,3 +100,69 @@ class Trie:
 # 叶子节点的数据为全null数组
 # 叶子节点代表的字符串的最后一个字符是什么这个信息存在parent的children数组里面
 # 一个空树只有一个root节点，self即是root
+
+
+class SimpleTrie:
+    def __init__(self):
+        self.next: defaultdict[str, SimpleTrie] = defaultdict(SimpleTrie)
+        self.is_terminal = False
+        self.terminal_value: str | None = None
+        self.terminal_value_count: int | None = None
+
+    def insert(self, word: str) -> None:
+        current_trie = self
+        for c in word:
+            current_trie = current_trie.next[c]
+        if not current_trie.is_terminal:
+            current_trie.is_terminal = True
+            current_trie.terminal_value = word
+            current_trie.terminal_value_count = 1
+        else:
+            current_trie.terminal_value_count += 1
+
+    def search(self, word: str) -> bool:  # 无副作用
+        current_trie = self
+        for c in word:
+            # defaultdict 使用方括号操作符读或写不存在的键会创建键值对, in 测试不会创建键值对
+            if c not in current_trie.next:
+                return False
+            current_trie = current_trie.next[c]
+        return current_trie.is_terminal
+
+    def contains_prefix(self, word: str) -> bool:  # 无副作用
+        current_trie = self
+        for c in word:
+            if c not in current_trie.next:
+                return False
+            current_trie = current_trie.next[c]
+        return current_trie.is_terminal or len(current_trie.next) > 0
+
+
+if __name__ == '__main__':
+    simple_trie = SimpleTrie()
+    print(simple_trie.search(""))
+    print(simple_trie.contains_prefix(""))
+    print(simple_trie.search("4"))
+    print(simple_trie.contains_prefix("4"))
+    print(simple_trie.search("42"))
+    print(simple_trie.contains_prefix("42"))
+
+    print("===============================")
+    simple_trie.insert("")
+    simple_trie.insert("42")
+    print(simple_trie.search(""))
+    print(simple_trie.contains_prefix(""))
+    print(simple_trie.search("4"))
+    print(simple_trie.contains_prefix("4"))
+    print(simple_trie.search("42"))
+    print(simple_trie.contains_prefix("42"))
+
+    print("===============================")
+    simple_trie.insert("")
+    simple_trie.insert("42")
+    print(simple_trie.search(""))
+    print(simple_trie.contains_prefix(""))
+    print(simple_trie.search("4"))
+    print(simple_trie.contains_prefix("4"))
+    print(simple_trie.search("42"))
+    print(simple_trie.contains_prefix("42"))

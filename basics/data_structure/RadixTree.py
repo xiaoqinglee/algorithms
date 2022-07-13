@@ -152,7 +152,7 @@ class RadixTree:
             else:  # string1_suffix != "" and string2_suffix != ""
                 return False, None
 
-    def starts_with(self, prefix: str) -> bool:
+    def contains_prefix(self, prefix: str) -> bool:
         word_suffix = prefix
         node = self
 
@@ -189,17 +189,17 @@ if __name__ == "__main__":
     print("======")
     t.insert("hello")
     print(t.search(""))
-    print(t.starts_with(""))
+    print(t.contains_prefix(""))
     print("==============")
     t.insert("")
     print(t.search(""))
-    print(t.starts_with(""))
+    print(t.contains_prefix(""))
     print("============================")
     t.delete("")
     print(t.search(""))
-    print(t.starts_with(""))
+    print(t.contains_prefix(""))
     print("======")
     t.delete("hello")
     print(t.search(""))
-    print(t.starts_with(""))
+    print(t.contains_prefix(""))
     print("================")
