@@ -5,11 +5,19 @@ import (
 	"math/rand"
 )
 
-type key interface {
-	~int | ~int8 | ~int16 | ~int32 | ~int64 | ~string
+type SignedInteger interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64
 }
 
-type FHQTreap[K key, V any] struct {
+type Float interface {
+	~float32 | ~float64
+}
+
+type Ordered interface { //参考https://pkg.go.dev/golang.org/x/exp/constraints
+	SignedInteger | Float | ~string
+}
+
+type FHQTreap[K Ordered, V any] struct {
 	len      int
 	Key      K
 	Val      V

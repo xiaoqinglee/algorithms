@@ -1,9 +1,8 @@
 package main
 
-import (
-	"github.com/xiaoqinglee/algorithms/problems/Concurrency"
-)
+import "github.com/xiaoqinglee/algorithms/basics/data_structure"
 
 func main() {
-	Concurrency.TestZeroEvenOdd()
+	//Concurrency.TestZeroEvenOdd()
+	data_structure.TestFHQTreap()
 }
