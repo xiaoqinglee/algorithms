@@ -17,4 +17,29 @@ banker's algorithm.
 
 ### problems
 
-leetcode problems
+leetcode problems:
+
+Backtracking、
+BinarySearch、
+Concurrency、
+Design、
+DivideandConquer、
+DynamicProgramming、
+GraphMinimumSpanningTree、
+GraphShortestPath、
+GraphTraversal、
+Greedy、
+HashTable、
+LinkedList、
+Math、
+Matrix、
+PrefixSum、
+RangeQueryandIntervalQuery、
+Simulation、
+SlidingWindow、
+Sorting、
+StackandQueue、
+String、
+TopologicalSorting、
+TreeTraversal、
+TwoPointers 
