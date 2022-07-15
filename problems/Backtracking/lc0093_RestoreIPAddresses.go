@@ -10,6 +10,9 @@ func restoreIpAddresses(s string) []string {
 		if len(chars) > 1 && chars[0] == '0' {
 			return false
 		}
+		if len(chars) <= 2 {
+			return true
+		}
 		integer, _ := strconv.Atoi(chars)
 		return 0 <= integer && integer <= 255
 	}
