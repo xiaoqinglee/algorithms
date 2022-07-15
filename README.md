@@ -4,7 +4,7 @@
 
 data_structure: 
 hash table、 binary heap、 ring buffer、 skiplist、
-treap、 segment tree、 interval tree、 union find、
+BST、 treap、 segment tree、 interval tree、 union find、
 trie、 radix tree、 suffix tree、 suffix array、
 huffman tree、 optimal BST.
 
@@ -42,4 +42,4 @@ StackandQueue、
 String、
 TopologicalSorting、
 TreeTraversal、
-TwoPointers 
+TwoPointers
