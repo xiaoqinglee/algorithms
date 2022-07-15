@@ -1,4 +1,4 @@
-package MonotonicQueue
+package StackandQueue
 
 import (
 	"container/list"
