@@ -17,26 +17,27 @@ func restoreIpAddresses(s string) []string {
 		return 0 <= integer && integer <= 255
 	}
 
-	nums_ := make([]string, 4)
+	var nums_ []string
 	var result []string
 
-	var traverse func([]string, int, int)
-	traverse = func(nums []string, hasFixedFirstNNums int, hasConsideredFirstNChars int) {
-		if hasFixedFirstNNums == 4 || hasConsideredFirstNChars == len(s) {
-			if hasFixedFirstNNums == 4 && hasConsideredFirstNChars == len(s) {
+	var traverse func(int)
+	traverse = func(hasSolvedFirstNChars int) {
+		if len(nums_) == 4 || hasSolvedFirstNChars == len(s) {
+			if len(nums_) == 4 && hasSolvedFirstNChars == len(s) {
 				result = append(result, strings.Join(nums_, "."))
 			}
 			return
 		}
 
 		//rightSideBorder 不包含
-		for rightSideBorder := hasConsideredFirstNChars + 1; rightSideBorder <= len(s) && rightSideBorder-hasConsideredFirstNChars <= 3; rightSideBorder += 1 {
-			if isValidNum(s[hasConsideredFirstNChars:rightSideBorder]) {
-				nums[hasFixedFirstNNums] = s[hasConsideredFirstNChars:rightSideBorder]
-				traverse(nums, hasFixedFirstNNums+1, rightSideBorder)
+		for rightSideBorder := hasSolvedFirstNChars + 1; rightSideBorder <= len(s) && rightSideBorder-hasSolvedFirstNChars <= 3; rightSideBorder += 1 {
+			if isValidNum(s[hasSolvedFirstNChars:rightSideBorder]) {
+				nums_ = append(nums_, s[hasSolvedFirstNChars:rightSideBorder])
+				traverse(rightSideBorder)
+				nums_ = nums_[:len(nums_)-1]
 			}
 		}
 	}
-	traverse(nums_, 0, 0)
+	traverse(0)
 	return result
 }
