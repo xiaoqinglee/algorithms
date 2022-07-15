@@ -1,4 +1,4 @@
-package problems
+package TreeTraversal
 
 func verifyPostorder(postorder []int) bool {
 	if len(postorder) <= 1 {

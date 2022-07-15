@@ -1,4 +1,4 @@
-package problems
+package TreeTraversal
 
 import (
 	"github.com/xiaoqinglee/algorithms/pkg"
