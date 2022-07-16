@@ -203,3 +203,5 @@ func (this *HashMap) Remove(key string) (ok bool) {
 //	  func (l *List) PushBack(v interface{}) *Element  // 在队列最后插入元素
 //	  func (l *List) PushFront(v interface{}) *Element  // 在队列头部插入元素
 //	  func (l *List) Remove(e *Element) interface{} // 删除某个元素
+//	  func (l *List) PushBackList(other *List) // 在队列最后插入接上新队列
+//	  func (l *List) PushFrontList(other *List) // 在队列头部插入接上新队列
