@@ -222,6 +222,14 @@ more to see:
     https://docs.python.org/zh-cn/3/library/decimal.html  # 有更长精度的固定精度浮点数表示
     https://docs.python.org/zh-cn/3/library/fractions.html  # 任意精度（无损）的有理数表示
 
+    https://pkg.go.dev/math/big#pkg-overview  # 任意精度（无损）的有理数表示
+
+    python的fractions包和golang的math.big包都支持用字符串作为参数初始化一个任意精度的有理数,
+
+    注意:
+        assert Fraction(1.1) == 1.1
+        assert Fraction("1.1") == Fraction(11, 10)
+        assert Fraction(1.1) != Fraction("1.1")
 
 
 # https://zh.wikipedia.org/wiki/IEEE_754
