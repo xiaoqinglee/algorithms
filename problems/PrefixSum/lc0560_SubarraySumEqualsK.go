@@ -28,9 +28,7 @@ func subarraySum(nums []int, k int) int {
 				fmt.Printf("找到子数组nums[%v..%v]: %v\n",
 					lastElementIndex+1, i, nums[lastElementIndex+1:i+1])
 			}
-			for range lastElementIndexes {
-				count += 1
-			}
+			count += len(lastElementIndexes)
 		}
 		sumToLastIndexes[sum] = append(sumToLastIndexes[sum], i)
 	}
