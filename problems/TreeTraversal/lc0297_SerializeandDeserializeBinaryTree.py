@@ -38,25 +38,27 @@ class Codec:
                 pass
             elif char in ",]":
                 if len(current) > 0:
-                    if current[-1] == "l":
+                    current_node: str = "".join(current)
+                    if current_node == "null":
                         nodes.append(None)
                     else:
-                        val = int(''.join(current))
+                        val = int(current_node)
                         nodes.append(TreeNode(val=val))
                     current = []
                 else:
-                    # do nothing
+                    # data is "[]"
                     pass
             else:
                 current.append(char)
 
-        root: TreeNode | None = None
-        nodes_in_prev_level: list[TreeNode | None] = []
-        nodes_in_curr_level: list[TreeNode | None] = []
         if len(nodes) == 0:
             return None
-        nodes_in_prev_level.append(nodes.popleft())
-        while True > 0:
+
+        root: TreeNode | None = None
+        nodes_in_prev_level: list[TreeNode | None] = [nodes.popleft()]
+        nodes_in_curr_level: list[TreeNode | None] = []
+
+        while True:
             for index, node in enumerate(nodes_in_prev_level):
                 if root is None:
                     root = node
