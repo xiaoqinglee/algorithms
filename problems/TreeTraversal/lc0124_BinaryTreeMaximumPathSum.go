@@ -1,7 +1,7 @@
 package TreeTraversal
 
 import (
-	"github.com/xiaoqinglee/algorithms/pkg"
+	. "github.com/xiaoqinglee/algorithms/pkg"
 	"math"
 )
 
@@ -13,7 +13,7 @@ import (
  *     Right *TreeNode
  * }
  */
-func maxPathSum(root *pkg.TreeNode) int {
+func maxPathSum(root *TreeNode) int {
 
 	// 题目要我们找出经过某一个node和该node的0、1或2个孩子节点形成的路径，
 	// 且这个路径上所有节点的权重相加之和最大，求这个权重之和X。
@@ -37,19 +37,20 @@ func maxPathSum(root *pkg.TreeNode) int {
 
 	result := math.MinInt32
 
-	var singlePathSum func(node *pkg.TreeNode) int
-	singlePathSum = func(node *pkg.TreeNode) int {
+	var singlePathSum func(node *TreeNode) int
+	singlePathSum = func(node *TreeNode) int {
 		if node == nil {
 			return 0
 		}
-		leftPathSum := max(0, singlePathSum(node.Left))
-		rightPathSum := max(0, singlePathSum(node.Right))
+		leftSinglePathSum := singlePathSum(node.Left)
+		rightSinglePathSum := singlePathSum(node.Right)
 
-		resultCandidate := leftPathSum + rightPathSum + node.Val
+		resultCandidate := max(0, leftSinglePathSum) + max(0, rightSinglePathSum) + node.Val
 		result = max(resultCandidate, result)
 
-		return max(leftPathSum, rightPathSum) + node.Val
+		return max(max(0, leftSinglePathSum), max(0, rightSinglePathSum)) + node.Val
 	}
+
 	singlePathSum(root)
 	return result
 }
