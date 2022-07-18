@@ -11,7 +11,7 @@ class Solution:
     def sortedArrayToBST(self, nums: list[int]) -> TreeNode | None:
 
         def build_tree(left, right) -> TreeNode | None:
-            print(left, right)
+
             if left > right:
                 return None
             elif left == right:

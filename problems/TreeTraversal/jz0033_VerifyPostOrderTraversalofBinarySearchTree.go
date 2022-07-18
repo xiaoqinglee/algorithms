@@ -16,7 +16,7 @@ func verifyPostorder(postorder []int) bool {
 		//注意，要对左右子树上所有的元素进行验证
 		if rightTreeFirstElementIndex == -1 { // i是左子树的元素
 			// do noting
-		} else { // i是左子树的元素
+		} else { // i是右子树的元素
 			if val <= postorder[len(postorder)-1] {
 				return false
 			}
