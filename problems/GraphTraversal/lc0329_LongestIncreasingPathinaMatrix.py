@@ -46,12 +46,12 @@ class Solution:
             adj_points: list[Point] = graph.get(start_point, [])
             longest_path_: int = 0
             child_v_on_longest_path_: Point = None
-            if len(adj_points) != 0:
-                for adj_point in adj_points:
-                    path_len = compute_longest_path(adj_point) + 1
-                    if path_len > longest_path_:
-                        longest_path_ = path_len
-                        child_v_on_longest_path_ = adj_point
+
+            for adj_point in adj_points:
+                path_len = compute_longest_path(adj_point) + 1
+                if path_len > longest_path_:
+                    longest_path_ = path_len
+                    child_v_on_longest_path_ = adj_point
 
             longest_path[i][j] = longest_path_
             child_v_on_longest_path[i][j] = child_v_on_longest_path_

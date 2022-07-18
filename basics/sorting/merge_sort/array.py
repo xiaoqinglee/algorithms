@@ -18,7 +18,7 @@ def merge_sort(nums: list[int], key: Callable[[int], int] = lambda x: x) -> list
         right_pointer = mid + 1
         merging_pointer = left
         while left_pointer <= mid and right_pointer <= right:
-            if key(container[left_pointer]) <= key(container[right_pointer]):
+            if key(container[left_pointer]) <= key(container[right_pointer]):  # 归并排序应当是稳定的
                 nums[merging_pointer] = container[left_pointer]
                 left_pointer += 1
             else:
