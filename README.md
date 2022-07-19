@@ -9,6 +9,7 @@ trie、 radix tree、 suffix tree、 suffix array、
 huffman tree、 optimal BST.
 
 sort: 
+bubble sort、 insertion sort、 selection sort、
 merge sort、 quick sort、 radix sort、
 data structure based sort (heap sort、 balanced search tree sort).
 
