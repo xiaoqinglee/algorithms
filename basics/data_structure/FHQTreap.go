@@ -2,20 +2,9 @@ package data_structure
 
 import (
 	"github.com/davecgh/go-spew/spew"
+	. "github.com/xiaoqinglee/algorithms/pkg"
 	"math/rand"
 )
-
-type SignedInteger interface {
-	~int | ~int8 | ~int16 | ~int32 | ~int64
-}
-
-type Float interface {
-	~float32 | ~float64
-}
-
-type Ordered interface { //参考https://pkg.go.dev/golang.org/x/exp/constraints
-	SignedInteger | Float | ~string
-}
 
 type FHQTreap[K Ordered, V any] struct {
 	len      int
