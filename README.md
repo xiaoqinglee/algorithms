@@ -1,4 +1,4 @@
-# algorithm
+# algorithms
 
 ### basics
 
