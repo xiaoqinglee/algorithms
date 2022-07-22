@@ -8,8 +8,7 @@ class Solution:
 		ugly_numbers: list[int] = [1]
 		count = 0
 		while True:
-			min_ugly_number = ugly_numbers[0]
-			heapq.heappop(ugly_numbers)
+			min_ugly_number = heapq.heappop(ugly_numbers)
 			count += 1
 			if count == n:
 				return min_ugly_number

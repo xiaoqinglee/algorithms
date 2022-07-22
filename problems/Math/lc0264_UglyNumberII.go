@@ -1,7 +1,11 @@
 package Math
 
-func nthUglyNumber(n int) int {
-	return -1
+import "fmt"
+
+func NthUglyNumber(n int) {
+	fmt.Println(nthUglyNumber1(n))
+	fmt.Println(nthUglyNumber2(n))
+	fmt.Println(nthUglyNumber3(n))
 }
 
 // 递归无优化
@@ -16,7 +20,7 @@ func nthUglyNumber1(n int) int {
 	}
 
 	count := 0
-	for i := 1; count != n; i += 1 {
+	for i := 1; ; i += 1 {
 		if isUglyNumber(i) {
 			count += 1
 			if count == n {
@@ -24,7 +28,6 @@ func nthUglyNumber1(n int) int {
 			}
 		}
 	}
-	return -1 // 满足编译器要求
 }
 
 // 记忆化函数缓存重复子问题结果
@@ -45,7 +48,7 @@ func nthUglyNumber2(n int) int {
 	}
 
 	count := 0
-	for i := 1; count != n; i += 1 {
+	for i := 1; ; i += 1 {
 		if isUglyNumber(i) {
 			count += 1
 			if count == n {
@@ -53,7 +56,6 @@ func nthUglyNumber2(n int) int {
 			}
 		}
 	}
-	return -1 // 满足编译器要求
 }
 
 // 动态规划按序打表
@@ -61,7 +63,7 @@ func nthUglyNumber3(n int) int {
 
 	isUglyNumberCache := make(map[int]bool)
 	count := 0
-	for i := 1; count != n; i += 1 { //要求i>0, 因为 0 % k = 0
+	for i := 1; ; i += 1 { //要求i>0, 因为 0 % k = 0
 		is := false
 		if i == 1 ||
 			(i%2 == 0 && isUglyNumberCache[i/2]) ||
@@ -75,5 +77,4 @@ func nthUglyNumber3(n int) int {
 		}
 		isUglyNumberCache[i] = is
 	}
-	return -1 // 满足编译器要求
 }
