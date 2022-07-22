@@ -7,7 +7,7 @@ class Solution:
 
         dp: list[list[int | None]] = [[None] * (len(text2) + 1) for _ in range(len(text1) + 1)]
 
-        def __longest_common_subsequence(i, j) -> int:
+        def _longest_common_subsequence(i, j) -> int:
             if dp[i][j] is not None:
                 return dp[i][j]
 
@@ -15,11 +15,11 @@ class Solution:
                 result = 0
             else:
                 if text1[i-1] == text2[j-1]:
-                    result = __longest_common_subsequence(i-1, j-1) + 1
+                    result = _longest_common_subsequence(i-1, j-1) + 1
                 else:  # text1[i-1] != text2[j-1]
-                    result = max(__longest_common_subsequence(i-1, j), __longest_common_subsequence(i, j-1))
+                    result = max(_longest_common_subsequence(i-1, j), _longest_common_subsequence(i, j-1))
 
             dp[i][j] = result
             return result
 
-        return __longest_common_subsequence(len(text1), len(text2))
+        return _longest_common_subsequence(len(text1), len(text2))
