@@ -2,13 +2,15 @@
 
 ### basics
 
-**data structure**: 
+**data structure:**
+
 hash table、 binary heap、 ring buffer、 skiplist、
 BST、 treap、 segment tree、 interval tree、 union find、
 trie、 radix tree、 suffix tree、 suffix array、
 huffman tree、 optimal BST.
 
-**sort**: 
+**sort:**
+
 bubble sort、 insertion sort、 selection sort、
 merge sort、 quick sort、 radix sort、
 data structure based sort (heap sort、 balanced search tree sort).
@@ -18,7 +20,8 @@ data structure based sort (heap sort、 balanced search tree sort).
 
 ### problems
 
-**leetcode problems**:
+**leetcode problems:**
+
 Backtracking、
 BinarySearch、
 Concurrency、
