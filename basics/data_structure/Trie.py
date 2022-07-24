@@ -123,7 +123,10 @@ class SimpleTrie:
     def search(self, word: str) -> bool:  # 无副作用
         current_trie = self
         for c in word:
-            # defaultdict 使用方括号操作符读或写不存在的键会创建键值对, in 测试不会创建键值对
+            # defaultdict(default_factory=None, /, [...]) --> dict with default factory
+            #
+            #         The default factory is called without arguments to produce
+            #         a new value when a key is not present, in __getitem__ only.
             if c not in current_trie.next:
                 return False
             current_trie = current_trie.next[c]
