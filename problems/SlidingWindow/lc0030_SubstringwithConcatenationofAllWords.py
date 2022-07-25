@@ -12,12 +12,13 @@ class Solution:
         # 最后一个有效的窗口第一个字符的索引i:
         # i + window_size - 1 <= len(s) - 1 可得 i <= len(s) - window_size
 
-        window_first_char_idx_to_window: dict[int, list[str]] = \
-            {i: Counter([
-                s[word_start:word_start + word_len]
-                for word_start
-                in range(i, i + window_size, word_len)
-            ])
+        window_first_char_idx_to_window: dict[int, Counter[str]] = \
+            {
+                i: Counter([
+                    s[word_start:word_start + word_len]
+                    for word_start
+                    in range(i, i + window_size, word_len)
+                ])
                 for i
                 in range(0, len(s)-window_size+1)
             }
