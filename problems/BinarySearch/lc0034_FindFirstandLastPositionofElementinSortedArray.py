@@ -1,6 +1,8 @@
 class Solution:
     def searchRange(self, nums: list[int], target: int) -> tuple[int, int]:
 
+        # 总是将问题转化为"右半区间是目的区间并尝试缩小右半区间"
+
         # 返回[lo, hi)第一个满足 >= target的元素的索引
         # 函数被调用时, 函数自己的视角: array[lo]不满足,  array[hi]满足
         # 返回值范围[lo...hi]: [lo, hi)内所有元素都满足 -> lo, [lo, hi)内所有元素都不满足 -> hi
