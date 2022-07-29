@@ -59,7 +59,7 @@ func (this *HashMap) rehash(rehashOperation int) {
 	}
 
 	oldBuckets := this.buckets
-	this.buckets = make([]*list.List, newNBuckets)
+	this.buckets = make([]*list.List, newNBuckets, newNBuckets)
 
 	for bucketIndex := range oldBuckets {
 		if oldBuckets[bucketIndex] == nil {
@@ -93,8 +93,8 @@ func (this *HashMap) Len() int {
 }
 
 func (this *HashMap) Put(key string, value interface{}) {
-	if this.len == 0 {
-		this.buckets = make([]*list.List, this.minNBuckets)
+	if len(this.buckets) == 0 {
+		this.buckets = make([]*list.List, this.minNBuckets, this.minNBuckets)
 	}
 	bucketIdx := this.getBucketIndex(key)
 	if this.buckets[bucketIdx] == nil {
