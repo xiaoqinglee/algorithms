@@ -18,35 +18,35 @@ class PriorityQueue:
             if element_index == 0:
                 break
             index_of_parent = (element_index - 1) // 2
-            if self.__has_higher_priority(self.__elements[index_of_parent], self.__elements[element_index]):
+            if self.__has_higher_priority(self.__elements[element_index], self.__elements[index_of_parent]):
+                self.__elements[element_index], self.__elements[index_of_parent] = \
+                    self.__elements[index_of_parent], self.__elements[element_index]
+                element_index = index_of_parent
+            else:
                 break
-            self.__elements[element_index], self.__elements[index_of_parent] = \
-                self.__elements[index_of_parent], self.__elements[element_index]
-            element_index = index_of_parent
 
     def __sink_down(self, element_index: int) -> None:
         while True:
-            children_indexes = []
-            if 2*element_index + 1 <= self.size() - 1:
-                children_indexes.append(2*element_index + 1)
-            if 2*element_index + 2 <= self.size() - 1:
-                children_indexes.append(2*element_index + 2)
+            child_indexes: list[int] = []
+            if 2 * element_index + 1 <= self.size() - 1:
+                child_indexes.append(2 * element_index + 1)
+            if 2 * element_index + 2 <= self.size() - 1:
+                child_indexes.append(2 * element_index + 2)
 
-            if len(children_indexes) == 0:
+            if len(child_indexes) == 0:
                 break
-            elif len(children_indexes) == 1:
-                index_of_child_with_higher_priority = children_indexes[0]
-            else:  # len(children_indexes) == 2
-                index_of_child_with_higher_priority = children_indexes[0] \
-                    if self.__has_higher_priority(self.__elements[children_indexes[0]],
-                                                  self.__elements[children_indexes[1]]) \
-                    else children_indexes[1]
-            if self.__has_higher_priority(self.__elements[element_index],
-                                          self.__elements[index_of_child_with_higher_priority]):
+            index_of_child_with_higher_priority = child_indexes[0]
+            if (len(child_indexes) == 2 and
+                    self.__has_higher_priority(self.__elements[child_indexes[1]],
+                                               self.__elements[child_indexes[0]])):
+                index_of_child_with_higher_priority = child_indexes[1]
+            if self.__has_higher_priority(self.__elements[index_of_child_with_higher_priority],
+                                          self.__elements[element_index]):
+                self.__elements[index_of_child_with_higher_priority], self.__elements[element_index] = \
+                    self.__elements[element_index], self.__elements[index_of_child_with_higher_priority]
+                element_index = index_of_child_with_higher_priority
+            else:
                 break
-            self.__elements[index_of_child_with_higher_priority], self.__elements[element_index] = \
-                self.__elements[element_index], self.__elements[index_of_child_with_higher_priority]
-            element_index = index_of_child_with_higher_priority
 
     def size(self) -> int:
         return len(self.__elements)

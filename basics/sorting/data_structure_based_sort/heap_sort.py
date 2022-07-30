@@ -19,4 +19,6 @@ def heap_sort(nums: list[int]) -> list[int]:
     while not heap.is_empty():
         sorted_2.append(heap.pop())
 
+    assert sorted_ == sorted_2
+
     return sorted_
