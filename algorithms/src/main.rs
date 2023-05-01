@@ -1,5 +1,5 @@
-use algorithms::problems::lc0217_contains_duplicate::Solution;
+use algorithms::problems::jz003_find_repeat_number::Solution;
 
 fn main() {
-    dbg!(Solution::contains_duplicate(vec![42, 42, 43]));
+    dbg!(Solution::find_repeat_number(vec![2, 3, 1, 0, 2, 5, 3]));
 }
