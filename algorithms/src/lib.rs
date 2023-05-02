@@ -1,2 +1,2 @@
-pub mod util;
 pub mod problems;
+pub mod util;
