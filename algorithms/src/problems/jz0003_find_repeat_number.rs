@@ -5,7 +5,7 @@ use std::collections::HashSet;
 impl Solution {
     // pub fn find_repeat_number(nums: Vec<i32>) -> i32 {
     //     let mut set = HashSet::new();
-    //     match nums.iter().find(|&&x| set.insert(x) == false) {
+    //     match nums.iter().find(|&&x| !set.insert(x)) {
     //         Some(&x) => x,
     //         None => panic!("repeated number not found"),
     //     }
