@@ -6,7 +6,7 @@ class Solution:
 
         def binary_search_right_half_first_index(lo: int, hi: int) -> int:
             # 返回第一个小于等于nums[len(nums)-1]的元素的索引
-            # 函数认为array[lo] > nums[len(nums)-1], array[hi] <= nums[len(nums)-1]
+            # 当前函数认为array[hi] <= nums[len(nums)-1]
             while True:
                 if lo == hi:
                     return lo
@@ -17,7 +17,7 @@ class Solution:
                     hi = mid
 
         def binary_search_target_index(lo: int, hi: int) -> int:
-            # 函数认为[lo...hi]是个递增序列, 元素各不同
+            # 当前函数认为[lo...hi]是个递增序列, 元素各不同
             while True:
                 if lo > hi:
                     return -1

@@ -67,7 +67,7 @@ class SuffixArray:
 
         # lower_boundary是第一个满足suffix[:len(substring)] >= substring的元素的索引
         def binary_search_lower_boundary(lo: int, hi: int) -> int:
-            # 函数被调用时, 函数自己的视角: array[lo]不满足,  array[hi]满足
+            # 函数被调用时, 函数自己的视角: array[hi]满足
             # 返回值范围[lo...hi]: [lo, hi)内所有元素都满足 -> lo, [lo, hi)内所有元素都不满足 -> hi
             while True:
                 if lo == hi:
@@ -80,7 +80,7 @@ class SuffixArray:
 
         # upper_boundary是第一个满足suffix[:len(substring)] > substring的元素的索引
         def binary_search_upper_boundary(lo: int, hi: int) -> int:
-            # 函数被调用时, 函数自己的视角: array[lo]不满足,  array[hi]满足
+            # 函数被调用时, 函数自己的视角: array[hi]满足
             # 返回值范围[lo...hi]: [lo, hi)内所有元素都满足 -> lo, [lo, hi)内所有元素都不满足 -> hi
             while True:
                 if lo == hi:
