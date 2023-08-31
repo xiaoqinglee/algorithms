@@ -1,0 +1,5 @@
+use algorithms::ArrayStackQueue::jz0003_FindRepeatNumber::Solution;
+
+fn main() {
+    dbg!(Solution::find_repeat_number(vec![2, 3, 1, 0, 2, 5, 3]));
+}

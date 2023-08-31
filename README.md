@@ -15,13 +15,12 @@ bubble sort、 insertion sort、 selection sort、
 merge sort、 quick sort、 radix sort、
 data structure based sort (heap sort、 balanced search tree sort).
 
-**banker's algorithm**
-
 
 ### problems
 
 **leetcode problems:**
 
+ArrayStackQueue、
 Backtracking、
 BinarySearch、
 Concurrency、
@@ -41,7 +40,6 @@ RangeQueryandIntervalQuery、
 Simulation、
 SlidingWindow、
 Sorting、
-StackandQueue、
 String、
 TopologicalSorting、
 TreeTraversal、
