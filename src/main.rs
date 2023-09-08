@@ -1,5 +1,8 @@
-use algorithms::ArrayStackQueue::jz0003_FindRepeatNumber::Solution;
+use algorithms::Simulation::lc0165_CompareVersion::Solution;
 
 fn main() {
-    dbg!(Solution::find_repeat_number(vec![2, 3, 1, 0, 2, 5, 3]));
+    dbg!(Solution::compare_version(
+        String::from("1.1"),
+        String::from("1.1.0")
+    ));
 }
