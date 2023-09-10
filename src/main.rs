@@ -1,9 +1,6 @@
-use algorithms::Simulation::lc0048_RotateImage::Solution;
+use algorithms::Backtracking::lc0494_TargetSum::Solution;
 
 fn main() {
-    dbg!(Solution::rotate(&mut vec![
-        vec![1, 2, 3],
-        vec![4, 5, 6],
-        vec![7, 8, 9],
-    ]));
+    // Solution::find_target_sum_ways(vec![1, 1, 1], 3);
+    Solution::find_target_sum_ways(vec![100], -200);
 }
