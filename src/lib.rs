@@ -2,6 +2,8 @@ pub mod ArrayStackQueue;
 pub mod Backtracking;
 pub mod BinarySearch;
 pub mod HashTable;
+pub mod LinkedList;
 pub mod Math;
 pub mod Simulation;
+pub mod TreeTraversal;
 pub mod util;

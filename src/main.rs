@@ -1,6 +1,5 @@
-use algorithms::Backtracking::lc0494_TargetSum::Solution;
+use algorithms::LinkedList::lc0206_ReverseLinkedList::Solution;
 
 fn main() {
-    // Solution::find_target_sum_ways(vec![1, 1, 1], 3);
-    Solution::find_target_sum_ways(vec![100], -200);
+    dbg!(Solution::reverse_list(None));
 }
