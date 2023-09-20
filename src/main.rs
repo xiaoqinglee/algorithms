@@ -1,5 +1,6 @@
-use algorithms::LinkedList::lc0206_ReverseLinkedList::Solution;
+use algorithms::Greedy::lc0860_LemonadeChange::Solution;
 
 fn main() {
-    dbg!(Solution::reverse_list(None));
+    dbg!(Solution::lemonade_change(vec![5, 5, 5, 10, 20]));
+    dbg!(Solution::lemonade_change(vec![5, 5, 10, 10, 20]));
 }
