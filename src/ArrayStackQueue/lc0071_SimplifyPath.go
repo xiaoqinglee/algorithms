@@ -7,15 +7,16 @@ import (
 // https://leetcode.cn/problems/simplify-path
 func simplifyPath(path string) string {
 	var folders []string
-	var currentFolder []rune
-	var currentFolderInString string
+	var currentFolderNameBuff []rune
 
-	processCurrentFolder := func() {
-		currentFolderInString = string(currentFolder)
-		currentFolder = currentFolder[:0]
-		if currentFolderInString == "." {
+	processCurrentFolderName := func() {
+		currentFolderName := string(currentFolderNameBuff)
+		if currentFolderName == "." {
 			//do nothing
-		} else if currentFolderInString == ".." { //弹栈
+		} else if currentFolderName == ".." { //弹栈
+			if len(folders) == 0 {
+				panic("invalid input")
+			}
 			top := folders[len(folders)-1]
 			if top == "/" { //根目录
 				//do nothing
@@ -23,29 +24,30 @@ func simplifyPath(path string) string {
 				folders = folders[:len(folders)-1]
 			}
 		} else { //压栈
-			folders = append(folders, currentFolderInString)
+			folders = append(folders, currentFolderName)
 		}
+		currentFolderNameBuff = currentFolderNameBuff[:0]
 	}
 
 	for i, char := range path {
+		if char == '/' && i == 0 { //根目录
+			folders = append(folders, "/")
+			continue
+		}
+		if char == '/' && i > 0 && path[i-1] == '/' { // 连续的 '/'
+			// do nothing
+			continue
+		}
 		if char == '/' {
-			if len(currentFolder) == 0 {
-				if i == 0 { //根目录
-					folders = append(folders, "/")
-				} else if path[i-1] == '/' { //连续的'/'符号
-					//do nothing
-				}
-			} else {
-				processCurrentFolder()
-			}
+			processCurrentFolderName()
 		} else {
-			currentFolder = append(currentFolder, char)
+			currentFolderNameBuff = append(currentFolderNameBuff, char)
 		}
 	}
 
-	// The path does not end with a trailing '/'.
-	if len(currentFolder) > 0 {
-		processCurrentFolder()
+	// when the path does not end with a trailing '/'
+	if len(currentFolderNameBuff) > 0 {
+		processCurrentFolderName()
 	}
 
 	if len(folders) > 0 && folders[0] == "/" {

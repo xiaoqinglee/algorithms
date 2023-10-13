@@ -12,12 +12,12 @@ func search(nums []int, target int) int {
 			return -1
 		}
 		midIndex := (leftIndex + rightIndex) / 2
-		if nums[midIndex] == target {
-			return midIndex
-		} else if nums[midIndex] > target {
+		if nums[midIndex] > target {
 			rightIndex = midIndex - 1
 		} else if nums[midIndex] < target {
 			leftIndex = midIndex + 1
+		} else { // leftIndex == rightIndex
+			return midIndex
 		}
 	}
 }

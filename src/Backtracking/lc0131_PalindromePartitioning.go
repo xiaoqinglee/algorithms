@@ -33,17 +33,17 @@ func partition(s string) [][]string {
 	var currenPartition []string
 
 	var backtrace func(int)
-	backtrace = func(hasSolvedFirstNChars int) {
-		if hasSolvedFirstNChars == len(s) {
+	backtrace = func(sourceStringFirstNCharsArePalindromeWords int) {
+		if sourceStringFirstNCharsArePalindromeWords == len(s) {
 			currenPartitionCopy := make([]string, len(currenPartition), len(currenPartition))
 			copy(currenPartitionCopy, currenPartition)
 			partitions = append(partitions, currenPartitionCopy)
 			return
 		}
 
-		for subStringLastCharIndex := hasSolvedFirstNChars; subStringLastCharIndex <= len(s)-1; subStringLastCharIndex += 1 {
-			if isPalindrome[hasSolvedFirstNChars][subStringLastCharIndex] {
-				currenPartition = append(currenPartition, s[hasSolvedFirstNChars:subStringLastCharIndex+1])
+		for subStringLastCharIndex := sourceStringFirstNCharsArePalindromeWords; subStringLastCharIndex <= len(s)-1; subStringLastCharIndex += 1 {
+			if isPalindrome[sourceStringFirstNCharsArePalindromeWords][subStringLastCharIndex] {
+				currenPartition = append(currenPartition, s[sourceStringFirstNCharsArePalindromeWords:subStringLastCharIndex+1])
 				backtrace(subStringLastCharIndex + 1)
 				currenPartition = currenPartition[:len(currenPartition)-1]
 			}

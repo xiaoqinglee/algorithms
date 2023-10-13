@@ -1,24 +1,47 @@
 package BinarySearch
 
-import "math"
+import (
+	"math"
+)
 
 // https://leetcode.cn/problems/sqrtx
 func mySqrt(x int) int {
-	foundIt := func(root int) bool {
-		return root*root <= x && x < (root+1)*(root+1)
+
+	isRootFloor := func(rootFloor int) bool {
+		if rootFloor == math.MaxInt32 { //避免下面的计算发生溢出
+			panic("unexpected")
+		}
+		return rootFloor*rootFloor <= x && x < (rootFloor+1)*(rootFloor+1)
 	}
-	leftCursor := 0
-	rightCursor := math.MaxInt32
-	// 答案在区间[leftCursor..rightCursor]中，只要区间元素个数不为零，就需要继续计算
-	for leftCursor <= rightCursor {
-		mid := (leftCursor + rightCursor) / 2
-		if foundIt(mid) {
-			return mid
-		} else if mid*mid < x {
-			leftCursor = mid + 1
-		} else if mid*mid > x {
-			rightCursor = mid - 1
+	isRootCeiling := func(rootCeiling int) bool {
+		if rootCeiling == 0 { //避免下面的计算出现负数
+			return x == 0
+		}
+		return (rootCeiling-1)*(rootCeiling-1) < x && x <= rootCeiling*rootCeiling
+	}
+	lo := 0
+	hi := math.MaxInt32
+	// rootCeiling 在闭区间区间[lo..hi]中, 下面的 for 循环求 rootCeiling
+	for {
+		if lo == hi {
+			break
+		}
+		rootCeiling := (lo + hi) / 2
+		if x <= rootCeiling*rootCeiling {
+			hi = rootCeiling
+		} else {
+			lo = rootCeiling + 1
 		}
 	}
-	return -1 //只是为了迁就语法，这里根本得不到执行
+	rootCeiling := lo
+	if !isRootCeiling(rootCeiling) {
+		panic("unexpected")
+	}
+	if isRootFloor(rootCeiling) {
+		return rootCeiling
+	} else if isRootFloor(rootCeiling - 1) {
+		return rootCeiling - 1
+	} else {
+		panic("unexpected")
+	}
 }

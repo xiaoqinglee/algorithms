@@ -2,15 +2,18 @@
 class Solution:
     def largestRectangleArea(self, heights: list[int]) -> int:
 
+        # 想象 input [1, 5, 4, 3, 2, 3, 4, 5, 6, 7, 1]。 input[4] 被弹出时，画一个底包含 index 4， 高为 input[4] 2 的矩形。
+
         # index为i处高度为heights[i]
-        # 尝试画一个包含heights[i]且高度为heights[i]的矩形
-        # i左侧第一个满足heights[l] < heights[i]的元素 l 是矩形的左边界(不包含)
-        # i右侧第一个满足heights[r] < heights[i]的元素 r 是矩形的右边界(不包含)
+        # 在heights[i]被弹出时，画一个底包含i且高度为heights[i]的矩形
+        # i左侧第一个满足 heights[l] < heights[i] 的索引 l 是矩形的左边界(不包含)
+        # i右侧第一个满足 heights[i] > heights[r] 的索引 r 是矩形的右边界(不包含)
         # 矩形的底是[l+1...r-1]
 
         # 构建一个自栈底到栈顶元素严格递增的单调栈,
-        # a元素入栈导致b元素(heights[i])被挤出, 那么a元素就是i右侧第一个小于heights[i]的元素heights[r]
-        # b出栈时(或b入栈时)b在该单调栈相邻的左侧元素就是在原数组中左侧第一个小于heights[i]的元素heights[l]
+        # heights[i] 出栈时(或 heights[i] 入栈时) 它在该单调栈相邻的左侧元素就是 heights[l]
+        # 当且仅当 heights[r] 元素入栈导致 heights[i] 元素被挤出
+
         # stack 元素 tuple[height, height_index]
         stack: list[tuple[int, int]] = []
 

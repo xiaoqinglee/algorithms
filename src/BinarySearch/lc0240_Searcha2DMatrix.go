@@ -1,7 +1,7 @@
 package BinarySearch
 
-// https://leetcode.cn/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/
-func findNumberIn2DArray(matrix [][]int, target int) bool {
+// https://leetcode.cn/problems/search-a-2d-matrix-ii
+func searchMatrix(matrix [][]int, target int) bool {
 	if len(matrix) == 0 || len(matrix[0]) == 0 {
 		return false
 	}
@@ -29,12 +29,12 @@ func findNumberIn2DArray(matrix [][]int, target int) bool {
 
 	row, col := 0, len(matrix[0])-1
 	for row <= len(matrix)-1 && col >= 0 {
-		if matrix[row][col] == target {
-			return true
-		} else if matrix[row][col] < target {
+		if matrix[row][col] < target {
 			row += 1
 		} else if matrix[row][col] > target {
 			col -= 1
+		} else { //matrix[row][col] == target
+			return true
 		}
 	}
 	return false

@@ -5,42 +5,38 @@ import "container/list"
 //https://leetcode.cn/problems/implement-stack-using-queues
 
 type MyStack struct {
-	stack *list.List
-	temp  *list.List
+	queue     *list.List
+	queueTemp *list.List
 }
 
 func Constructor() MyStack {
-	return MyStack{stack: list.New(), temp: list.New()}
+	return MyStack{queue: list.New(), queueTemp: list.New()}
 }
 
-func (this *MyStack) Push(x int) {
-	this.temp.PushBack(x)
-	for this.stack.Len() > 0 {
-		this.temp.PushBack(this.stack.Front().Value.(int))
-		this.stack.Remove(this.stack.Front())
+func (myStack *MyStack) Push(x int) {
+	myStack.queueTemp.PushBack(x)
+	for myStack.queue.Len() > 0 {
+		myStack.queueTemp.PushBack(myStack.queue.Remove(myStack.queue.Front()).(int))
 	}
-	this.stack, this.temp = this.temp, this.stack
+	myStack.queue, myStack.queueTemp = myStack.queueTemp, myStack.queue
 }
 
-func (this *MyStack) Pop() int {
-	if this.Empty() {
-		panic("Empty stack")
+func (myStack *MyStack) Pop() int {
+	if myStack.queue.Len() == 0 {
+		panic("empty stack")
 	}
-	val := this.stack.Front().Value.(int)
-	this.stack.Remove(this.stack.Front())
-	return val
+	return myStack.queue.Remove(myStack.queue.Front()).(int)
 }
 
-func (this *MyStack) Top() int {
-	if this.Empty() {
-		panic("Empty stack")
+func (myStack *MyStack) Top() int {
+	if myStack.queue.Len() == 0 {
+		panic("empty stack")
 	}
-	val := this.stack.Front().Value.(int)
-	return val
+	return myStack.queue.Front().Value.(int)
 }
 
-func (this *MyStack) Empty() bool {
-	return this.stack.Len() == 0
+func (myStack *MyStack) Empty() bool {
+	return myStack.queue.Len() == 0
 }
 
 /**

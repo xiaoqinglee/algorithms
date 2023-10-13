@@ -10,10 +10,10 @@ class Solution:
                 if lo == hi:
                     return lo
                 mid = (lo + hi) // 2
-                if nums[mid] < target:
-                    lo = mid + 1
-                else:
+                if nums[mid] >= target:
                     hi = mid
+                else:
+                    lo = mid + 1
 
         # 返回[lo, hi)第一个满足 > target的元素的索引
         # 函数被调用时, 函数自己的视角: array[hi]满足 > target
@@ -23,14 +23,14 @@ class Solution:
                 if lo == hi:
                     return lo
                 mid = (lo + hi) // 2
-                if nums[mid] <= target:
-                    lo = mid + 1
-                else:
+                if nums[mid] > target:
                     hi = mid
+                else:
+                    lo = mid + 1
 
         low_boundary = binary_search_1(0, len(nums))
-        high_boundary = binary_search_2(0, len(nums))
+        high_boundary = binary_search_2(low_boundary, len(nums))
         print("满足条件的子串切片:")
         print(nums[low_boundary:high_boundary])
 
-        return (low_boundary, high_boundary-1) if high_boundary - low_boundary > 0 else (-1, -1)
+        return (low_boundary, high_boundary - 1) if low_boundary < high_boundary else (-1, -1)
