@@ -4,11 +4,11 @@ class Solution:
         if start == target:
             return True
 
-        # Floyd 算法, 时间复杂度V^3
+        # Floyd–Warshall 算法, 时间复杂度V^3
 
         # v1 != v2,
-        # 从v1到v2的最短路径长度是reach_cost_min[v1][v2]的值, 是len(reach_via[v1][v2]) + 1.
-        # len(reach_via[v1][v2]) + 2 是包含起点和终点路径上所有的节点数.
+        # reach_cost_min[v1][v2] 是从 v1 到 v2 的最短路径长度
+        # reach_via[v1][v2] 是 从 v1 到 v2 经过的中转站节点列表
         reach_cost_min: list[list[int | float]] = [[float("inf")] * n for v in range(n)]
         reach_via: list[list[list[int]]] = [[[] for v in range(n)] for v in range(n)]  # 不含起点和终点
 
@@ -16,16 +16,18 @@ class Solution:
             v1, v2 = edge
             if v1 == v2:
                 continue
-            reach_cost_min[v1][v2] = min(reach_cost_min[v1][v2], 1)
+            reach_cost_min[v1][v2] = 1
 
-        for v1 in range(n):
-            for v2 in range(n):
-                for v3 in range(n):
-                    if v1 == v2 or v1 == v3 or v2 == v3:
+        # 中转节点应在在循环最外层
+        # https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm
+        for v_shortcut in range(n):
+            for v1 in range(n):
+                for v2 in range(n):
+                    if v1 == v2 or v1 == v_shortcut or v2 == v_shortcut:
                         continue
-                    if reach_cost_min[v1][v3] + reach_cost_min[v3][v2] < reach_cost_min[v1][v2]:
-                        reach_cost_min[v1][v2] = reach_cost_min[v1][v3] + reach_cost_min[v3][v2]
-                        reach_via[v1][v2] = reach_via[v1][v3] + [v3] + reach_via[v3][v2]
+                    if reach_cost_min[v1][v_shortcut] + reach_cost_min[v_shortcut][v2] < reach_cost_min[v1][v2]:
+                        reach_cost_min[v1][v2] = reach_cost_min[v1][v_shortcut] + reach_cost_min[v_shortcut][v2]
+                        reach_via[v1][v2] = reach_via[v1][v_shortcut] + [v_shortcut] + reach_via[v_shortcut][v2]
 
         # import pprint
         # pprint.pprint(reach_cost_min[start][target])
@@ -40,7 +42,7 @@ class Solution:
         # BFS 算法, 时间复杂度E+V
 
         # 无权重的有向无环或有环图的单源最短路径问题可以使用广度优先遍历,
-        # 如果是确定起点终点的最短路径问题那么我们可以在找到终点后提前停下来
+        # 在遍历到终点后算法就可以停下来了
 
         adj_vs: dict[int, set[int]] = {}
         visited: dict[int, bool] = {}
@@ -104,7 +106,7 @@ class Solution:
 #
 #     确定起点的最短路径问题(Single-destination shortest-paths problem)
 #         也叫单源最短路问题，即已知起始结点，求最短路径的问题。
-#         在边权非负时适合使用Dijkstra算法，若边权为负时则适合使用Bellman-ford算法或者SPFA算法。
+#         在边权非负时适合使用Dijkstra算法，存在负边权时则适合使用Bellman-ford算法或者SPFA算法。
 #
 #     确定终点的最短路径问题
 #         与确定起点的问题相反，该问题是已知终结结点，求最短路径的问题。

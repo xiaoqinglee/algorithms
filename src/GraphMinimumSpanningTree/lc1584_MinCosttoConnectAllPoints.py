@@ -10,6 +10,10 @@ class Solution:
 
         # Kruskal 算法, 时间复杂度ElogV
 
+        # https://en.wikipedia.org/wiki/Kruskal%27s_algorithm#Complexity
+        # For a graph with E edges and V vertices, Kruskal's algorithm can be shown to run in O(E log E) time,
+        # or equivalently, O(E log V) time, all with simple data structures.
+
         distance_sum: int = 0
         points = [tuple(p) for p in points]
         sets: UnionFind = UnionFind(from_vertexes=points)
@@ -36,8 +40,11 @@ class Solution:
 
         distance_sum: int = 0
 
+        # shortest_edge_to_spanning_tree[v] 表示生成树之外的某个节点 v 到生成树的最短距离
         shortest_edge_to_spanning_tree: list[int | float] = [float("inf")] * len(points)
+        # the_other_end_v_on_shortest_edge[v] 表示生成树之外的某个节点 v 到生成树的最短距离边的另一个节点 v', v' 在生成树上
         the_other_end_v_on_shortest_edge: list[int | None] = [None] * len(points)
+        # solved_vs 表示生成树上所有的点的集合
         solved_vs: set[int] = set()
 
         # 随便选择一个起点
