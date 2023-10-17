@@ -59,7 +59,7 @@ class Solution:
         def position_is_within_grid(row_index: int, column_index: int) -> bool:
             return 0 <= row_index <= len(grid) - 1 and 0 <= column_index <= len(grid[0]) - 1
 
-        def position_can_be_visited_but_is_not_visited(row_index: int, column_index: int) -> bool:
+        def position_can_be_visited_and_is_not_visited(row_index: int, column_index: int) -> bool:
             return grid[row_index][column_index] == '1'
 
         def traversal(row_index: int, column_index: int) -> None:
@@ -68,7 +68,7 @@ class Solution:
             result += 1
             positions_around_ = positions_around(row_index, column_index)
             for r, c in positions_around_:
-                if position_is_within_grid(r, c) and position_can_be_visited_but_is_not_visited(r, c):
+                if position_is_within_grid(r, c) and position_can_be_visited_and_is_not_visited(r, c):
                     traversal(r, c)
 
         traversal(0, 0)

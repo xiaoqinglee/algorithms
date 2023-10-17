@@ -1,7 +1,7 @@
 # https://leetcode.cn/problems/number-of-islands
 class Solution:
 
-    # 岛屿数量就是开始一次深度有限搜素或广度优先搜索的次数，是森林中树的个数
+    # 岛屿数量就是开始一次深度优先搜素或广度优先搜索的次数，是森林中树的个数
 
     # def numIslands(self, grid: list[list[str]]) -> int:  # 广度优先搜索（使用队列）
     #

@@ -4,13 +4,11 @@ class Solution:
 
         max_height_to_the_right: list[int] = height.copy()
         for i in range(len(height) - 2, -1, -1):
-            if max_height_to_the_right[i] < max_height_to_the_right[i+1]:
-                max_height_to_the_right[i] = max_height_to_the_right[i+1]
+            max_height_to_the_right[i] = max(max_height_to_the_right[i], max_height_to_the_right[i + 1])
 
         max_height_to_the_left: list[int] = height.copy()
-        for i in range(1, len(height) - 1):
-            if max_height_to_the_left[i] < max_height_to_the_left[i-1]:
-                max_height_to_the_left[i] = max_height_to_the_left[i-1]
+        for i in range(1, len(height)):
+            max_height_to_the_left[i] = max(max_height_to_the_left[i - 1], max_height_to_the_left[i])
 
         area_sum: int = 0
         for i in range(len(height)):
