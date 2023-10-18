@@ -1,7 +1,9 @@
 package main
 
-import "github.com/xiaoqinglee/algorithms/src/Concurrency"
+import (
+	"github.com/xiaoqinglee/algorithms/basics/data_structure"
+)
 
 func main() {
-	Concurrency.TestFoo()
+	data_structure.TestFHQTreap()
 }

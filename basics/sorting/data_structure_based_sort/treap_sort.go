@@ -21,7 +21,7 @@ func TreapSort(nums []int) []int {
 
 	var root *FHQTreap[int, int]
 	for _, num := range nums {
-		if val, ok := root.Get(num); ok {
+		if val, _, ok := root.GetByKey(num); ok {
 			root = root.Insert(num, val+1)
 		} else {
 			root = root.Insert(num, 1)

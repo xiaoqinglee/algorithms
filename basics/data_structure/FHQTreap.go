@@ -2,17 +2,31 @@ package data_structure
 
 import (
 	"github.com/davecgh/go-spew/spew"
+	"github.com/k0kubun/pp/v3"
 	. "github.com/xiaoqinglee/algorithms/pkg"
 	"math/rand"
 )
 
 type FHQTreap[K Ordered, V any] struct {
-	len      int
 	Key      K
 	Val      V
-	priority float64
 	L        *FHQTreap[K, V]
 	R        *FHQTreap[K, V]
+	len      int
+	priority float64
+}
+
+func (root *FHQTreap[K, V]) searchNodeByKey(key K) *FHQTreap[K, V] {
+	if root == nil {
+		return nil
+	}
+	if key == root.Key {
+		return root
+	} else if key < root.Key {
+		return root.L.searchNodeByKey(key)
+	} else {
+		return root.R.searchNodeByKey(key)
+	}
 }
 
 func (root *FHQTreap[K, V]) splitByKey(key K) (tree1, freeNode, tree2 *FHQTreap[K, V]) {
@@ -27,14 +41,12 @@ func (root *FHQTreap[K, V]) splitByKey(key K) (tree1, freeNode, tree2 *FHQTreap[
 	} else if key < root.Key {
 		tree1, freeNode, tree2 = root.L.splitByKey(key)
 		root.L = tree2
-		root.len -= tree1.Len()
-		root.len -= freeNode.Len()
+		root.len = root.L.Len() + 1 + root.R.Len()
 		return tree1, freeNode, root
 	} else {
 		tree1, freeNode, tree2 = root.R.splitByKey(key)
 		root.R = tree1
-		root.len -= tree2.Len()
-		root.len -= freeNode.Len()
+		root.len = root.L.Len() + 1 + root.R.Len()
 		return root, freeNode, tree2
 	}
 }
@@ -55,20 +67,18 @@ func (root *FHQTreap[K, V]) splitByRank(rank int) (tree1, freeNode, tree2 *FHQTr
 	} else if rank < rootRank {
 		tree1, freeNode, tree2 = root.L.splitByRank(rank)
 		root.L = tree2
-		root.len -= tree1.Len()
-		root.len -= 1
+		root.len = root.L.Len() + 1 + root.R.Len()
 		return tree1, freeNode, root
 	} else {
 		tree1, freeNode, tree2 = root.R.splitByRank(rank - rootRank)
 		root.R = tree1
-		root.len -= tree2.Len()
-		root.len -= 1
+		root.len = root.L.Len() + 1 + root.R.Len()
 		return root, freeNode, tree2
 	}
 }
 
+// 调用方要保证root中的key都小于tree中的key
 func (root *FHQTreap[K, V]) mergeWith(tree *FHQTreap[K, V]) (newTree *FHQTreap[K, V]) {
-	// 要求root中的key都小于tree中的key, 而且不会overlap
 	if tree == nil {
 		return root
 	}
@@ -78,33 +88,27 @@ func (root *FHQTreap[K, V]) mergeWith(tree *FHQTreap[K, V]) (newTree *FHQTreap[K
 	if root.priority > tree.priority {
 		newTree = root.R.mergeWith(tree)
 		root.R = newTree
-		root.len += tree.len
+		root.len = root.L.Len() + 1 + root.R.Len()
 		return root
 	} else {
 		newTree = root.mergeWith(tree.L)
 		tree.L = newTree
-		tree.len += root.len
+		tree.len = tree.L.Len() + 1 + tree.R.Len()
 		return tree
 	}
 }
 
-func (root *FHQTreap[K, V]) search(key K) *FHQTreap[K, V] {
-	if root == nil {
-		return nil
+func (root *FHQTreap[K, V]) Len() (len_ int) {
+	if root != nil {
+		return root.len
 	}
-	if key == root.Key {
-		return root
-	} else if key < root.Key {
-		return root.L.search(key)
-	} else {
-		return root.R.search(key)
-	}
+	return 0
 }
 
-func (root *FHQTreap[K, V]) Get(key K) (val V, ok bool) {
-	node := root.search(key)
+func (root *FHQTreap[K, V]) GetByKey(key K) (val V, rank int, ok bool) {
+	node := root.searchNodeByKey(key)
 	if node != nil {
-		return node.Val, true
+		return node.Val, node.L.Len() + 1, true
 	}
 	return
 }
@@ -124,31 +128,37 @@ func (root *FHQTreap[K, V]) GetByRank(rank int) (key K, val V) {
 }
 
 func (root *FHQTreap[K, V]) Insert(key K, val V) (newTree *FHQTreap[K, V]) {
-	node := root.search(key)
+	node := root.searchNodeByKey(key)
 	if node != nil {
 		node.Val = val
 		return root
 	}
-	tree1, _, tree2 := root.splitByKey(key)
+	tree1, freeNode, tree2 := root.splitByKey(key)
 	// assert freeNode is nil
+	if freeNode != nil {
+		panic("unexpected")
+	}
 	newNode := &FHQTreap[K, V]{
-		len:      1,
 		Key:      key,
 		Val:      val,
-		priority: rand.Float64(),
 		L:        nil,
 		R:        nil,
+		len:      1,
+		priority: rand.Float64(),
 	}
 	return tree1.mergeWith(newNode).mergeWith(tree2)
 }
 
-func (root *FHQTreap[K, V]) Remove(key K) (newTree *FHQTreap[K, V]) {
-	node := root.search(key)
+func (root *FHQTreap[K, V]) RemoveByKey(key K) (newTree *FHQTreap[K, V]) {
+	node := root.searchNodeByKey(key)
 	if node == nil {
 		return root
 	}
-	tree1, _, tree2 := root.splitByKey(key)
+	tree1, freeNode, tree2 := root.splitByKey(key)
 	// assert freeNode is not nil
+	if freeNode == nil {
+		panic("unexpected")
+	}
 	return tree1.mergeWith(tree2)
 }
 
@@ -156,17 +166,12 @@ func (root *FHQTreap[K, V]) RemoveByRank(rank int) (newTree *FHQTreap[K, V]) {
 	if rank < 0 || rank > root.Len() {
 		panic("invalid argument rank")
 	}
-	tree1, _, tree2 := root.splitByRank(rank)
+	tree1, freeNode, tree2 := root.splitByRank(rank)
 	// assert freeNode is not nil
-	return tree1.mergeWith(tree2)
-}
-
-func (root *FHQTreap[K, V]) Len() (len_ int) {
-	len_ = 0
-	if root != nil {
-		len_ += root.len
+	if freeNode == nil {
+		panic("unexpected")
 	}
-	return len_
+	return tree1.mergeWith(tree2)
 }
 
 //算法训练营 陈小玉 5.1 Treap
@@ -184,25 +189,26 @@ func TestFHQTreap() {
 	root = root.Insert("hel", 1500)
 	root = root.Insert("hello", 150000)
 
-	//spew.Dump(root)
+	pp.Println(root)
 
 	//spew.Dump(root.GetByRank(1))
 	//spew.Dump(root.GetByRank(2))
 	//spew.Dump(root.GetByRank(3))
 	//spew.Dump(root.GetByRank(4))
 
-	//root = root.Remove("he")
-	//root = root.Remove("h")
+	root = root.RemoveByKey("h")
+	root = root.RemoveByKey("hel")
 
-	//spew.Dump(root.GetByRank(1))
-	//spew.Dump(root.GetByRank(2))
+	spew.Dump(root.GetByKey("h"))
+	spew.Dump(root.GetByKey("he"))
 
-	//root = root.RemoveByRank(2)
+	//root = root.RemoveByRank(3)
 	//root = root.RemoveByRank(1)
-
+	//
 	//spew.Dump(root.GetByRank(1))
 	//spew.Dump(root.GetByRank(2))
 
-	spew.Dump(root.Get("h"))
-	spew.Dump(root.Get("he"))
+	//root = root.Insert("helloworld", 100000000)
+	//root = root.RemoveByKey("pika")
+	//pp.Println(root)
 }
