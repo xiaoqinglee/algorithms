@@ -1,4 +1,4 @@
-package HashTable
+package Map
 
 import (
 	"sort"

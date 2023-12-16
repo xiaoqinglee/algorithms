@@ -13,6 +13,12 @@ func permute(nums []int) [][]int {
 		if fixedFirstNElement == len(nums) {
 			oneCombination := make([]int, len(nums), len(nums))
 			copy(oneCombination, nums)
+			//作为对比，在 elixir 中：
+			//匿名函数可以捕获外部值成为闭包，但是无法递归调用自己.
+			//有名函数可以递归调用自己，但是无法捕获外部值成为闭包.
+			//see:
+			//Learn Functional Programming with Elixir by Ulisses Almeida
+			//Using Recursion with Anonymous Functions
 			result = append(result, oneCombination)
 		}
 		for i := fixedFirstNElement; i < len(nums); i++ {

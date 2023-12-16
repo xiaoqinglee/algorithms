@@ -31,7 +31,7 @@ GraphMinimumSpanningTree、
 GraphShortestPath、
 GraphTraversal、
 Greedy、
-HashTable、
+Map、
 LinkedList、
 Math、
 Matrix、

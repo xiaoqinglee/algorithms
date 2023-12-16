@@ -1,9 +1,9 @@
-import ArrayStackQueue.lc0088_MergeSortedArray
+import src.Map.lc0001_TwoSum
 
 if __name__ == '__main__':
-    nums1 = [1,2,3,0,0,0]
-    m = 3
-    nums2 = [2,5,6]
-    n = 3
-    ArrayStackQueue.lc0088_MergeSortedArray.Solution().merge(nums1, m, nums2, n)
-    print(nums1)
+    nums = [2, 7, 11, 15]
+    target = 9
+    print(src.Map.lc0001_TwoSum.two_sum(nums, target))
+
+# in project home directory, run:
+# python3 main.py

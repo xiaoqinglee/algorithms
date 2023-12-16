@@ -1,4 +1,4 @@
-package HashTable
+package Map
 
 // https://leetcode.cn/problems/intersection-of-two-arrays
 func intersection(nums1 []int, nums2 []int) []int {

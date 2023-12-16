@@ -1,9 +1,12 @@
 package main
 
 import (
-	"github.com/xiaoqinglee/algorithms/basics/data_structure"
+	"github.com/xiaoqinglee/algorithms/src/Map"
 )
 
 func main() {
-	data_structure.TestFHQTreap()
+	Map.TestTwoSum()
 }
+
+// in project home directory, run:
+// go run main.go
