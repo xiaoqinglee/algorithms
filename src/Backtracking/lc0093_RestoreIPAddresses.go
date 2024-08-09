@@ -30,11 +30,11 @@ func restoreIpAddresses(s string) []string {
 			return
 		}
 
-		//rightSideBorder 不包含
-		for rightSideBorder := hasSolvedFirstNChars + 1; rightSideBorder <= len(s) && rightSideBorder-hasSolvedFirstNChars <= 3; rightSideBorder += 1 {
-			if isValidNum(s[hasSolvedFirstNChars:rightSideBorder]) {
-				nums_ = append(nums_, s[hasSolvedFirstNChars:rightSideBorder])
-				traverse(rightSideBorder)
+		//子串包含rightSideBorder上的字符
+		for rightSideBorder := hasSolvedFirstNChars; rightSideBorder <= len(s)-1 && rightSideBorder-hasSolvedFirstNChars+1 <= 3; rightSideBorder += 1 {
+			if isValidNum(s[hasSolvedFirstNChars : rightSideBorder+1]) {
+				nums_ = append(nums_, s[hasSolvedFirstNChars:rightSideBorder+1])
+				traverse(rightSideBorder + 1)
 				nums_ = nums_[:len(nums_)-1]
 			}
 		}
