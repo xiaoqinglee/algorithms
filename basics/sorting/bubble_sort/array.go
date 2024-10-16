@@ -1,6 +1,6 @@
 package bubble_sort
 
-func BubbleSort(array []int) { //使得右边的有序子数组在其内部慢慢膨胀
+func BubbleSort(array []int) { //使得右边的有序子数组在其左边界慢慢膨胀
 	for floatedElementCount := 0; floatedElementCount < len(array)-1; floatedElementCount++ {
 		isChanged := false
 		for j := 0; j <= len(array)-2-floatedElementCount; j++ {
