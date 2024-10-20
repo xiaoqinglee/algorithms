@@ -12,7 +12,7 @@ impl Solution {
     //     }
     // }
     // pub fn find_repeat_number(nums: Vec<i32>) -> i32 {
-    //     let mut num_count = vec![0; nums.len()];
+    //     let mut num_count = vec![0; 100000]; // 已知 0 ≤ documents[i] ≤ n-1，2 <= n <= 100000
     //     nums.iter().for_each(|&x| num_count[x as usize] += 1);
     //     match num_count.iter().position(|&count| count > 1) {
     //         Some(index) => index as i32,
@@ -20,7 +20,7 @@ impl Solution {
     //     }
     // }
     pub fn find_repeat_number(nums: Vec<i32>) -> i32 {
-        let mut num_count = vec![0; nums.len()];
+        let mut num_count = vec![0; 100000]; // 已知 0 ≤ documents[i] ≤ n-1，2 <= n <= 100000
         match nums.iter().find(|&&num| {
             num_count[num as usize] += 1;
             num_count[num as usize] > 1
