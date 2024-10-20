@@ -14,7 +14,7 @@ def quick_sort(nums: list[int]) -> list[int]:
 
         left_pointer, right_pointer = left_index, right_index
 
-        # 要求左指针略过的值小于标兵，所以标兵所在的初始位置是个坑，而且是待填的第一个坑，
+        # 要求左指针掠过的值小于标兵，所以标兵所在的初始位置是个坑，而且是待填的第一个坑，
         # 所以先移动右指针。
         # 最后把标兵的值填充到中间的坑里。
         # 同一时刻仅有一个坑位。

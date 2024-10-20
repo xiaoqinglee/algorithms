@@ -21,7 +21,7 @@ func mySqrt(x int) int {
 	}
 	lo := 0
 	hi := math.MaxInt32
-	// rootCeiling 在闭区间区间[lo..hi]中, 下面的 for 循环求 rootCeiling
+	// 在闭区间 [lo..hi] 中寻找第一个大于等于 root 的整数，这个整数也就是 rootCeiling
 	for {
 		if lo == hi {
 			break

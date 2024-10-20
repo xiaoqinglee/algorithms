@@ -15,7 +15,6 @@ class Solution:
             return ord("0") <= ord(digit) <= ord("9")
 
         current_integer: int = 0
-        current_sub_string: list[str] = []
 
         for char in s:
             if is_digit_char(char):
@@ -25,7 +24,7 @@ class Solution:
                 current_integer = 0
                 char_stack.append(char)
             elif char == "]":
-                current_sub_string = []
+                current_sub_string: list[str] = []
                 while char_stack[-1] != "[":
                     current_sub_string.append(char_stack[-1])
                     char_stack.pop()

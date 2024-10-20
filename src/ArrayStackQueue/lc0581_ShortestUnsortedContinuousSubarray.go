@@ -51,8 +51,8 @@ func findUnsortedSubarray(nums []int) int {
 	//所有挤占事件中，
 	//所有挤出元素中的最大值就是subarray最大值max，
 	//所有挤入元素中的最小值就是subarray最小值min。
-	//subarray的第一个元素是原数组从左到右第一个大于min的元素(也就是被挤元素中index最小的那个元素)
-	//subarray的最后一个元素是原数组从右到左第一个小于max的元素
+	//subarray的第一个元素是原数组从左到右第一个大于min的元素
+	//subarray的最后一个元素是原数组从右到左第一个小于max的元素 (考虑[1,3,2,2,2])
 
 	squeezeOutValMax := math.MinInt32 //subarray最大值
 	squeezeInValMin := math.MaxInt32  //subarray最小值
@@ -60,17 +60,15 @@ func findUnsortedSubarray(nums []int) int {
 	var ascNums []ElemValAndIndex
 	for i, num := range nums {
 
-		squeezeHappened := false
 		for len(ascNums) > 0 && ascNums[len(ascNums)-1].Val > num {
-			squeezeHappened = true
+
 			squeezeOutValMax = max(squeezeOutValMax, ascNums[len(ascNums)-1].Val)
+			squeezeInValMin = min(squeezeInValMin, num)
+
 			ascNums = ascNums[:len(ascNums)-1]
 		}
 
 		ascNums = append(ascNums, ElemValAndIndex{Val: num, Index: i})
-		if squeezeHappened {
-			squeezeInValMin = min(squeezeInValMin, num)
-		}
 	}
 
 	if squeezeOutValMax == math.MinInt32 {

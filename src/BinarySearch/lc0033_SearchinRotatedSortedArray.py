@@ -3,8 +3,10 @@ class Solution:
     def search(self, nums: list[int], target: int) -> int:
 
         # 参考 lc 34
-        # 首先给数组分段, 右半段是小于等于nums[len(nums)-1]的元素, 左半段是大于nums[len(nums)-1]的元素,
-        # 右半段不为空，左半段可能为空
+        # 首先给数组分段,
+        # 右半段是小于等于nums[len(nums)-1]的元素, 左半段是大于nums[len(nums)-1]的元素,
+        # 右半段不为空，左半段可能为空.
+        # 然后在其中一段上寻找目标值.
 
         def binary_search_right_half_first_index(lo: int, hi: int) -> int:
             # 返回第一个小于等于nums[len(nums)-1]的元素的索引

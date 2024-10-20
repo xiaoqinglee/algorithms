@@ -30,7 +30,10 @@ class Solution:
 
         low_boundary = binary_search_1(0, len(nums))
         high_boundary = binary_search_2(low_boundary, len(nums))
-        print("满足条件的子串切片:")
-        print(nums[low_boundary:high_boundary])
 
-        return (low_boundary, high_boundary - 1) if low_boundary < high_boundary else (-1, -1)
+        if low_boundary < high_boundary:
+            print("满足条件的子串切片:")
+            print(nums[low_boundary:high_boundary])
+            return low_boundary, high_boundary - 1
+        else:
+            return -1, -1
