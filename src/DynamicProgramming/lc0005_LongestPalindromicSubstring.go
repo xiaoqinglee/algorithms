@@ -15,7 +15,7 @@ func longestPalindrome(s string) string {
 
 	populateDpTable := func() {
 		for subStringLen := 1; subStringLen <= len(s); subStringLen++ {
-			//子串左边界i（包含），有边界j（包含）
+			//子串左边界i（包含），右边界j（包含）
 			for i := range s {
 				j := i + (subStringLen - 1)
 				if j >= len(s) {
