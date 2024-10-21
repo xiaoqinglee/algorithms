@@ -24,4 +24,14 @@ class Solution:
                 max_subarray_right_index = i
                 max_subarray_element_value_sum = dp[i]
 
+        max_subarray_left_index = max_subarray_right_index  # 包含
+        sum_temp = nums[max_subarray_right_index]
+        while True:
+            if sum_temp == max_subarray_element_value_sum:
+                print("其中一个拥有最大子数组和的数组:")
+                print(nums[max_subarray_left_index:max_subarray_right_index + 1])
+                break
+            max_subarray_left_index -= 1
+            sum_temp += nums[max_subarray_left_index]
+
         return max_subarray_element_value_sum
