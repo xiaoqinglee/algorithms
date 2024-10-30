@@ -31,15 +31,19 @@ import "math"
 //    ])
 
 // 使用golang实现时，只要加了针对负数的溢出判断，处理负数的逻辑和处理正数的逻辑完全一样
-func reverse(x int) (integer int) {
-	for x != 0 {
+func reverse(x int) int {
+	rev := 0
+	for {
+		if x == 0 {
+			return rev
+		}
+
 		digit := x % 10
 		x = x / 10
-		if !(math.MinInt32/10 <= integer && integer <= math.MaxInt32/10) {
-			//溢出
+
+		if !(math.MinInt32/10 <= rev && rev <= math.MaxInt32/10) {
 			return 0
 		}
-		integer = integer*10 + digit
+		rev = rev*10 + digit
 	}
-	return
 }
