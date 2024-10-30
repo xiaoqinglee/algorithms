@@ -10,9 +10,9 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	var l3LastNode *ListNode
 	var l1NodeValue int
 	var l2NodeValue int
-	var addOneAtHigherDigit int
+	var addNAtHigherDigit int
 	for {
-		if l1 == nil && l2 == nil && addOneAtHigherDigit == 0 {
+		if l1 == nil && l2 == nil && addNAtHigherDigit == 0 {
 			break
 		}
 		if l1 == nil {
@@ -27,12 +27,12 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 			l2NodeValue = l2.Val
 			l2 = l2.Next
 		}
-		nodeSum := l1NodeValue + l2NodeValue + addOneAtHigherDigit
+		nodeSum := l1NodeValue + l2NodeValue + addNAtHigherDigit
 		if nodeSum >= 10 {
-			addOneAtHigherDigit = 1
-			nodeSum -= 10
+			addNAtHigherDigit = nodeSum / 10
+			nodeSum = nodeSum % 10
 		} else {
-			addOneAtHigherDigit = 0
+			addNAtHigherDigit = 0
 		}
 		l3NewNode := &ListNode{
 			Val: nodeSum,

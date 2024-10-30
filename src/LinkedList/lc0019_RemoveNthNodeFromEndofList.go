@@ -1,38 +1,27 @@
 package LinkedList
 
-import "github.com/xiaoqinglee/algorithms/pkg"
+import . "github.com/xiaoqinglee/algorithms/pkg"
 
 // https://leetcode.cn/problems/remove-nth-node-from-end-of-list/
-func removeNthFromEnd(head *pkg.ListNode, n int) *pkg.ListNode {
-	if head == nil || n <= 0 {
-		panic("Invalid Input head or n")
-	}
+func removeNthFromEnd(head *ListNode, n int) *ListNode {
+	var fastPointer, slowPointer, slowPreviousPointer *ListNode = head, head, nil
 
-	dummyHead := &pkg.ListNode{
-		Val:  0,
-		Next: head,
-	}
-
-	isLastNode := func(node *pkg.ListNode) bool {
-		return node != nil && node.Next == nil
-	}
-
-	firstPointer := dummyHead
+	fastPointer = head
 	for i := 1; i <= n; i++ {
-		if isLastNode(firstPointer) {
-			panic("Invalid Input head")
-		}
-		firstPointer = firstPointer.Next
+		fastPointer = fastPointer.Next
 	}
-	secondPointer := dummyHead
 
 	for {
-		if isLastNode(firstPointer) {
-			break
+		if fastPointer == nil {
+			if slowPreviousPointer == nil {
+				return slowPointer.Next //删去第一个节点
+			} else {
+				slowPreviousPointer.Next = slowPointer.Next
+				return head
+			}
 		}
-		firstPointer = firstPointer.Next
-		secondPointer = secondPointer.Next
+		fastPointer = fastPointer.Next
+		slowPreviousPointer = slowPointer
+		slowPointer = slowPointer.Next
 	}
-	secondPointer.Next = secondPointer.Next.Next
-	return dummyHead.Next
 }

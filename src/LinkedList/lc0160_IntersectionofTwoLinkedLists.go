@@ -1,6 +1,6 @@
 package LinkedList
 
-import "github.com/xiaoqinglee/algorithms/pkg"
+import . "github.com/xiaoqinglee/algorithms/pkg"
 
 /**
  * Definition for singly-linked list.
@@ -11,7 +11,7 @@ import "github.com/xiaoqinglee/algorithms/pkg"
  */
 
 // https://leetcode.cn/problems/intersection-of-two-linked-lists
-func getIntersectionNode(headA, headB *pkg.ListNode) *pkg.ListNode {
+func getIntersectionNode(headA, headB *ListNode) *ListNode {
 	aLen, bLen := 0, 0
 	for headANode := headA; headANode != nil; headANode = headANode.Next {
 		aLen += 1

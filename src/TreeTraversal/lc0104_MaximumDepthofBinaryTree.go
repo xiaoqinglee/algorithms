@@ -1,6 +1,6 @@
 package TreeTraversal
 
-import "github.com/xiaoqinglee/algorithms/pkg"
+import . "github.com/xiaoqinglee/algorithms/pkg"
 
 /**
  * Definition for a binary tree node.
@@ -12,7 +12,7 @@ import "github.com/xiaoqinglee/algorithms/pkg"
  */
 
 // https://leetcode.cn/problems/maximum-depth-of-binary-tree
-func maxDepth(root *pkg.TreeNode) int {
+func maxDepth(root *TreeNode) int {
 	if root == nil {
 		return 0
 	}

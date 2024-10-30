@@ -26,13 +26,13 @@ class Solution:
         dummy_head = ListNode(val=0, next=None)
         new_list_last_node = dummy_head
         while True:
-            if back_pointer < front_pointer:
+            if front_pointer > back_pointer:
                 break
-            elif back_pointer == front_pointer:
+            elif front_pointer == back_pointer:
                 new_list_last_node.next = array[front_pointer]
                 new_list_last_node = new_list_last_node.next
                 new_list_last_node.next = None
-            else:  # back_pointer > front_pointer
+            else:  # front_pointer < back_pointer
                 new_list_last_node.next = array[front_pointer]
                 new_list_last_node = new_list_last_node.next
                 new_list_last_node.next = array[back_pointer]

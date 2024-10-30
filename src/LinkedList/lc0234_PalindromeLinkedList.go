@@ -1,6 +1,6 @@
 package LinkedList
 
-import "github.com/xiaoqinglee/algorithms/pkg"
+import . "github.com/xiaoqinglee/algorithms/pkg"
 
 /**
  * Definition for singly-linked list.
@@ -11,22 +11,27 @@ import "github.com/xiaoqinglee/algorithms/pkg"
  */
 
 // https://leetcode.cn/problems/palindrome-linked-list
-func isPalindrome(head *pkg.ListNode) bool {
+func isPalindrome(head *ListNode) bool {
 	pointer := head
-	var nodes []*pkg.ListNode
+	var nodes []*ListNode
 	for pointer != nil {
 		nodes = append(nodes, pointer)
 		pointer = pointer.Next
 	}
-	pointer = head
+
 	for len(nodes) > 0 {
+
+		if len(nodes) == 1 {
+			return true
+		}
+
+		bottom := nodes[0]
 		top := nodes[len(nodes)-1]
 
-		if top.Val != pointer.Val {
+		if bottom.Val != top.Val {
 			return false
 		}
-		nodes = nodes[:len(nodes)-1]
-		pointer = pointer.Next
+		nodes = nodes[1 : len(nodes)-1]
 	}
 	return true
 }

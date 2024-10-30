@@ -11,7 +11,7 @@ class Solution:
         if len(prices) == 0:
             return 0
 
-        dp: list[list[int]] = [[0, 0]] * len(prices)
+        dp: list[list[int]] = [[0, 0] for _ in range(len(prices))]
 
         for i in range(len(prices)):
             if i == 0:

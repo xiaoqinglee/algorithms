@@ -1,6 +1,6 @@
 package LinkedList
 
-import "github.com/xiaoqinglee/algorithms/pkg"
+import . "github.com/xiaoqinglee/algorithms/pkg"
 
 /**
  * Definition for singly-linked list.
@@ -11,13 +11,13 @@ import "github.com/xiaoqinglee/algorithms/pkg"
  */
 
 // https://leetcode.cn/problems/odd-even-linked-list
-func oddEvenList(head *pkg.ListNode) *pkg.ListNode {
+func oddEvenList(head *ListNode) *ListNode {
 	if head == nil {
 		return head
 	}
-	l1DummyHead := new(pkg.ListNode)
+	l1DummyHead := new(ListNode)
 	l1Tail := l1DummyHead
-	l2DummyHead := new(pkg.ListNode)
+	l2DummyHead := new(ListNode)
 	l2Tail := l2DummyHead
 
 	for head != nil {
@@ -30,6 +30,7 @@ func oddEvenList(head *pkg.ListNode) *pkg.ListNode {
 		if head == nil {
 			break
 		}
+
 		newHead = head.Next
 		head.Next = nil
 		l2Tail.Next = head

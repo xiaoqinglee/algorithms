@@ -1,6 +1,6 @@
 package LinkedList
 
-import "github.com/xiaoqinglee/algorithms/pkg"
+import . "github.com/xiaoqinglee/algorithms/pkg"
 
 /**
  * Definition for singly-linked list.
@@ -11,17 +11,17 @@ import "github.com/xiaoqinglee/algorithms/pkg"
  */
 
 // https://leetcode.cn/problems/reverse-nodes-in-k-group
-func reverseKGroup(head *pkg.ListNode, k int) *pkg.ListNode {
+func reverseKGroup(head *ListNode, k int) *ListNode {
 	if head == nil {
 		return head
 	}
 	if k <= 0 {
 		panic("Invalid Input k")
 	}
-	newListDummyHead := &pkg.ListNode{Val: -1, Next: nil}
+	newListDummyHead := &ListNode{Val: -1, Next: nil}
 	newListLastNode := newListDummyHead
 
-	var fixSizedStack []*pkg.ListNode
+	var fixSizedStack []*ListNode
 
 	for head != nil {
 		newHead := head.Next
