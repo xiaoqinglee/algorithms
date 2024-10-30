@@ -6,7 +6,7 @@ import "fmt"
 func subarraySum(nums []int, k int) int {
 	count := 0
 
-	//某个数组[x+1..y]的元素K和加数组[0..x]的元素X和等于数组[0..y]的元素和Y。
+	//某个数组[x+1..y]的元素和K 加 数组[0..x]的元素和X 等于 数组[0..y]的元素和Y。
 	//K + X = Y -> Y - K = X
 	//数组[0..i]叫做原数组的prefix数组
 

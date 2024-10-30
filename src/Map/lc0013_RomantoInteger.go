@@ -23,7 +23,7 @@ func romanToInt(s string) int {
 	for currentIdx := 0; currentIdx <= len(s)-1; {
 
 		canMakeTwoSteps := false
-		if currentIdx <= len(s)-2 {
+		if currentIdx+2 <= len(s) {
 			if _, ok := symbolToValue[s[currentIdx:currentIdx+2]]; ok {
 				canMakeTwoSteps = true
 			}

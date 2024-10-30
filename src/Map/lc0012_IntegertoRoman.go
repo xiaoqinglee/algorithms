@@ -32,7 +32,7 @@ func intToRoman(num int) string {
 	var result []string
 	for _, value := range values {
 		count := num / value
-		num = num - count*value
+		num = num % value
 		for i := 0; i < count; i++ {
 			result = append(result, valueToSymbol[value])
 		}
