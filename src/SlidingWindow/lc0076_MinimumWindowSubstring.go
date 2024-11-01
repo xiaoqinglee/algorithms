@@ -14,13 +14,13 @@ import (
 //	最小值在收缩的过程中获得。
 //	扩张过程：收劲，见好就收。遇到第一个能让收缩过程继续下去的情况（即让窗口满足条件的情况）后立即停下来，转向收缩过程。
 //	收缩过程：使劲，逼到极限。遇到第一个让窗口满足条件的地方不会停下来，因为移动到下一个位置可能仍然满足条件，
-//		从而获得一个更小的窗口，直到不满足条件转向扩张过程。
+//		从而获得一个更小的窗口，直到不满足条件从而转向扩张过程。【每次收缩后比较并记录下最小窗口。】
 //
 //求最大窗口：
 //	比如lc0003
 //	最大值在窗口扩张的过程中获得。
 //	扩张过程：使劲，逼到极限。遇到第一个让窗口满足条件的地方不会停下来，因为移动到下一个位置可能仍然满足条件，
-//		从而获得一个更大的窗口，直到不满足条件转向收缩过程。
+//		从而获得一个更大的窗口，直到不满足条件从而转向收缩过程。【每次扩张后比较并记录下最大窗口。】
 //	收缩过程：收劲，见好就收。遇到第一个能让扩张过程继续下去的情况（即让窗口满足条件的情况）后立即停下来，转向扩张过程。
 
 func minWindow(s string, t string) string {
@@ -32,9 +32,9 @@ func minWindow(s string, t string) string {
 	//先移动右指针，遇到让当前窗口满足条件的第一个元素后右指针停下来。
 	//然后移动左指针，遇到让当前窗口不满足条件的第一个元素后左指针停下来。
 
-	requiringCharToCharCount := make(map[rune]int)
+	requiredCharToCharCount := make(map[rune]int)
 	for _, rune_ := range t {
-		requiringCharToCharCount[rune_] += 1
+		requiredCharToCharCount[rune_] += 1
 	}
 
 	holdingCharToCharCount := make(map[rune]int)
@@ -42,7 +42,7 @@ func minWindow(s string, t string) string {
 	// 窗口[left...right), 和C传统一致，这样可以表示len为0的空串，目标子串可以直接用切片语法[left:right]表示出来
 	left, right := 0, 0
 
-	for rune_, count := range requiringCharToCharCount {
+	for rune_, count := range requiredCharToCharCount {
 		holdingCharToCharCount[rune_] = 0
 		lackingCharSum += count
 	}
@@ -56,9 +56,9 @@ OuterLoop:
 			if right > len(s)-1 {
 				break OuterLoop
 			}
-			if requiringCount, ok := requiringCharToCharCount[rune(s[right])]; ok {
+			if requiredCount, ok := requiredCharToCharCount[rune(s[right])]; ok {
 				holdingCharCount := holdingCharToCharCount[rune(s[right])]
-				if holdingCharCount < requiringCount {
+				if holdingCharCount < requiredCount {
 					lackingCharSum -= 1
 				}
 				holdingCharToCharCount[rune(s[right])] += 1
@@ -76,10 +76,10 @@ OuterLoop:
 				shortestSubstringRightIdx = right
 			}
 
-			if requiringCount, ok := requiringCharToCharCount[rune(s[left])]; ok {
+			if requiredCount, ok := requiredCharToCharCount[rune(s[left])]; ok {
 				holdingCharToCharCount[rune(s[left])] -= 1
 				holdingCharCount := holdingCharToCharCount[rune(s[left])]
-				if holdingCharCount < requiringCount {
+				if holdingCharCount < requiredCount {
 					lackingCharSum += 1
 				}
 			}
