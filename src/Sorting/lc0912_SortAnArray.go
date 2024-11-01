@@ -58,7 +58,7 @@ func quickSort(nums []int) []int {
 	return nums
 }
 
-func MergeSort(nums []int) []int {
+func mergeSort(nums []int) []int {
 
 	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(nums), func(i, j int) {
