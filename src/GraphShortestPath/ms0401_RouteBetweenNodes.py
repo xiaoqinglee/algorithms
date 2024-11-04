@@ -41,7 +41,7 @@ class Solution:
 
         # BFS 算法, 时间复杂度E+V
 
-        # 无权重的有向无环或有环图的单源最短路径问题可以使用广度优先遍历,
+        # 【无权重的】有向无环或有环图的单源最短路径问题可以使用广度优先遍历,
         # 在遍历到终点后算法就可以停下来了
 
         adj_vs: dict[int, set[int]] = {}
@@ -106,7 +106,7 @@ class Solution:
 #
 #     确定起点的最短路径问题(Single-destination shortest-paths problem)
 #         也叫单源最短路问题，即已知起始结点，求最短路径的问题。
-#         在边权非负时适合使用Dijkstra算法，存在负边权时则适合使用Bellman-ford算法或者SPFA算法。
+#         在边权非负时适合使用Dijkstra算法，存在负边权时则适合使用Bellman-Ford算法。
 #
 #     确定终点的最短路径问题
 #         与确定起点的问题相反，该问题是已知终结结点，求最短路径的问题。
