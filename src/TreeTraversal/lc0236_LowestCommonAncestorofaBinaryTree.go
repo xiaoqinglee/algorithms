@@ -17,21 +17,18 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 	//递归，后序遍历，回退的的时候如果发现当前树第一次集齐了 p q 两个node，那么这个树的根就是 p q 最低的公共祖先target。
 	//注意：当找到target之后就不要继续深入向下遍历其他子树了，直接一步一步回退到根节点，将调用栈弹空即可。
 
-	var target *TreeNode
-
-	var containingPQCount func(node *TreeNode) int
-	// 如果返回值为-1说明target已经找到了
-	containingPQCount = func(node *TreeNode) int {
+	var traverse func(node *TreeNode) (containingPQCount int, target *TreeNode)
+	traverse = func(node *TreeNode) (containingPQCount int, target *TreeNode) {
 		if node == nil {
-			return 0
+			return 0, nil
 		}
-		leftChildContainingPQCount := containingPQCount(node.Left)
-		if leftChildContainingPQCount == -1 {
-			return -1
+		leftChildContainingPQCount, target := traverse(node.Left)
+		if target != nil {
+			return leftChildContainingPQCount, target
 		}
-		rightChildContainingPQCount := containingPQCount(node.Right)
-		if rightChildContainingPQCount == -1 {
-			return -1
+		rightChildContainingPQCount, target := traverse(node.Right)
+		if target != nil {
+			return rightChildContainingPQCount, target
 		}
 		rootContainingPQCount := 0
 		if node == p || node == q {
@@ -40,11 +37,10 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 		treeContainingPQCount := rootContainingPQCount + leftChildContainingPQCount + rightChildContainingPQCount
 
 		if treeContainingPQCount == 2 {
-			target = node
-			return -1
+			return treeContainingPQCount, node
 		}
-		return treeContainingPQCount
+		return treeContainingPQCount, nil
 	}
-	containingPQCount(root)
+	_, target := traverse(root)
 	return target
 }

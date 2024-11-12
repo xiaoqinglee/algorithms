@@ -31,9 +31,7 @@ class Solution:
         a_and_b.sort()
         min_distance: int | float = float("inf")
         for i in range(1, len(a_and_b)):
-            if a_and_b[i][1] == a_and_b[i-1][1]:
-                continue
-            else:
+            if a_and_b[i][1] != a_and_b[i-1][1]:
                 distance = a_and_b[i][0] - a_and_b[i-1][0]
                 min_distance = min(min_distance, distance)
 

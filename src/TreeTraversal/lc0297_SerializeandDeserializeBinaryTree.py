@@ -60,10 +60,10 @@ class Codec:
 
         while True:
             for index, node in enumerate(nodes_in_prev_level):
-                if root is None:
-                    root = node
                 if node is None:
                     continue
+                if root is None:
+                    root = node
 
                 left: TreeNode | None = nodes.popleft() if len(nodes) > 0 else None
                 right: TreeNode | None = nodes.popleft() if len(nodes) > 0 else None

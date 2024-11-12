@@ -2,15 +2,13 @@ package TwoPointers
 
 // https://leetcode.cn/problems/remove-element
 func removeElement(nums []int, val int) int {
-	length := len(nums)
-	i := 0
-	for i < length {
+	for i := 0; i <= len(nums)-1; {
 		if nums[i] == val {
-			nums[i] = nums[length-1]
-			length -= 1
+			nums[i] = nums[len(nums)-1]
+			nums = nums[:len(nums)-1]
 		} else {
 			i += 1
 		}
 	}
-	return length
+	return len(nums)
 }
