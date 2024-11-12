@@ -7,7 +7,7 @@ class Solution:
             return 1
 
         writing_pointer = 0  # 指向已经写入的最后一个元素
-        reading_pointer = 1  # 指向正在读取的元素
+        reading_pointer = 1  # 指向即将要读取的元素
         while True:
             if nums[reading_pointer] != nums[writing_pointer]:
                 writing_pointer += 1
