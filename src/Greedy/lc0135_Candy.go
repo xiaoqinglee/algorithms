@@ -12,13 +12,6 @@ package Greedy
 //		return len(ratings)
 //	}
 //
-//	max := func(int1, int2 int) int {
-//		if int1 > int2 {
-//			return int1
-//		}
-//		return int2
-//	}
-//
 //	childToSmallerRatingValueNeighbors := make(map[int][]int)
 //	for child := range ratings {
 //		if child != 0 {
@@ -85,13 +78,6 @@ func candy(ratings []int) int {
 
 	if len(ratings) <= 1 {
 		return len(ratings)
-	}
-
-	max := func(int1, int2 int) int {
-		if int1 > int2 {
-			return int1
-		}
-		return int2
 	}
 
 	//CandyCountOnlyConsideringLeftNeighbor

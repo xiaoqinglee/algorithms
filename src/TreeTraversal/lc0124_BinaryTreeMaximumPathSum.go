@@ -30,13 +30,6 @@ func maxPathSum(root *TreeNode) int {
 	//              root.Val + Y(root.Right),
 	//              root.Val + Y(root.Left) + Y(root.Right))
 
-	max := func(int1, int2 int) int {
-		if int1 > int2 {
-			return int1
-		}
-		return int2
-	}
-
 	result := math.MinInt32
 
 	var singlePathSum func(node *TreeNode) int
@@ -47,10 +40,17 @@ func maxPathSum(root *TreeNode) int {
 		leftSinglePathSum := singlePathSum(node.Left)
 		rightSinglePathSum := singlePathSum(node.Right)
 
-		resultCandidate := max(0, leftSinglePathSum) + max(0, rightSinglePathSum) + node.Val
+		resultCandidate := max(
+			node.Val,
+			node.Val+leftSinglePathSum,
+			node.Val+rightSinglePathSum,
+			node.Val+leftSinglePathSum+rightSinglePathSum)
 		result = max(resultCandidate, result)
 
-		return max(max(0, leftSinglePathSum), max(0, rightSinglePathSum)) + node.Val
+		return max(
+			node.Val,
+			node.Val+leftSinglePathSum,
+			node.Val+rightSinglePathSum)
 	}
 
 	singlePathSum(root)

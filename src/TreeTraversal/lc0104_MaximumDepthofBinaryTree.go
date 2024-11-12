@@ -17,12 +17,5 @@ func maxDepth(root *TreeNode) int {
 		return 0
 	}
 
-	max := func(int1, int2 int) int {
-		if int1 > int2 {
-			return int1
-		}
-		return int2
-	}
-
 	return max(maxDepth(root.Left), maxDepth(root.Right)) + 1
 }
