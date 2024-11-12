@@ -8,13 +8,6 @@ func lengthOfLIS(nums []int) int {
 
 	result := 1
 
-	max := func(int1, int2 int) int {
-		if int1 < int2 {
-			return int2
-		}
-		return int1
-	}
-
 	//dp[i]的值是以nums[i]作为最后一个元素的所有递增子序列中元素个数最大的那个递增子序列的元素数
 	dp := make([]int, len(nums))
 	for i := range dp {

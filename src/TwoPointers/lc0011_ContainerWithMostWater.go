@@ -3,14 +3,6 @@ package TwoPointers
 // https://leetcode.cn/problems/container-with-most-water
 func containerWithMostWater(height []int) int {
 
-	min := func(a, b int) int {
-		if a < b {
-			return a
-		} else {
-			return b
-		}
-	}
-
 	if len(height) <= 1 {
 		panic("Invalid Input height")
 	}

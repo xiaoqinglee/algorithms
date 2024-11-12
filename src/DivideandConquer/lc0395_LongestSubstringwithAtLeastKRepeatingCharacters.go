@@ -15,13 +15,6 @@ func longestSubstring(s string, k int) int {
 	//也就是说，我们将字符串按照 ch 切分成若干段，则满足要求的最长子串一定出现在某个被切分的段内，而不能跨越一个或多个段。
 	//因此，可以考虑分治的方式求解本题。
 
-	max := func(int1, int2 int) int {
-		if int1 > int2 {
-			return int1
-		}
-		return int2
-	}
-
 	if s == "" {
 		return 0
 	}
