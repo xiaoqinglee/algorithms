@@ -4,8 +4,7 @@ from functools import cmp_to_key
 # https://leetcode.cn/problems/largest-number
 class Solution:
 
-    # [21, 2] -> 221
-    # [23, 2] -> 232
+    # [1, 2, 4, 20, 21, 23] -> [4, 23, 2, 21, 20, 1]
 
     def largestNumber(self, nums: list[int]) -> str:
         if all((x == 0 for x in nums)):  # 一定要使用生成器推导式而不是列表推导式
