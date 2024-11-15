@@ -16,7 +16,7 @@ class Solution:
                 left_half_len = 1
                 while left_half_len < i:
                     right_half_len = i - left_half_len
-                    # 左半绳子切0或多刀取得的最大积或因数 * 右半绳子切0或多刀取得的最大积或因数
+                    # 左半绳子切0或多刀取得的最大积 * 右半绳子切0或多刀取得的最大积
                     candidate = max(dp[left_half_len], left_half_len) * max(dp[right_half_len], right_half_len)
                     if candidate > max_:
                         max_ = candidate

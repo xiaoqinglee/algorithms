@@ -7,41 +7,32 @@ import (
 // https://leetcode.cn/problems/sqrtx
 func mySqrt(x int) int {
 
-	isRootFloor := func(rootFloor int) bool {
+	equalToRootFloor := func(rootFloor int) bool {
 		if rootFloor == math.MaxInt32 { //避免下面的计算发生溢出
 			panic("unexpected")
 		}
 		return rootFloor*rootFloor <= x && x < (rootFloor+1)*(rootFloor+1)
 	}
-	isRootCeiling := func(rootCeiling int) bool {
-		if rootCeiling == 0 { //避免下面的计算出现负数
-			return x == 0
+	greaterThanRootFloor := func(candidate int) bool {
+		if candidate == math.MaxInt32 { //避免下面的计算发生溢出
+			panic("unexpected")
 		}
-		return (rootCeiling-1)*(rootCeiling-1) < x && x <= rootCeiling*rootCeiling
+		return x < candidate*candidate
 	}
+
 	lo := 0
 	hi := math.MaxInt32
-	// 在闭区间 [lo..hi] 中寻找第一个大于等于 root 的整数，这个整数也就是 rootCeiling
+	// 在闭区间 [lo..hi] 中寻找第一个满足某个条件的整数，数组的右半段都满足这个条件(至少hi满足)
 	for {
 		if lo == hi {
 			break
 		}
-		rootCeiling := (lo + hi) / 2
-		if x <= rootCeiling*rootCeiling {
-			hi = rootCeiling
+		mid := (lo + hi) / 2
+		if greaterThanRootFloor(mid) || equalToRootFloor(mid) {
+			hi = mid
 		} else {
-			lo = rootCeiling + 1
+			lo = mid + 1
 		}
 	}
-	rootCeiling := lo
-	if !isRootCeiling(rootCeiling) {
-		panic("unexpected")
-	}
-	if isRootFloor(rootCeiling) {
-		return rootCeiling
-	} else if isRootFloor(rootCeiling - 1) {
-		return rootCeiling - 1
-	} else {
-		panic("unexpected")
-	}
+	return lo
 }

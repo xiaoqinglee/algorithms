@@ -25,7 +25,7 @@ class Solution:
                     left_pointer += 1
                 else:
                     # 每当遇到 左子数组当前元素 > 右子数组当前元素 时，
-                    # 意味着 「左子数组当前元素 至 末尾元素」 与 「右子数组当前元素」 构成了若干 「逆序对」 。
+                    # 意味着 「左子数组当前元素 至 左子数组末尾元素」 与 「右子数组当前元素」 构成了若干 「逆序对」 。
                     nonlocal answer
                     answer += (mid - left_pointer + 1)
                     nums[merging_pointer] = container[right_pointer]
