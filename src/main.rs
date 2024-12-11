@@ -1,7 +1,7 @@
-use algorithms::Map::lc0217_ContainsDuplicate::Solution;
+use algorithms::Map::lc0128_LongestConsecutiveSequence::Solution;
 
 fn main() {
-    dbg!(Solution::contains_duplicate(vec![5, 5, 5, 10, 20]));
+    dbg!(Solution::longest_consecutive(vec![100, 4, 200, 1, 3, 2]));
 }
 
 // in project home directory, run:
