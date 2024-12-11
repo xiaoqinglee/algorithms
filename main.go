@@ -9,4 +9,5 @@ func main() {
 }
 
 // in project home directory, run:
+// go fmt ./...
 // go run main.go

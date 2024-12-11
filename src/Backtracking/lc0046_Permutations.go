@@ -19,6 +19,8 @@ func permute(nums []int) [][]int {
 			//see:
 			//Learn Functional Programming with Elixir by Ulisses Almeida
 			//Using Recursion with Anonymous Functions
+			//
+			//需要注意，elixir 捕获的总是值（是不可变的），而 golang 捕获的是变量（是可变的）。
 			result = append(result, oneCombination)
 		}
 		for i := fixedFirstNElement; i < len(nums); i++ {

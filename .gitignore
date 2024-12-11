@@ -70,3 +70,4 @@ in_elixir-*.tar
 # 5.others
 
 .idea
+.DS_Store

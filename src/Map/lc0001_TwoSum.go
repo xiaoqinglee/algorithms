@@ -11,7 +11,7 @@ func twoSum(nums []int, target int) []int {
 		}
 		numToIndexMap[num] = i
 	}
-	return []int{}
+	panic("unexpected input")
 }
 
 func TestTwoSum() {

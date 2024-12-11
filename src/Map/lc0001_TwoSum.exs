@@ -12,11 +12,14 @@ defmodule Solution do
         _ -> {:cont, _new_acc = Map.put(map, num, num_idx)}
       end
     end)
+    |> case do
+      result when is_list(result) -> result
+      _ -> raise "unexpected input"
+    end
   end
 end
 
-[2, 7, 11, 15]
-|> Solution.two_sum(9)
+Solution.two_sum([2, 7, 11, 15], 9)
 |> dbg()
 
 # in project home directory, run:
