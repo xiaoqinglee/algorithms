@@ -1,24 +1,18 @@
 # https://leetcode.cn/problems/valid-parentheses
 class Solution:
     def isValid(self, s: str) -> bool:
+        right_to_left = {
+            ')': '(',
+            ']': '[',
+            '}': '{',
+        }
         stack: list[str] = []
         for char in s:
-            if char == "(":
+            if char in right_to_left.values():
                 stack.append(char)
-            elif char == ")":
-                if len(stack) == 0 or stack[-1] != "(":
-                    return False
-                stack.pop()
-            elif char == "[":
-                stack.append(char)
-            elif char == "]":
-                if len(stack) == 0 or stack[-1] != "[":
-                    return False
-                stack.pop()
-            elif char == "{":
-                stack.append(char)
-            elif char == "}":
-                if len(stack) == 0 or stack[-1] != "{":
+            elif char in right_to_left:
+                left = right_to_left[char]
+                if not (len(stack) > 0 and stack[-1] == left):
                     return False
                 stack.pop()
             else:
