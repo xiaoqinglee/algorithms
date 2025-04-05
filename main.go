@@ -1,9 +1,9 @@
 package main
 
-import "github.com/xiaoqinglee/algorithms/src/Map"
+import "github.com/xiaoqinglee/algorithms/src/ArrayStackQueue"
 
 func main() {
-	Map.TestTwoSum()
+	ArrayStackQueue.TestSimplifyPath()
 }
 
 // in project home directory, run:
