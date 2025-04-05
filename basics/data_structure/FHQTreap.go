@@ -1,13 +1,13 @@
 package data_structure
 
 import (
+	"cmp"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/k0kubun/pp/v3"
-	. "github.com/xiaoqinglee/algorithms/pkg"
 	"math/rand"
 )
 
-type FHQTreap[K Ordered, V any] struct {
+type FHQTreap[K cmp.Ordered, V any] struct {
 	Key      K
 	Val      V
 	L        *FHQTreap[K, V]

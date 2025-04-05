@@ -1,8 +1,6 @@
 package main
 
-import (
-	"github.com/xiaoqinglee/algorithms/src/Map"
-)
+import "github.com/xiaoqinglee/algorithms/src/Map"
 
 func main() {
 	Map.TestTwoSum()
