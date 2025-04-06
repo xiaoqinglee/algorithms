@@ -22,15 +22,12 @@ class Solution:
 
         max_area: int = 0
         for i, height in enumerate(heights):
-            if len(stack) == 0 or stack[-1][0] < height:
-                stack.append((height, i))
-            else:  # len(stack) != 0 and stack[-1][0] >= height
-                while len(stack) != 0 and stack[-1][0] >= height:
-                    # rectangle_width = (r-1) - (l+1) + 1
-                    rectangle_width = (i-1) - (stack[-2][1] + 1 if len(stack) >= 2 else 0) + 1
-                    area = rectangle_width * stack[-1][0]
-                    max_area = max(area, max_area)
-                    stack.pop()
-                stack.append((height, i))
+            while len(stack) > 0 and stack[-1][0] >= height:
+                # rectangle_width = (r-1) - (l+1) + 1
+                rectangle_width = (i - 1) - ((stack[-2][1] if len(stack) > 1 else -1) + 1) + 1
+                area = rectangle_width * stack[-1][0]
+                max_area = max(area, max_area)
+                stack.pop()
+            stack.append((height, i))
 
         return max_area
