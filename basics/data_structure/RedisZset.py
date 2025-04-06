@@ -24,13 +24,13 @@ class ZSet:
 
     def get_element_rank(self, zset_element: str) -> int | None:
         if zset_element not in self.elem_to_score:
-            return
+            return None
         score = self.elem_to_score[zset_element]
         return self.skiplist.get_element_rank(score, zset_element)
 
     def search_element_by_rank(self, rank: int) -> tuple[float, str] | None:
         if not 1 <= rank <= len(self.elem_to_score):
-            return
+            return None
         return self.skiplist.search_element_by_rank(rank)
 
 
@@ -45,7 +45,7 @@ class SkiplistNode:
         self.elem: str | None = zset_element
         self.score: float = score
         self.backward: SkiplistNode | None = None
-        self.levels: list[SkiplistLevel] = [SkiplistLevel() for i in range(level_count)]
+        self.levels: list[SkiplistLevel] = [SkiplistLevel() for _ in range(level_count)]
 
     def __repr__(self):
         return repr({
@@ -182,11 +182,11 @@ class Skiplist:
         if x != self.dummy_header and (x.score, x.elem) == (score, zset_element):
             return node_rank
         # 没有找到该node
-        return
+        return None
 
     def search_element_by_rank(self, rank: int) -> tuple[float, str] | None:
         if not 1 <= rank <= self.length:
-            return
+            return None
         node_rank: int = 0
         x: SkiplistNode = self.dummy_header
         for i in range(self.instance_max_level-1, -1, -1):

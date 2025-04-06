@@ -1,6 +1,5 @@
 from typing import Any
 
-
 HashableComparableElem = Any
 
 
@@ -38,11 +37,18 @@ class UnionFind:
 
     # 元素填充完毕之后才可以使用
     def find(self, elem: HashableComparableElem) -> HashableComparableElem:
-        followed = self.follows[elem]
-        if followed == elem:
-            return elem
-        representative = self.find(followed)
-        self.follows[elem] = representative  # 路径压缩
+        representative = None
+        elem_on_path = []
+        while True:
+            followed = self.follows[elem]
+            if followed == elem:
+                representative = elem
+                break
+            elem_on_path.append(elem)
+            elem = followed
+        # 路径压缩
+        for elem in elem_on_path:
+            self.follows[elem] = representative
         return representative
 
     # 元素填充完毕之后才可以使用
