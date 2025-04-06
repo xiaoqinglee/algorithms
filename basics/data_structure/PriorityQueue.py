@@ -2,16 +2,25 @@ from collections.abc import Callable
 
 
 class PriorityQueue:
+    # https://interviewing.io/questions/build-a-max-heap
+
     def __init__(self,
                  elements: list[int],
                  has_higher_priority: Callable[[int, int], bool]):
         self.__elements = elements.copy()
         self.__has_higher_priority = has_higher_priority
-        self.__heapify()
+        # self.__heapify()
+        self.__heapify2()
 
     def __heapify(self) -> None:
+        # Time complexity: O(n)
         for element_index in range(self.size() - 1, -1, -1):
             self.__sink_down(element_index)
+
+    def __heapify2(self) -> None:
+        # Time complexity: O(n * log(n))
+        for element_index in range(self.size()):
+            self.__swim_up(element_index)
 
     def __swim_up(self, element_index: int) -> None:
         while True:
