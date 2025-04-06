@@ -13,7 +13,7 @@ class Solution:
 
         def _pre_node(tree: TreeNode) -> TreeNode:  # 要求 tree 非空, 且 tree 一定存在 pre node
             node = tree.left
-            while node is not None and node.right is not None:
+            while node.right is not None:
                 node = node.right
             return node
 

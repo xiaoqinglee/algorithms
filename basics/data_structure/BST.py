@@ -38,7 +38,7 @@ class BST:
 
         def _pre_node(node: BSTNode) -> BSTNode:  # 要求 node 一定存在 pre node
             node = node.left.root
-            while node is not None and node.right.root is not None:
+            while node.right.root is not None:
                 node = node.right.root
             return node
 

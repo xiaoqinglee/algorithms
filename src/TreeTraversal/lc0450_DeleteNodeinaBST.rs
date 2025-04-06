@@ -31,7 +31,7 @@ impl Solution {
         fn _pre_node(tree: Option<Rc<RefCell<TreeNode>>>) -> Option<Rc<RefCell<TreeNode>>> {
             // 要求 tree 非空, 且 tree 一定存在 pre node
             let mut node = tree.as_ref().unwrap().borrow().left.clone();
-            while node.is_some() && node.as_ref().unwrap().borrow().right.is_some() {
+            while node.as_ref().unwrap().borrow().right.is_some() {
                 let temp = node.as_ref().unwrap().borrow().right.clone();
                 node = temp
             }
