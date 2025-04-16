@@ -11,11 +11,11 @@ class Solution:
         # 单调栈, 自栈底到栈顶严格递减
         # stack element: tuple[num, num_index]
         stack: list[tuple[int, int]] = []
-        for i in range(len(duplicated_num_list)-1, -1, -1):
-            if len(stack) == 0 or stack[-1][0] > duplicated_num_list[i]:
+        for i in range(len(duplicated_num_list) - 1, -1, -1):
+            if len(stack) == 0 or duplicated_num_list[i] < stack[-1][0]:
                 stack.append((duplicated_num_list[i], i))
-            else:  # len(stack) != 0 and stack[-1][0] <= duplicated_num_list[i]:
-                while len(stack) != 0 and stack[-1][0] <= duplicated_num_list[i]:
+            else:  # len(stack) != 0 and duplicated_num_list[i] >= stack[-1][0]:
+                while len(stack) != 0 and duplicated_num_list[i] >= stack[-1][0]:
                     stack.pop()
                 stack.append((duplicated_num_list[i], i))
             if len(stack) >= 2:
