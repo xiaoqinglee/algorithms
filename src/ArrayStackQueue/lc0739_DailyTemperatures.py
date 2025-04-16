@@ -8,7 +8,7 @@ class Solution:
         result: list[int | None] = [None] * len(temperatures)
 
         for i in range(len(temperatures) - 1, -1, -1):
-            while len(higher_temperatures_in_future) > 0 and not higher_temperatures_in_future[-1][0] > temperatures[i]:
+            while len(higher_temperatures_in_future) > 0 and not temperatures[i] < higher_temperatures_in_future[-1][0]:
                 higher_temperatures_in_future.pop()
             if len(higher_temperatures_in_future) == 0:
                 result[i] = 0
