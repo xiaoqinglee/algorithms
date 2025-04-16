@@ -9,17 +9,16 @@ class Solution:
         next_bigger: dict[int, int] = {}
 
         # 单调栈, 自栈底到栈顶严格递减
-        # stack element: tuple[num, num_index]
-        stack: list[tuple[int, int]] = []
-        for i in range(len(nums2)-1, -1, -1):
-            if len(stack) == 0 or stack[-1][0] > nums2[i]:
-                stack.append((nums2[i], i))
-            else:  # len(stack) != 0 and stack[-1][0] <= nums2[i]:
-                while len(stack) != 0 and stack[-1][0] <= nums2[i]:
+        stack: list[int] = []
+        for i in range(len(nums2) - 1, -1, -1):
+            if len(stack) == 0 or nums2[i] < stack[-1]:
+                stack.append(nums2[i])
+            else:  # len(stack) != 0 and  nums2[i] >= stack[-1]:
+                while len(stack) != 0 and nums2[i] >= stack[-1]:
                     stack.pop()
-                stack.append((nums2[i], i))
+                stack.append(nums2[i])
             if len(stack) >= 2:
-                next_bigger[nums2[i]] = stack[-2][0]
+                next_bigger[nums2[i]] = stack[-2]
             else:
                 next_bigger[nums2[i]] = -1
 
