@@ -29,7 +29,8 @@ class Solution:
     def rand10(self) -> int:
         r1 = self.__rand2()
         r2 = self.__rand5()
-        if r1 == 1:
-            return 2 * r2 - 1
-        else:
-            return 2 * r2
+        # if r1 == 1:
+        #     return 2 * r2 - 1
+        # else:
+        #     return 2 * r2
+        return (r1 - 1) * 5 + r2
