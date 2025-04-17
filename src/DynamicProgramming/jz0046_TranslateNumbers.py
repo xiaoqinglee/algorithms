@@ -20,10 +20,10 @@ class Solution:
 
         for i in range(len(num_str)):
             if i == 0:
-                dp[i] = 1 + 0
+                dp[i] = 1
             elif i == 1:
-                dp[i] = (dp[0] * 1) + (1 * (1 if can_translate(num_str[0:2]) else 0))
+                dp[i] = dp[0] + (1 if can_translate(num_str[0:2]) else 0)
             else:
-                dp[i] = (dp[i - 1] * 1) + (dp[i - 2] * (1 if can_translate(num_str[i - 1:i + 1]) else 0))
+                dp[i] = dp[i - 1] + (dp[i - 2] if can_translate(num_str[i - 1:i + 1]) else 0)
 
         return dp[len(num_str) - 1]
