@@ -1,7 +1,8 @@
 package Map
 
 import (
-	"sort"
+	"maps"
+	"slices"
 	"strings"
 )
 
@@ -23,11 +24,9 @@ func intToRoman(num int) string {
 		900:  "CM",
 	}
 
-	values := make([]int, 0, len(valueToSymbol))
-	for key := range valueToSymbol {
-		values = append(values, key)
-	}
-	sort.Stable(sort.Reverse(sort.IntSlice(values)))
+	values := slices.Collect(maps.Keys(valueToSymbol))
+	slices.Sort(values)
+	slices.Reverse(values)
 
 	var result []string
 	for _, value := range values {
