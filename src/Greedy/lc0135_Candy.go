@@ -112,8 +112,8 @@ func candy(ratings []int) int {
 	}
 
 	candyCountSum := 0
-	for _, candyCount := range candyCount {
-		candyCountSum += candyCount
+	for _, candyCount_ := range candyCount {
+		candyCountSum += candyCount_
 	}
 	return candyCountSum
 }
