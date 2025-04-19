@@ -3,6 +3,7 @@ package PrefixSum
 import "fmt"
 
 // https://leetcode.cn/problems/subarray-sum-equals-k
+// 参考 lc 0001
 func subarraySum(nums []int, k int) int {
 	count := 0
 
