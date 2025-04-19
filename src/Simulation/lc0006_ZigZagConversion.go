@@ -10,37 +10,37 @@ func convert(s string, numRows int) string {
 	if numRows <= 1 || len([]rune(s)) < numRows {
 		return s
 	}
-
-	rows := make([][]rune, numRows)
+	rows := make([][]string, numRows)
 	for i := range rows {
-		rows[i] = make([]rune, 0)
+		rows[i] = make([]string, 0)
 	}
-	var movingDirectionUpToDown []bool
-	for i := 0; i < numRows-1; i++ {
-		movingDirectionUpToDown = append(movingDirectionUpToDown, true)
+	var input []string
+	for _, char := range s {
+		input = append(input, string(char))
 	}
-	for i := 0; i < numRows-1; i++ {
-		movingDirectionUpToDown = append(movingDirectionUpToDown, false)
+	oneIterationProcessNElems := (numRows - 1) * 2
+	for range oneIterationProcessNElems - (len(input) % oneIterationProcessNElems) {
+		input = append(input, "")
 	}
-
-	movingDirectionIndex := -1
-	currentRow := 0
-	rows[currentRow] = append(rows[currentRow], []rune(s)[0])
-
-	for _, rune_ := range []rune(s[1:]) {
-		movingDirectionIndex = (movingDirectionIndex + 1 + len(movingDirectionUpToDown)) % len(movingDirectionUpToDown)
-		upToDown := movingDirectionUpToDown[movingDirectionIndex]
-		if upToDown {
-			currentRow += 1
-		} else {
-			currentRow -= 1
+	curCharIdx := 0
+	for {
+		for i := 0; i <= numRows-2; i++ {
+			rows[i] = append(rows[i], input[curCharIdx])
+			curCharIdx++
 		}
-		rows[currentRow] = append(rows[currentRow], rune_)
+		for i := numRows - 1; i >= 1; i-- {
+			rows[i] = append(rows[i], input[curCharIdx])
+			curCharIdx++
+		}
+		if curCharIdx == len(input) {
+			break
+		}
 	}
-	strings_ := make([]string, numRows)
+	var result []string
 	for _, row := range rows {
-		strings_ = append(strings_, string(row))
+		for _, char := range row {
+			result = append(result, char)
+		}
 	}
-	result := strings.Join(strings_, "")
-	return result
+	return strings.Join(result, "")
 }
