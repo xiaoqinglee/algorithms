@@ -2,6 +2,7 @@ use std::collections::HashMap;
 
 pub struct Solution;
 
+// https://leetcode.cn/problems/group-anagrams
 impl Solution {
     // pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
     //     let mut out: HashMap<Vec<char>, Vec<String>> = HashMap::new();
